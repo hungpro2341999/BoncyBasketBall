@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Target
+  - Ground
+  - Bottom
+  - Up
+  - Left
+  - AI
+  - Right
+  - Box_1
+  - Box_2
+  - Box_3
+  - Percition
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Head
+  - Leg
+  - Hand
+  - Ground
+  - Body
+  - Player
+  - Sky
+  - AI
+  - Ball
+  - High
+  - Under
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Leg
+    uniqueID: 3179752293
+    locked: 0
+  - name: Head
+    uniqueID: 3701947581
+    locked: 0
+  - name: Ball
+    uniqueID: 1589735951
+    locked: 0
+  - name: Hand
+    uniqueID: 4194074347
+    locked: 0
