@@ -1,0 +1,41 @@
+
+Zeus.png
+size: 844,164
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Hand/2
+  rotate: false
+  xy: 360, 1
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+Hand/8
+  rotate: false
+  xy: 199, 1
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+Leg/2
+  rotate: false
+  xy: 521, 1
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+Leg/26
+  rotate: false
+  xy: 682, 1
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+Zeus
+  rotate: true
+  xy: 1, 8
+  size: 153, 197
+  orig: 153, 197
+  offset: 0, 0
+  index: -1

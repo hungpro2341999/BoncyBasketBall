@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public enum RelizeBall { Right,Left,Up,Down};
 public enum IsSameDirectWithBall  { Yes, No };
@@ -15,7 +16,13 @@ public enum StatusHaveBall { Yes,No}
 
 public class AI : Character
 {
+   
 
+  
+
+
+
+    [Header("InforCPU")]
     #region InforAI
 
     public float ForceHead;
@@ -38,8 +45,9 @@ public class AI : Character
     public float Up;
     public float ThrowBall;
 
+    public float delayAI;
 
-
+    [Header("STATUS")]
     // Status
 
     public RelizeBall RelizeBall;
@@ -76,6 +84,8 @@ public class AI : Character
 
 
     public Transform PosHand;
+
+    public Transform TriggerBallForward;
     // Action
     string[] Jump = { "jumpRight", "jumpLeft", "jumpStraght", "Area", "JumpFoward", "ProtectBasket", "CatchBall" };
 
@@ -87,6 +97,8 @@ public class AI : Character
 
     public override void Start()
     {
+      
+
         Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
 
         MatrixPositonAi = new int[CountSperateDistance];
@@ -106,7 +118,7 @@ public class AI : Character
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            CtrlGamePlay.Ins.Launch(Random.Range(4, 6));
+            isJump = true;
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -178,50 +190,125 @@ public class AI : Character
     public override void Move()
     {
 
-
-
+       
+      
         if (isMoveRight)
         {
+            if (isGround)
+            {
+                StatusCurr = CharacterState.move1;
+            }
+           
             Velocity = speed * Vector2.right;
         }
 
         if (isMoveLeft)
         {
-            Velocity = speed * Vector2.left;
-        }
-
-        if (isJump)
-        {
-            isJump = false;
             if (isGround)
             {
-                Body.velocity = new Vector2(Body.velocity.x, 0);
-                Body.AddForce(Force * Vector2.up, ForceMode2D.Impulse);
-
-
+                StatusCurr = CharacterState.move2;
             }
+           
+            Velocity = speed * Vector2.left;
         }
-        else if (isJump_x2)
+        if (isGround)
         {
-            timeJumpX2 -= Time.deltaTime;
-
-            if (timeJumpX2 <= 0)
+            if (isJump)
             {
-                isJump_x2 = false;
-                Body.AddForce(Force * Vector2.up * 1.4f, ForceMode2D.Impulse);
+                m_timeStartJump = timeStartJump;
+                if (isBall)
+                {
+                    isPullBall = true;
+                }
+                isJump = false;
+                if (isGround)
+                {
+                   
+                    isStartJump = true;
+                    isGround = false;
+                    StatusCurr = CharacterState.jumb1;
+                    Body.velocity = new Vector2(Body.velocity.x, 0);
+                    Body.AddForce(Force * Vector2.up, ForceMode2D.Impulse);
+
+
+                }
+            }
+        }
+        else
+        {
+            isJump = false;
+        }
+     
+       
+        //if (isThrowBall)
+        //{
+        //    isThrowBall = false;
+        //    CtrlGamePlay.Ins.ThrowBall();
+        //}
+
+        if (isStartJump)
+        {
+            if (!isGround)
+            {
+                if (m_timeStartJump > 0)
+                {
+                    m_timeStartJump -= Time.deltaTime;
+                }
+                else
+                {
+                    TriggerBallForward.gameObject.SetActive(false);
+                    if (Mathf.Sign(Body.velocity.y) == 1)
+                    {
+                        StatusCurr = CharacterState.jumb2;
+
+                    }
+                    else
+                    {
+                        if (isPullBall)
+                        {
+                            if (isBall)
+                            {
+                                isBall = false;
+                                CtrlGamePlay.Ins.Launch(Random.Range(2, 3));
+                                isPullBall = false;
+
+                            }
+
+
+
+                        }
+                        StatusCurr = CharacterState.jumb3;
+
+                    }
+
+                }
+            }
+            else
+            {
+                TriggerBallForward.gameObject.SetActive(true);
+                isPullBall = false;
+                isStartJump = false;
+                StatusCurr = CharacterState.idle;
             }
 
+
+
         }
-        if (isThrowBall)
+
+
+
+
+        if (!(isMoveRight || isMoveLeft || isStartJump))
         {
-            isThrowBall = false;
-            CtrlGamePlay.Ins.ThrowBall();
+            StatusCurr = CharacterState.idle;
         }
 
 
 
 
     }
+
+  
 
     public void CatchBall()
     {
@@ -307,6 +394,8 @@ public class AI : Character
     }
     private void LateUpdate()
     {
+
+
         Body.velocity = new Vector2(((isMoveRight ? 1 : 0) + (isMoveLeft ? -1 : 0)) * speed, Body.velocity.y);
         //if (isLimit)
         //{
@@ -316,7 +405,15 @@ public class AI : Character
         {
             StartX2Jump();
         }
+
+      
+
+
+       
     }
+
+
+
     #endregion
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -436,6 +533,14 @@ public class AI : Character
         CtrlGamePlay.Ins.Launch(Random.Range(4,6));
 
     }
+
+    #endregion
+
+
+
+    #region Animation
+
+  
 
     #endregion
 

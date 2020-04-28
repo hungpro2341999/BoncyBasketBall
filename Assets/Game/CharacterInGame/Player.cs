@@ -20,15 +20,17 @@ public class Player : Character
 
 
     
-    public bool isJump;
+    public bool isJump = false;
 
-
+   
     
    
     // For Player:
     public bool isRayToPlayer_1;
     public bool isRayToPlayer_2;
-     
+    [Header("CatchBall")]
+    public Transform PosHand;
+    public Transform TriggerBallForward;
 
     private void Awake()
     {
@@ -55,52 +57,141 @@ public class Player : Character
     public override void Move()
     {
 
-     
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            PlayAnimation();
+        }
+
+            if (Input.GetKeyDown(KeyCode.A))
         {
             isInputMove = true;
             Velocity = speed * Vector2.left;
+            if (isGround)
+            {
+                StatusCurr = CharacterState.move1;
+            }
+           
            
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.D))
         {
+            
             isInputMove = true;
             Velocity = speed * Vector2.right;
+            if (isGround)
+            {
+                StatusCurr = CharacterState.move2;
+            }
            
+
         }
        
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             if (isGround)
             {
+
+                m_timeStartJump = timeStartJump;
+                StatusCurr = CharacterState.jumb1;
                 Body.velocity = new Vector2(Body.velocity.x, 0);
                 Body.AddForce(Force * Vector2.up,ForceMode2D.Impulse);
+                isStartJump = true;
+                isGround = false;
+                StatusCurr = CharacterState.jumb1;
+                if (isBall)
+                {
+                    isPullBall = true;
+                }
+                else
+                {
+                    isPullBall = false;
+                }
             }
         }   
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             if (isBall)
             {
                 isBall = false;
-                CtrlGamePlay.Ins.ThrowBall();
+                CtrlGamePlay.Ins.Launch(Random.Range(5,8));
+
+               
             }
         }
        
 
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        if (Input.GetKeyUp(KeyCode.A))
         {
-           
+            if (isGround)
+            {
+                StatusCurr = CharacterState.idle;
+            }
+       
             Velocity = Vector2.zero;
            
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow))
+        if (Input.GetKeyUp(KeyCode.D))
         {
+            if (isGround)
+            {
+                StatusCurr = CharacterState.idle;
+            }
           
             Velocity = Vector2.zero;
 
 
         }
+
+        if (isStartJump)
+        {
+            if (!isGround)
+            {
+                if (m_timeStartJump > 0)
+                {
+                    m_timeStartJump -= Time.deltaTime;
+                }
+                else
+                {
+                    TriggerBallForward.gameObject.SetActive(false);
+                    if (Mathf.Sign(Body.velocity.y) == 1)
+                    {
+                        StatusCurr = CharacterState.jumb2;
+                      
+                    }
+                    else
+                    {
+                        if (isPullBall)
+                        {
+                            if (isBall)
+                            {
+                                isBall = false;
+                                CtrlGamePlay.Ins.Launch(Random.Range(1, 2));
+                                isPullBall = false;
+
+                            }
+                            
+
+
+                        }
+                        StatusCurr = CharacterState.jumb3;
+                        
+                    }
+
+                }
+            }
+            else
+            {
+                TriggerBallForward.gameObject.SetActive(true);
+                isPullBall = false;
+                isStartJump = false;
+                StatusCurr = CharacterState.idle;
+            }
+
+           
+           
+        }
+       
 
 
 
@@ -168,6 +259,19 @@ public class Player : Character
 
 
         }
+    }
+
+    public void CatchBall()
+    {
+        Debug.Log("CatchBall");
+        var collision = (Ball)CtrlGamePlay.Ins.Ball;
+        collision.GetComponent<Ball>().Velocity = Vector3.zero;
+        collision.GetComponent<Ball>().Body.isKinematic = true;
+        collision.GetComponent<CircleCollider2D>().isTrigger = true;
+
+        collision.transform.parent = PosHand;
+        collision.transform.localPosition = Vector3.zero;
+        isBall = true;
     }
   
     

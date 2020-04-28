@@ -5,7 +5,8 @@ using UnityEngine;
 public class Check : MonoBehaviour
 {
     public string key;
-    public AI AI;
+    public Character character;
+
     // Start is called before the first frame update
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -15,20 +16,51 @@ public class Check : MonoBehaviour
         if (collision.gameObject.tag == "Percition")
         {
             Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
-            AI.SetValue(key);
+            if(character is AI)
+            {
+                var AI = (AI)character;
+                 AI.SetValue(key);
+            }
+          
         }
-        if(collision.gameObject.layer == 16)
+        if (key == "")
         {
-            AI.CatchBall();
+            if (collision.gameObject.layer == 16)
+            {
+
+                if (character is AI)
+                {
+                    var AI = (AI)character;
+                    AI.CatchBall();
+
+                }
+                else if (character is Player)
+                {
+                    var Player = (Player)character;
+                    Player.CatchBall();
+                }
+
+            }
         }
        
+       
     }
+   
     private void OnTriggerExit2D(Collider2D collision)
     {
       
         if (collision.gameObject.tag == "Percition")
         {
-            AI.ResetActionJump(key);
+            if(character is AI)
+            {
+                var AI = (AI)character;
+                 AI.ResetActionJump(key);
+            }
+            else if(character is Player)
+            {
+
+            }
+           
         }
         
     }

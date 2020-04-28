@@ -35,8 +35,8 @@ TagManager:
   - Ball
   - High
   - Under
-  - 
-  - 
+  - Net
+  - Straigh
   - 
   - 
   - 
@@ -63,4 +63,13 @@ TagManager:
     locked: 0
   - name: Hand
     uniqueID: 4194074347
+    locked: 0
+  - name: Player
+    uniqueID: 2007941941
+    locked: 0
+  - name: Net
+    uniqueID: 700266487
+    locked: 0
+  - name: Straigh
+    uniqueID: 4200383831
     locked: 0
