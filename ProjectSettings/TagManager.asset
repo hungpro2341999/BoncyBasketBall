@@ -37,7 +37,7 @@ TagManager:
   - Under
   - Net
   - Straigh
-  - 
+  - BG
   - 
   - 
   - 
@@ -51,6 +51,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BG
+    uniqueID: 269555423
     locked: 0
   - name: Leg
     uniqueID: 3179752293

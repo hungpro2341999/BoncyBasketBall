@@ -38,7 +38,7 @@ public class AI : Character
     public bool isThrowBall;
 
 
-    public bool isBall;
+  
 
     public float Left;
     public float Right;
@@ -321,6 +321,7 @@ public class AI : Character
         collision.transform.parent = PosHand;
         collision.transform.localPosition = Vector3.zero;
         isBall = true;
+        CtrlGamePlay.Ins.Player.isBall = false;
 
     }
 
@@ -793,7 +794,7 @@ public class AI : Character
     public void MoveToWardBall()
     {
         var a = (Ball)CtrlGamePlay.Ins.Ball;
-        if (Mathf.Abs(transform.position.x - a.transform.position.x) >= 0.1f)
+        if (Mathf.Abs(transform.position.x - a.transform.position.x) >= 0.4f)
         {
             if (Mathf.Sign(a.transform.position.x - transform.position.x) == 1)
             {

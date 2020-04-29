@@ -16,7 +16,7 @@ public class Player : Character
 
     public bool isInputMove = false;
 
-    public bool isBall = false;
+   
 
 
     
@@ -147,7 +147,7 @@ public class Player : Character
         {
             if (!isGround)
             {
-                if (m_timeStartJump > 0)
+                if (m_timeStartJump >= 0)
                 {
                     m_timeStartJump -= Time.deltaTime;
                 }
@@ -182,6 +182,7 @@ public class Player : Character
             }
             else
             {
+                m_timeStartJump = 0;
                 TriggerBallForward.gameObject.SetActive(true);
                 isPullBall = false;
                 isStartJump = false;
@@ -272,6 +273,7 @@ public class Player : Character
         collision.transform.parent = PosHand;
         collision.transform.localPosition = Vector3.zero;
         isBall = true;
+        CtrlGamePlay.Ins.AI.isBall = false;
     }
   
     

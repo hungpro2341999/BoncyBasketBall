@@ -39,7 +39,7 @@ public abstract class Character : MonoBehaviour
     public float high;
     public float HighWithGround;
     public bool isStartJump = false;
-
+    public bool isBall;
     public float timeStartJump;
    
     protected float m_timeStartJump;
