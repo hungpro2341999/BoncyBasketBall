@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
+using UnityEngine.UI;
+using System.IO;
 
 public enum RelizeBall { Right,Left,Up,Down};
 public enum IsSameDirectWithBall  { Yes, No };
@@ -16,14 +18,16 @@ public enum StatusHaveBall { Yes,No}
 
 public class AI : Character
 {
-   
 
-  
+
+
 
 
 
     [Header("InforCPU")]
     #region InforAI
+
+    public TextAsset textCPU;
 
     public float ForceHead;
     public float SpeedShoe;
@@ -85,79 +89,125 @@ public class AI : Character
 
     public Transform PosHand;
 
+    
+
     public Transform TriggerBallForward;
-    // Action
-    string[] Jump = { "jumpRight", "jumpLeft", "jumpStraght", "Area", "JumpFoward", "ProtectBasket", "CatchBall" };
+    [Header("CPU")]
+    // Key Action
+  
 
-    private const string Key_Catch_Ball = "CatchBall";
+    public const string Key_Jump_Right = "On_Jump_Right";
+    public const string Key_Jump_Left = "On_Jump_left";
+    public const string Key_Jump_Straight = "OnActionJump";
+    public const string Key_Move_To_Ball = "MoveToBall";
 
 
-    Dictionary<string, int> ActionJump = new Dictionary<string, int>();
+    public const string Key_Catch_Ball = "On_Catch_Ball";
+    public const string Key_Move_Random = "MoveRandom";
+    public const string Key_Move_Ide = "Ide";
+
+
+
+    public const string Key_Trigger_Have_Ball = "Trigger_Ball";
+    public const string Key_Trigger_Jump = "Trigger_Jump";
+    public const string Key_Trigger_ThrowBall = "Trigger_Throw_Ball";
+    public const string Key_Trigger_Front = "Trigger_Front";
+    public const string Key_Trigger_Back = "Trigger_Back";
+   
+
+
+
+
+
+
+
+ 
+    
+    Dictionary<string, ActionGame> Directory_OnActionGame = new Dictionary<string,ActionGame>();
+
+    Dictionary<string, int> Directory_StatusCpu = new Dictionary<string, int>();
+
+    Dictionary<string, ActionGame[]> Directory_Key_Status = new Dictionary<string, ActionGame[]>();
+
+    Dictionary<string, RegistryItem> registry;
+
+    public event System.Action<float> OnAction;
+    public event System.Action OnMove;
+
+
+
+    public Stack<System.Action> Stack_Active_Action = new Stack<System.Action>();
+
+    public string KeyActionCurr;
+    public string KeyActionPrevious;
+
+    [Header("Debug")]
+
+    public Text TextStatus;
+
+
+    public void PushAction(System.Action Action)
+    {
+        Stack_Active_Action.Push(Action);
+    }
+    public System.Action PoPAction()
+    {
+
+        return Stack_Active_Action.Pop();
+    }
+
+    
+
+    public Stack<System.Action> Stack_Action_Move = new Stack<System.Action>();
+
+
+
+   
+
 
 
     public override void Start()
     {
-      
 
+        // bla bla
         Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
 
         MatrixPositonAi = new int[CountSperateDistance];
 
         PosInit = CtrlGamePlay.Ins.WidthScreen / 2;
+        TargetX = transform.position.x;
 
-        Setup();
 
         base.Start();
 
-        TargetX = transform.position.x;
-
+        
+        Init();
     }
 
-    #region MainAi
+    
+   
+    #region Core
     public override void CaculateStatus()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+     
+       
+
+        if (OnAction != null)
         {
-            isJump = true;
+            OnAction(Time.deltaTime);
+
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        else if(OnMove!=null)
         {
-            StartMove();
-        }
-        if (!isBall)
-        {
-            if (OnAction != null)
-            {
-                OnAction(Time.deltaTime);
-            }
-            else
-            {
 
-                base.CaculateStatus();
-
-                var ball = (Ball)CtrlGamePlay.Ins.Ball;
-                var player = (Player)CtrlGamePlay.Ins.Player;
-
-                if (ChangeStatus)
-                {
-                    Debug.Log("Change");
-                    ChangeStatus = false;
-
-                    //  SetUpRandomStatus();
-                }
-            }
-
-
-            MoveToWardBall();
+            OnMove();
         }
         else
         {
-         
             isMoveLeft = false;
             isMoveRight = false;
-        }
-        
 
+        }
 
     }
     public void Load_Matrix()
@@ -312,7 +362,7 @@ public class AI : Character
 
     public void CatchBall()
     {
-        Debug.Log("CatchBall");
+     //   Debug.Log("CatchBall");
         var collision = (Ball)CtrlGamePlay.Ins.Ball;
         collision.GetComponent<Ball>().Velocity = Vector3.zero;
         collision.GetComponent<Ball>().Body.isKinematic = true;
@@ -330,87 +380,93 @@ public class AI : Character
     {
         base.GetStatus();
 
+        //1.
 
-        var b = Physics2D.RaycastAll(transform.position, Vector2.left, 100, LayerPlayer);
-
-        // Debug.Log(b.Length);
-        for (int i = 0; i < b.Length; i++)
-        {
-            //   Debug.Log(b[i].collider.gameObject.name);
-            if (b[i].collider.gameObject.tag == "Player")
-            {
-                DistanceToPlayer = Mathf.Abs(transform.position.x - b[i].point.x);
-                //   Debug.Log(DistanceToPlayer);
-                break;
-
-            }
-            else
-            {
-                DistanceToPlayer = -1;
-            }
-        }
-
-
-        var c = (Ball)CtrlGamePlay.Ins.Ball;
-
-        //  Move_Catch_Ball(c.transform.position);
-
-        var d = (Player)CtrlGamePlay.Ins.Player;
-
-        if (Mathf.Sign(transform.position.x - CtrlGamePlay.Ins.Player.transform.position.x) == 1)
-        {
-            isSameWithPlayer = IsSameDirectWithPlayer.Yes;
-        }
-        else
-        {
-            isSameWithPlayer = IsSameDirectWithPlayer.No;
-        }
-        if (Mathf.Sign(transform.position.x - CtrlGamePlay.Ins.Ball.transform.position.x) == 1)
-        {
-            isSameWithBall = IsSameDirectWithBall.Yes;
-        }
-        else
-        {
-            isSameWithBall = IsSameDirectWithBall.No;
-        }
-
-        if (DistanceToPlayer <= 2 && isSameWithPlayer == IsSameDirectWithPlayer.Yes && d.Status_Player != StatusPlayer.Jump)
-        {
-            StatusWithPlayer = StatusWithPlayer.BlockByPlayer;
-        }
-        else
-        {
-            StatusWithPlayer = StatusWithPlayer.NotBlock;
-        }
         if (isBall)
         {
-            StatusHaveBall = StatusHaveBall.Yes;
+            Directory_StatusCpu[Key_Trigger_Have_Ball] = 1;
         }
         else
         {
-            StatusHaveBall = StatusHaveBall.No;
+            Directory_StatusCpu[Key_Trigger_Have_Ball] = 0;
         }
 
-        Load_Matrix();
+        //2.
+
+        ProcessStatus(KeyCurr());
+
+
+        
+
+        //var b = Physics2D.RaycastAll(transform.position, Vector2.left, 100, LayerPlayer);
+
+        //// Debug.Log(b.Length);
+        //for (int i = 0; i < b.Length; i++)
+        //{
+        //    //   Debug.Log(b[i].collider.gameObject.name);
+        //    if (b[i].collider.gameObject.tag == "Player")
+        //    {
+        //        DistanceToPlayer = Mathf.Abs(transform.position.x - b[i].point.x);
+        //        //   Debug.Log(DistanceToPlayer);
+        //        break;
+
+        //    }
+        //    else
+        //    {
+        //        DistanceToPlayer = -1;
+        //    }
+        //}
+
+
+        //var c = (Ball)CtrlGamePlay.Ins.Ball;
+
+        ////  Move_Catch_Ball(c.transform.position);
+
+        //var d = (Player)CtrlGamePlay.Ins.Player;
+
+        //if (Mathf.Sign(transform.position.x - CtrlGamePlay.Ins.Player.transform.position.x) == 1)
+        //{
+        //    isSameWithPlayer = IsSameDirectWithPlayer.Yes;
+        //}
+        //else
+        //{
+        //    isSameWithPlayer = IsSameDirectWithPlayer.No;
+        //}
+        //if (Mathf.Sign(transform.position.x - CtrlGamePlay.Ins.Ball.transform.position.x) == 1)
+        //{
+        //    isSameWithBall = IsSameDirectWithBall.Yes;
+        //}
+        //else
+        //{
+        //    isSameWithBall = IsSameDirectWithBall.No;
+        //}
+
+        //if (DistanceToPlayer <= 2 && isSameWithPlayer == IsSameDirectWithPlayer.Yes && d.Status_Player != StatusPlayer.Jump)
+        //{
+        //    StatusWithPlayer = StatusWithPlayer.BlockByPlayer;
+        //}
+        //else
+        //{
+        //    StatusWithPlayer = StatusWithPlayer.NotBlock;
+        //}
+        //if (isBall)
+        //{
+        //    StatusHaveBall = StatusHaveBall.Yes;
+        //}
+        //else
+        //{
+        //    StatusHaveBall = StatusHaveBall.No;
+        //}
+
+        //Load_Matrix();
     }
+
+
     private void LateUpdate()
     {
 
-
         Body.velocity = new Vector2(((isMoveRight ? 1 : 0) + (isMoveLeft ? -1 : 0)) * speed, Body.velocity.y);
-        //if (isLimit)
-        //{
-        //    Body.velocity = new Vector2(0, Body.velocity.y);
-        //}
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StartX2Jump();
-        }
-
-      
-
-
-       
+     
     }
 
 
@@ -435,105 +491,24 @@ public class AI : Character
 
 
     #region SetUpKeyAction
-    public void Setup()
+
+
+
+    public void ActionWithKey(string key)
     {
-
-        ActionJump.Add(Jump[0], 0);
-        ActionJump.Add(Jump[1], 0);
-        ActionJump.Add(Jump[2], 0);
-        ActionJump.Add(Jump[3], 0);
-        ActionJump.Add(Jump[4], 0);
-        ActionJump.Add(Jump[5], 0);
-
-
-    }
-    public void SetValue(string key)
-    {
-        ActionJump[key] = 1;
-        if (ActionJump[Jump[4]] == 1)
+        if (Directory_OnActionGame.ContainsKey(key))
         {
-            StartAcion(OnJumpStraight, ResetJump, 0.8f);
+                      
         }
-      
-
-
-        //if (ActionJump[Jump[4]] == 1)
-        //{
-        //    StartAcion(OnJumpStraight, ResetJump, 0.8f);
-        //}
-        //else if (ActionJump[Jump[5]] == 1)
-        //{
-        //    StartX2Jump();
-        //}
-
-        //if (ActionJump[Jump[3]] == 1)
-        //{
-        //    if (isCheckValue())
-        //    {
-        //        var b = (Ball)CtrlGamePlay.Ins.Ball;
-
-        //        if (ActionJump[Jump[0]] == 1)
-        //        {
-        //            StartAcion(OnJumpRight, ResetJump, 0.8f);
-
-        //        }
-        //        else if (ActionJump[Jump[1]] == 1)
-        //        {
-        //            StartAcion(OnJumpLeft, ResetJump, 0.8f);
-        //        }
-        //        else
-        //        {
-        //            StartAcion(OnJumpStraight, ResetJump, 0.8f);
-        //        }
-
-
-        //    }
-        //}
     }
 
-    public bool isCheckValue()
-    {
-        if ((ActionJump[Jump[0]] + ActionJump[Jump[1]] + ActionJump[Jump[2]]) == 1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-        return false;
-    }
-    public void ResetActionJump(string key)
-    {
-        if (key == Jump[3])
-        {
-            ActionJump[Jump[0]] = 0;
-            ActionJump[Jump[1]] = 0;
-            ActionJump[Jump[2]] = 0;
-            ActionJump[Jump[3]] = 0;
-        }
-        if (key == Jump[4])
-        {
-            ActionJump[Jump[4]] = 0;
-
-        }
-        if (key == Jump[5])
-        {
-            ActionJump[Jump[5]] = 0;
-
-        }
-
-
-    }
+  
+   
     #endregion
 
     #region ActionPullBall
     
-    public void OnPullNormal()
-    {
-        CtrlGamePlay.Ins.Launch(Random.Range(4,6));
-
-    }
+ 
 
     #endregion
 
@@ -545,53 +520,7 @@ public class AI : Character
 
     #endregion
 
-    public void SetUpRandomStatus()
-    {
-
-        int r = Random.Range(0, 100);
-        if (0 <= r && r < Left)
-        {
-            isMoveLeft = true;
-            isMoveRight = false;
-        }
-        if (Left <= r && r <= Right)
-        {
-            isMoveLeft = false;
-            isMoveRight = true;
-        }
-        if (Right < r && r < Up)
-        {
-            isJump = true;
-        }
-        if (Up <= r && r <= ThrowBall)
-        {
-            isThrowBall = true;
-        }
-
-
-
-
-
-
-    }
-    public void SetStatus(int left, int right, int up, int throwBall)
-    {
-        this.Left = left;
-        if (right != 0)
-        {
-            this.Right = right + Left;
-        }
-
-        if (up != 0)
-        {
-            this.Up = right + left;
-        }
-        if (throwBall != 0)
-        {
-            this.ThrowBall = up + right + left;
-        }
-    }
-
+   
 
 
 
@@ -609,36 +538,10 @@ public class AI : Character
 
     }
     // Jump_2
-    public void PrecJumpPushBall()
-    {
-        if (DistanceToPlayer <= 2)
-        {
-            int r = Random.Range(0, 30);
-            if (r % 3 == 0)
-            {
-                isJump = true;
-            }
+  
+  
 
-        }
-
-    }
-
-    public void StartX2Jump()
-    {
-        if (!isJump_x2)
-        {
-            timeJumpX2 = 0.5f;
-            isJump = true;
-            isJump_x2 = true;
-        }
-
-
-    }
-
-    public void Start_Jump_x2()
-    {
-        isJump_x2 = true;
-    }
+  
     // Jump_3
 
     // Move_1:
@@ -654,68 +557,18 @@ public class AI : Character
 
     }
 
-    public void MoveToTarget_1()
-    {
-        if (Mathf.Abs(TargetX_1 - transform.position.x) >= 0.1f)
-        {
-            if (Mathf.Sign(TargetX_1 - transform.position.x) == 1)
-            {
-                isMoveLeft = false;
-                isMoveRight = true;
-            }
-            else
-            {
-                isMoveLeft = true;
-                isMoveRight = false;
-            }
-        }
-        else
-        {
-            isMoveLeft = false;
-            isMoveRight = false;
-        }
-    }
+   
 
-    public void Move_Catch_Ball(Vector3 PosTarrget)
-    {
+    
 
 
 
-    }
-
-    public void Move_Random()
-    {
-
-    }
-    public void Active_Jump()
-    {
-
-    }
-
-
-
-    public void StartAcion(System.Action ActionUpdate, System.Action ActionRemove, float time)
-    {
-        isJump = true;
-        System.Action expireAction = () =>
-        {
-            ActionRemove();
-        };
-
-        System.Action<float> UpdateAction = (t) =>
-        {
-            ActionUpdate();
-
-        };
-
-
-        SetupTimer(time, UpdateAction, expireAction);
-
-    }
+  
 
     
 
     // Move
+    #region Move
     public void MoveToPostion(float x)
     {
         if (Mathf.Abs(x - transform.position.x) <= 0.2f)
@@ -741,8 +594,16 @@ public class AI : Character
     }
 
 
+    public void OnMoveIde()
+    {
+        OnAction = null;
+        OnMove = null;
+        isMoveLeft = false;
+        isMoveRight = false;
 
-    public void MoveRandom()
+    }
+
+    public void OnMoveRandom()
     {
 
 
@@ -774,6 +635,7 @@ public class AI : Character
 
     }
 
+    #endregion
     public bool isChange()
     {
         if (Mathf.Abs(TargetX - transform.position.x) <= 0.2f)
@@ -791,7 +653,7 @@ public class AI : Character
         return false;
     }
 
-    public void MoveToWardBall()
+    public void OnMoveToBall()
     {
         var a = (Ball)CtrlGamePlay.Ins.Ball;
         if (Mathf.Abs(transform.position.x - a.transform.position.x) >= 0.4f)
@@ -854,10 +716,220 @@ public class AI : Character
     /// <summary>
     /// 
     /// </summary>
+    #region ActionKey
+    public void Init()
+    {
+        // Initialize Action With Key
 
-    public event System.Action<float> OnAction;
-    Dictionary<string, RegistryItem> registry;
-    string[] Action = { "JumpLeft", "JimpRight" };
+
+        ActionGame lc_OnActionMove = new ActionGame(OnMoveToBall);
+        ActionGame lc_OnJumpStraight = new ActionGame(OnJumpStraight, null, 0.8f);
+        ActionGame lc_OnDie = new ActionGame(OnMoveIde);
+
+        // Update To Directory
+
+        //  Update
+        Directory_OnActionGame.Add(Key_Move_To_Ball, lc_OnActionMove);
+        Directory_OnActionGame.Add(Key_Move_Ide, lc_OnDie);
+
+
+        //  Action
+
+        Directory_OnActionGame.Add(Key_Jump_Straight, lc_OnJumpStraight);
+
+        // Status
+
+        Directory_StatusCpu.Add(Key_Trigger_Have_Ball, 0);
+        Directory_StatusCpu.Add(Key_Trigger_Front, 0);
+        Directory_StatusCpu.Add(Key_Trigger_Back, 0);
+        Directory_StatusCpu.Add(Key_Trigger_Jump, 0);
+        Directory_StatusCpu.Add(Key_Trigger_ThrowBall, 0);
+
+        // Load Text Cpu
+
+        ReadFileCPU();
+
+
+    }
+
+    public string KeyCurr()
+    {
+
+        string key = Directory_StatusCpu[Key_Trigger_Have_Ball].ToString() + Directory_StatusCpu[Key_Trigger_Jump].ToString() + Directory_StatusCpu[Key_Trigger_Front].ToString()
+               + Directory_StatusCpu[Key_Trigger_Back].ToString() + Directory_StatusCpu[Key_Trigger_ThrowBall];
+        TextStatus.text = key;
+
+        return key;
+    }
+
+
+    public void ProcessStatus(string key)
+    {
+
+        KeyActionCurr = key;
+
+        if (KeyActionCurr != KeyActionPrevious)
+        {
+            OnActionWithKey(key);
+        }
+
+
+
+
+        //if (key == "00000")
+        //{
+        //    StartActionUpdate(null, OnMoveToBall);
+        //}
+        //else if(key == "10000")
+        //{
+        //    StartActionUpdate(null,OnMoveIde);
+        //}
+        KeyActionPrevious = KeyActionCurr;
+
+
+    }
+
+    public void ReadFileCPU()
+    {
+        string s = textCPU.text;
+
+        StringReader strRead = new StringReader(s);
+        while (true)
+        {
+
+            string line = strRead.ReadLine();
+            if (line != null)
+            {
+                if (line.StartsWith("//") || line=="")
+                {
+                    continue;
+                }
+                
+                FormatString(line);
+                Debug.Log(line);
+
+            }
+            else
+            {
+
+                break;
+            }
+        }
+
+    }
+    private void FormatString(string line)
+    {
+        string ss = "";
+        Debug.Log("Line Format : " + line);
+        string[] w = new string[1] { "." };
+        string[] w1 = new string[1] { "=" };
+        string[] w2 = new string[1] { "||" };
+        string[] word = line.Split(w, System.StringSplitOptions.None);
+      
+        for(int i = 0; i < word.Length; i++)
+        {
+            Debug.Log(word[i]);
+        }
+        string[] word2 = word[1].Split(w1, System.StringSplitOptions.None);
+        string key = word2[0].Trim();
+        string[] value = word2[1].Split(w2, System.StringSplitOptions.None);
+        string[] ArrayValue = new string[value.Length];
+        for(int i = 0; i < value.Length; i++)
+        {
+            ArrayValue[i] = value[i].Trim();
+            ss += " " + ArrayValue[i];
+           
+        }
+
+        ActionGame[] ArrayAction = new ActionGame[value.Length];
+
+        for(int i=0; i < ArrayValue.Length; i++)
+        {
+            Debug.Log("Value : " + ArrayValue[i]);
+            ArrayAction[i] = Directory_OnActionGame[ArrayValue[i]];
+        }
+
+
+        Directory_Key_Status.Add(key, ArrayAction);
+
+        Debug.Log("Key : "+key + " " + ss);
+       
+       
+
+    }
+
+    public void OnActionWithKey(string key)
+    {
+        Debug.Log(key);
+         int r = Random.Range(0, Directory_Key_Status[key].Length);
+        ActionGame a = Directory_Key_Status[key][r];
+        switch (a.typeAction)
+        {
+            case ActionGame.TypeAction.Action:
+
+                StartAcionWithTime(null, a.ActionUpdate, a.ActionRemove, a.time);
+
+                break;
+            case ActionGame.TypeAction.Update:
+
+                StartActionUpdate(null, a.ActionUpdate);
+                break;
+        }
+    }
+
+
+
+    public void StartAcionWithTime(System.Action ActionTrigger,System.Action ActionUpdate, System.Action ActionRemove, float time)
+    {
+        if (ActionTrigger != null)
+        {
+            ActionTrigger();
+        }
+        isJump = true;
+        System.Action expireAction = () =>
+        {
+            ActionRemove();
+        };
+
+        System.Action<float> UpdateAction = (t) =>
+        {
+            ActionUpdate();
+
+        };
+
+
+        SetupTimer(time, UpdateAction, expireAction);
+
+    }
+
+
+    public void StartActionUpdate(System.Action ActionTrigger,System.Action ActionUpdate)
+    {
+        if (ActionTrigger != null)
+        {
+            ActionTrigger();
+        }
+        OnMove = null;
+        OnMove += ActionUpdate;
+       
+    }
+
+    
+    public ActionGame GetAction(string key)
+    {
+        if (Directory_OnActionGame.ContainsKey(key))
+        {
+            return Directory_OnActionGame[key];
+        }
+        else
+        {
+            return null;
+        }
+
+        return null;
+    }
+
+
 
     System.Action SetupTimer(float seconds, System.Action<float> updateAction, System.Action expireAction)
     {
@@ -900,46 +972,77 @@ public class AI : Character
 
         return expireWrapper;
     }
-    void RemoveListener(string name, System.Action action)
+
+
+    public class ActionGame
     {
-        if (registry.ContainsKey(name) == false)
+        public enum TypeAction { Update, Action };
+        public TypeAction typeAction;
+        public bool isAction;
+        public System.Action ActionUpdate;
+        public System.Action ActionRemove;
+        public float time;
+
+        public ActionGame(System.Action UpdateAction)
         {
-            return;
+            typeAction = TypeAction.Update;
+            ActionUpdate = UpdateAction;
+        }
+        public ActionGame(System.Action UpdateAction, System.Action RemoveAction, float time)
+        {
+            typeAction = TypeAction.Action;
+            UpdateAction = ActionUpdate;
+            RemoveAction = ActionRemove;
+            this.time = time;
         }
 
-        registry[name].listeners -= action;
+
     }
 
-    void AddListener(string name, System.Action action)
-    {
-        if (registry.ContainsKey(name) == false)
-        {
-            registry[name] = new RegistryItem();
-        }
 
-        registry[name].listeners += action;
-    }
 
-    class RegistryItem
-    {
-        int _value;
-        public int Value
-        {
-            get { return _value; }
-            set
-            {
-                _value = value;
-                if (listeners != null)
-                {
-                    listeners();
-                }
-            }
-        }
+    #endregion
+    //void RemoveListener(string name, System.Action action)
+    //{
+    //    if (registry.ContainsKey(name) == false)
+    //    {
+    //        return;
+    //    }
 
-        public event System.Action listeners;
-    }
+    //    registry[name].listeners -= action;
+    //}
+
+    //void AddListener(string name, System.Action action)
+    //{
+    //    if (registry.ContainsKey(name) == false)
+    //    {
+    //        registry[name] = new RegistryItem();
+    //    }
+
+    //    registry[name].listeners += action;
+    //}
+
+  
 
 
 }
 
 
+class RegistryItem
+{
+    int _value;
+    public int Value
+    {
+        get { return _value; }
+        set
+        {
+            _value = value;
+            if (listeners != null)
+            {
+                listeners();
+            }
+        }
+    }
+
+    public event System.Action listeners;
+}

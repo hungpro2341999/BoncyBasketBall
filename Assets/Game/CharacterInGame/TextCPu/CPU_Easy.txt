@@ -1,0 +1,13 @@
+// 1.TriggerHaveBall
+// 2.TriggerJump
+// 3.TriggerFrontWithPlayer
+// 4.TriggerbackWithPlayer
+// 5.TriggerThrowBall
+
+// Status = 1+2+3+4+5+6
+//
+
+
+1. 00000 = MoveToBall
+2. 01000 = OnActionJump 
+3. 10000 = Ide

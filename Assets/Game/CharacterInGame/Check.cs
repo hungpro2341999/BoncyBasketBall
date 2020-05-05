@@ -15,11 +15,11 @@ public class Check : MonoBehaviour
 
         if (collision.gameObject.tag == "Percition")
         {
-            Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
+         //   Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
             if(character is AI)
             {
                 var AI = (AI)character;
-                 AI.SetValue(key);
+                
             }
           
         }
@@ -54,7 +54,7 @@ public class Check : MonoBehaviour
             if(character is AI)
             {
                 var AI = (AI)character;
-                 AI.ResetActionJump(key);
+               
             }
             else if(character is Player)
             {

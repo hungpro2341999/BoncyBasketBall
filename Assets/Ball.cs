@@ -123,7 +123,7 @@ public class Ball : Character
             
             if (hits.collider != null)
             {
-                Debug.Log(hits.collider.gameObject.name);
+              //  Debug.Log(hits.collider.gameObject.name);
             }
                if (hits.collider!=null)
             {
