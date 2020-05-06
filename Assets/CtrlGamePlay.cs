@@ -60,10 +60,7 @@ public class CtrlGamePlay : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Launch(4);
-        }
+     
     }
    
 
@@ -72,12 +69,12 @@ public class CtrlGamePlay : MonoBehaviour
     {
        
        
-      //  Launch();
+     
     }
 
-    public void Launch(float height)
+    public void Launch(float height,Vector3 Target)
     {
-        Debug.Log("PullBall");
+       
         var a = (Player)Player;
         var b = (AI)AI;
 
@@ -87,11 +84,11 @@ public class CtrlGamePlay : MonoBehaviour
         Ball.GetComponent<CircleCollider2D>().isTrigger = false;
         Ball.Body.isKinematic = false;
         Ball.Body.simulated = true;
-        Ball.Body.velocity = CaculateVelocity(height).InitVelocity;
+        Ball.Body.velocity = CaculateVelocity(height,Target).InitVelocity;
     }
-    LauchData CaculateVelocity(float height)
+    LauchData CaculateVelocity(float height, Vector3 TargetTo)
     {
-       Vector3 Target = GameObject.FindGameObjectWithTag("Target").transform.position;
+       Vector3 Target = TargetTo;
         float h = height;
         float displacementY = Target.y - Ball.transform.position.y;
         Vector3 displacementX = new Vector3((Target.x - Ball.transform.position.x),0,0);

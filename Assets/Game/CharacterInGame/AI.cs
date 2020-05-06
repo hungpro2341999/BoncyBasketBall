@@ -81,11 +81,6 @@ public class AI : Character
     public int PreviousPos;
     public bool ChangeStatus;
 
-    public float TargetX;
-    public float TargetX_1;
-    public bool isInTarget_1;
-    public float timeJumpX2;
-
 
     public Transform PosHand;
 
@@ -96,11 +91,12 @@ public class AI : Character
     // Key Action
   
 
-    public const string Key_Jump_Right = "On_Jump_Right";
-    public const string Key_Jump_Left = "On_Jump_left";
+    public const string Key_Jump_Right = "OnJumpRight";
+    public const string Key_Jump_Left = "OnJumpleft";
     public const string Key_Jump_Straight = "OnActionJump";
+   
     public const string Key_Move_To_Ball = "MoveToBall";
-
+    public const string Key_Move_To_Hoop = "MoveToHoop";
 
     public const string Key_Catch_Ball = "On_Catch_Ball";
     public const string Key_Move_Random = "MoveRandom";
@@ -144,6 +140,26 @@ public class AI : Character
     [Header("Debug")]
 
     public Text TextStatus;
+    public bool test = false;
+
+    public Transform BoxCatchBall;
+   
+    public enum TypeRandomMove {RandomDistance,RandomInGround1,RandomInGround2}
+    [Header("Move")]
+
+    public Vector3 TargetHoop;
+
+     
+
+    // Move Random
+    public float TargetX;
+
+    public float DistanceRandom;
+
+    public float TargetRandom;
+    
+
+
 
 
     public void PushAction(System.Action Action)
@@ -177,6 +193,7 @@ public class AI : Character
         PosInit = CtrlGamePlay.Ins.WidthScreen / 2;
         TargetX = transform.position.x;
 
+        TargetHoop = GameObject.FindGameObjectWithTag("TargetCPU").transform.position;
 
         base.Start();
 
@@ -189,28 +206,36 @@ public class AI : Character
     #region Core
     public override void CaculateStatus()
     {
-     
-       
-
-        if (OnAction != null)
+        
+        if(OnAction == null)
         {
-            OnAction(Time.deltaTime);
+            ProcessStatus(KeyCurr());
+        }
+
+        if (!test)
+        {
+            if (OnAction != null)
+            {
+                OnAction(Time.deltaTime);
+
+            }
+            else if (OnMove != null)
+            {
+
+                OnMove();
+            }
+            else
+            {
+                isMoveLeft = false;
+                isMoveRight = false;
+
+            }
 
         }
-        else if(OnMove!=null)
-        {
 
-            OnMove();
-        }
-        else
-        {
-            isMoveLeft = false;
-            isMoveRight = false;
-
-        }
 
     }
-    public void Load_Matrix()
+    public void LoadCurrPosionPlayer()
     {
 
         int point = (int)((PosInit - transform.position.x) / Amount);
@@ -236,6 +261,9 @@ public class AI : Character
 
 
     }
+
+    
+
 
     public override void Move()
     {
@@ -300,6 +328,7 @@ public class AI : Character
         {
             if (!isGround)
             {
+                BoxCatchBall.gameObject.SetActive(false);
                 if (m_timeStartJump > 0)
                 {
                     m_timeStartJump -= Time.deltaTime;
@@ -319,7 +348,7 @@ public class AI : Character
                             if (isBall)
                             {
                                 isBall = false;
-                                CtrlGamePlay.Ins.Launch(Random.Range(2, 3));
+                                CtrlGamePlay.Ins.Launch(Random.Range(2, 3),TargetHoop);
                                 isPullBall = false;
 
                             }
@@ -335,6 +364,7 @@ public class AI : Character
             }
             else
             {
+                BoxCatchBall.gameObject.SetActive(true);
                 TriggerBallForward.gameObject.SetActive(true);
                 isPullBall = false;
                 isStartJump = false;
@@ -358,9 +388,8 @@ public class AI : Character
 
     }
 
-  
-
-    public void CatchBall()
+    
+    public override void CatchBall()
     {
      //   Debug.Log("CatchBall");
         var collision = (Ball)CtrlGamePlay.Ins.Ball;
@@ -375,10 +404,14 @@ public class AI : Character
 
     }
 
-
+   
     public override void GetStatus()
     {
         base.GetStatus();
+
+        LoadCurrPosionPlayer();
+
+
 
         //1.
 
@@ -393,72 +426,7 @@ public class AI : Character
 
         //2.
 
-        ProcessStatus(KeyCurr());
-
-
-        
-
-        //var b = Physics2D.RaycastAll(transform.position, Vector2.left, 100, LayerPlayer);
-
-        //// Debug.Log(b.Length);
-        //for (int i = 0; i < b.Length; i++)
-        //{
-        //    //   Debug.Log(b[i].collider.gameObject.name);
-        //    if (b[i].collider.gameObject.tag == "Player")
-        //    {
-        //        DistanceToPlayer = Mathf.Abs(transform.position.x - b[i].point.x);
-        //        //   Debug.Log(DistanceToPlayer);
-        //        break;
-
-        //    }
-        //    else
-        //    {
-        //        DistanceToPlayer = -1;
-        //    }
-        //}
-
-
-        //var c = (Ball)CtrlGamePlay.Ins.Ball;
-
-        ////  Move_Catch_Ball(c.transform.position);
-
-        //var d = (Player)CtrlGamePlay.Ins.Player;
-
-        //if (Mathf.Sign(transform.position.x - CtrlGamePlay.Ins.Player.transform.position.x) == 1)
-        //{
-        //    isSameWithPlayer = IsSameDirectWithPlayer.Yes;
-        //}
-        //else
-        //{
-        //    isSameWithPlayer = IsSameDirectWithPlayer.No;
-        //}
-        //if (Mathf.Sign(transform.position.x - CtrlGamePlay.Ins.Ball.transform.position.x) == 1)
-        //{
-        //    isSameWithBall = IsSameDirectWithBall.Yes;
-        //}
-        //else
-        //{
-        //    isSameWithBall = IsSameDirectWithBall.No;
-        //}
-
-        //if (DistanceToPlayer <= 2 && isSameWithPlayer == IsSameDirectWithPlayer.Yes && d.Status_Player != StatusPlayer.Jump)
-        //{
-        //    StatusWithPlayer = StatusWithPlayer.BlockByPlayer;
-        //}
-        //else
-        //{
-        //    StatusWithPlayer = StatusWithPlayer.NotBlock;
-        //}
-        //if (isBall)
-        //{
-        //    StatusHaveBall = StatusHaveBall.Yes;
-        //}
-        //else
-        //{
-        //    StatusHaveBall = StatusHaveBall.No;
-        //}
-
-        //Load_Matrix();
+      
     }
 
 
@@ -526,47 +494,9 @@ public class AI : Character
 
 
 
-    // Action:
-    // Jump _ 1:
-    public void JumpPushBall()
-    {
-        if (DistanceToPlayer <= 2)
-        {
-
-            isJump = true;
-        }
-
-    }
-    // Jump_2
-  
-  
-
-  
-    // Jump_3
-
-    // Move_1:
-    public void StartMove()
-    {
-        var ball = (Ball)CtrlGamePlay.Ins.Ball;
-
-        int x = ball.posPercition;
-
-        TargetX_1 = ball.Point[x].transform.position.x;
-        TargetX_1 = 0;
-
-
-    }
-
    
-
-    
-
-
-
-  
-
-    
-
+   
+   
     // Move
     #region Move
     public void MoveToPostion(float x)
@@ -593,6 +523,12 @@ public class AI : Character
 
     }
 
+    public void OnMoveToHoop()
+    {
+        isMoveLeft = true;
+        isMoveRight = false;
+    }
+
 
     public void OnMoveIde()
     {
@@ -602,8 +538,15 @@ public class AI : Character
         isMoveRight = false;
 
     }
+   
 
-    public void OnMoveRandom()
+    private void OnTriggerMoveRandom()
+    {
+
+    }
+
+
+    private void OnMoveRandom()
     {
 
 
@@ -617,9 +560,11 @@ public class AI : Character
                 TargetX = r * Amount;
             }
             Debug.Log("Target : " + TargetX);
+            Debug.Log("Not_Move");
         }
         else
         {
+            Debug.Log("Move");
             if (Mathf.Sign(TargetX - transform.position.x) == -1)
             {
                 isMoveLeft = true;
@@ -679,23 +624,32 @@ public class AI : Character
 
     public void OnJumpLeft()
     {
+      
         isMoveRight = false;
         isMoveLeft = true;
 
     }
     public void OnJumpRight()
     {
+       
         isMoveRight = true;
         isMoveLeft = false;
 
     }
     public void OnJumpStraight()
     {
+       
         isMoveRight = false;
         isMoveLeft = false;
 
     }
 
+   
+    public void OnJump()
+    {
+        Debug.Log("Jump");
+        isJump = true;
+    }
     public void ResetJump()
     {
         isMoveRight = false;
@@ -722,20 +676,30 @@ public class AI : Character
         // Initialize Action With Key
 
 
-        ActionGame lc_OnActionMove = new ActionGame(OnMoveToBall);
-        ActionGame lc_OnJumpStraight = new ActionGame(OnJumpStraight, null, 0.8f);
-        ActionGame lc_OnDie = new ActionGame(OnMoveIde);
-
+        ActionGame lc_OnActionMove = new ActionGame(null,OnMoveToBall);
+        ActionGame lc_OnJump = new ActionGame(OnJump,OnJumpStraight, null, 0.8f);
+        ActionGame lc_OnDie = new ActionGame(null,OnMoveIde);
+        ActionGame lc_OnMoveRandom = new ActionGame(null,OnMoveRandom);
+        ActionGame lc_onMoveToHoop = new ActionGame(null,OnMoveToHoop);
+        ActionGame lc_OnJump_left = new ActionGame(OnJump,OnJumpLeft, null, 1.7f);
+        ActionGame lc_OnJump_right = new ActionGame(OnJump,OnJumpRight, null, 1.7f);
+        
         // Update To Directory
 
         //  Update
         Directory_OnActionGame.Add(Key_Move_To_Ball, lc_OnActionMove);
         Directory_OnActionGame.Add(Key_Move_Ide, lc_OnDie);
+        Directory_OnActionGame.Add(Key_Move_Random, lc_OnMoveRandom);
+        Directory_OnActionGame.Add(Key_Move_To_Hoop, lc_onMoveToHoop);
 
+      
 
         //  Action
 
-        Directory_OnActionGame.Add(Key_Jump_Straight, lc_OnJumpStraight);
+        Directory_OnActionGame.Add(Key_Jump_Straight,lc_OnJump);
+        Directory_OnActionGame.Add(Key_Jump_Left, lc_OnJump_left);
+        Directory_OnActionGame.Add(Key_Jump_Right, lc_OnJump_right);
+        
 
         // Status
 
@@ -806,7 +770,7 @@ public class AI : Character
                 }
                 
                 FormatString(line);
-                Debug.Log(line);
+             //   Debug.Log(line);
 
             }
             else
@@ -828,7 +792,7 @@ public class AI : Character
       
         for(int i = 0; i < word.Length; i++)
         {
-            Debug.Log(word[i]);
+        //    Debug.Log(word[i]);
         }
         string[] word2 = word[1].Split(w1, System.StringSplitOptions.None);
         string key = word2[0].Trim();
@@ -845,14 +809,14 @@ public class AI : Character
 
         for(int i=0; i < ArrayValue.Length; i++)
         {
-            Debug.Log("Value : " + ArrayValue[i]);
+            Debug.Log(ArrayValue[i]);
             ArrayAction[i] = Directory_OnActionGame[ArrayValue[i]];
         }
 
 
         Directory_Key_Status.Add(key, ArrayAction);
 
-        Debug.Log("Key : "+key + " " + ss);
+      //  Debug.Log("Key : "+key + " " + ss);
        
        
 
@@ -867,12 +831,12 @@ public class AI : Character
         {
             case ActionGame.TypeAction.Action:
 
-                StartAcionWithTime(null, a.ActionUpdate, a.ActionRemove, a.time);
+                StartAcionWithTime(a.ActionStart, a.ActionUpdate, a.ActionRemove, a.time);
 
                 break;
             case ActionGame.TypeAction.Update:
 
-                StartActionUpdate(null, a.ActionUpdate);
+                StartActionUpdate(a.ActionStart , a.ActionUpdate);
                 break;
         }
     }
@@ -885,10 +849,14 @@ public class AI : Character
         {
             ActionTrigger();
         }
-        isJump = true;
+       
         System.Action expireAction = () =>
         {
-            ActionRemove();
+            if (ActionRemove != null)
+            {
+                ActionRemove();
+            }
+           
         };
 
         System.Action<float> UpdateAction = (t) =>
@@ -973,31 +941,26 @@ public class AI : Character
         return expireWrapper;
     }
 
-
-    public class ActionGame
+    public void SetKeyTrigger(string key)
     {
-        public enum TypeAction { Update, Action };
-        public TypeAction typeAction;
-        public bool isAction;
-        public System.Action ActionUpdate;
-        public System.Action ActionRemove;
-        public float time;
-
-        public ActionGame(System.Action UpdateAction)
-        {
-            typeAction = TypeAction.Update;
-            ActionUpdate = UpdateAction;
-        }
-        public ActionGame(System.Action UpdateAction, System.Action RemoveAction, float time)
-        {
-            typeAction = TypeAction.Action;
-            UpdateAction = ActionUpdate;
-            RemoveAction = ActionRemove;
-            this.time = time;
-        }
-
-
+        Directory_StatusCpu[key] = 1;
     }
+
+    public void SetRestoreTrigger(string key)
+    {
+        Directory_StatusCpu[key] = 0;
+    }
+
+    public void RestoreAll()
+    {
+        Directory_StatusCpu[Key_Trigger_Back] = 0;
+        Directory_StatusCpu[Key_Trigger_Front] = 0;
+        Directory_StatusCpu[Key_Trigger_Have_Ball] = 0;
+        Directory_StatusCpu[Key_Trigger_Jump] = 0;
+        Directory_StatusCpu[Key_Trigger_ThrowBall] = 0;
+    }
+
+   
 
 
 
@@ -1027,7 +990,34 @@ public class AI : Character
 
 }
 
+public class ActionGame
+{
+    public enum TypeAction { Update, Action };
+    public TypeAction typeAction;
+    public bool isAction;
+    public System.Action ActionUpdate;
+    public System.Action ActionRemove;
+    public System.Action ActionStart;
+    public float time;
 
+    public ActionGame(System.Action ActionStart, System.Action UpdateAction)
+    {
+        typeAction = TypeAction.Update;
+        ActionUpdate = UpdateAction;
+        this.ActionStart = ActionStart;
+
+    }
+    public ActionGame(System.Action ActionStart, System.Action UpdateAction, System.Action RemoveAction, float time)
+    {
+        this.ActionStart = ActionStart;
+        typeAction = TypeAction.Action;
+        ActionUpdate = UpdateAction;
+        ActionRemove = RemoveAction;
+        this.time = time;
+    }
+
+
+}
 class RegistryItem
 {
     int _value;

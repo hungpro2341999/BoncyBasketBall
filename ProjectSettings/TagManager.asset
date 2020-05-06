@@ -15,6 +15,9 @@ TagManager:
   - Box_2
   - Box_3
   - Percition
+  - TargetCPU
+  - TargetPlayer
+  - Hand
   layers:
   - Default
   - TransparentFX
