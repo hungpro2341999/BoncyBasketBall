@@ -86,6 +86,24 @@ public class CtrlGamePlay : MonoBehaviour
         Ball.Body.simulated = true;
         Ball.Body.velocity = CaculateVelocity(height,Target).InitVelocity;
     }
+
+    public void PushBall(Vector3 direct)
+    {
+        Debug.Log("PushBall : "+direct);
+        var a = (Player)Player;
+        var b = (AI)AI;
+
+        a.isBall = false;
+        b.isBall = false;
+        Ball.transform.transform.parent = null;
+        Ball.GetComponent<CircleCollider2D>().isTrigger = false;
+        Ball.Body.isKinematic = false;
+        Ball.Body.simulated = true;
+        Ball.Body.AddForce(direct, ForceMode2D.Force);
+
+
+    }
+
     LauchData CaculateVelocity(float height, Vector3 TargetTo)
     {
        Vector3 Target = TargetTo;

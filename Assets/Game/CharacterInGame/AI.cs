@@ -67,7 +67,7 @@ public class AI : Character
     public float PosCurr;
     public int[] MatrixPositonAi;
 
-
+  
 
     public int CountSperateDistance;
 
@@ -102,6 +102,8 @@ public class AI : Character
     public const string Key_Move_Random = "MoveRandom";
     public const string Key_Move_Ide = "Ide";
 
+    public const string Key_Slamp_Dunk = "SlampDunk";
+
 
 
     public const string Key_Trigger_Have_Ball = "Trigger_Ball";
@@ -109,16 +111,16 @@ public class AI : Character
     public const string Key_Trigger_ThrowBall = "Trigger_Throw_Ball";
     public const string Key_Trigger_Front = "Trigger_Front";
     public const string Key_Trigger_Back = "Trigger_Back";
-   
+
+    public const string Key_Trigger_Slamp_Dunk = "Trigger_Slamp_Dunk";
 
 
+  
 
-
-
-
-
- 
     
+
+
+
     Dictionary<string, ActionGame> Directory_OnActionGame = new Dictionary<string,ActionGame>();
 
     Dictionary<string, int> Directory_StatusCpu = new Dictionary<string, int>();
@@ -129,6 +131,7 @@ public class AI : Character
 
     public event System.Action<float> OnAction;
     public event System.Action OnMove;
+    public event System.Action<float> OnActionEFF;
 
 
 
@@ -138,6 +141,8 @@ public class AI : Character
     public string KeyActionPrevious;
 
     [Header("Debug")]
+
+
 
     public Text TextStatus;
     public bool test = false;
@@ -157,7 +162,13 @@ public class AI : Character
     public float DistanceRandom;
 
     public float TargetRandom;
-    
+
+    [Header("ActionEFF")]
+
+    public Action[] ArrayAction;
+    public bool isComplete = false;
+    private int i = 0;
+    public bool isAction = false;
 
 
 
@@ -186,6 +197,8 @@ public class AI : Character
     {
 
         // bla bla
+        AnimStatus.Complete += OnComplete;
+
         Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
 
         MatrixPositonAi = new int[CountSperateDistance];
@@ -206,32 +219,44 @@ public class AI : Character
     #region Core
     public override void CaculateStatus()
     {
+
+      
+         if (OnActionEFF != null)
+         {
+            Debug.Log("EFF_Action");
+           OnActionEFF(Time.deltaTime);
+         }
         
-        if(OnAction == null)
+        else
         {
-            ProcessStatus(KeyCurr());
+            if (OnAction == null)
+            {
+                ProcessStatus(KeyCurr());
+            }
+
+            if (!test)
+            {
+                if (OnAction != null)
+                {
+                    OnAction(Time.deltaTime);
+
+                }
+                else if (OnMove != null)
+                {
+
+                    OnMove();
+                }
+                else
+                {
+                    isMoveLeft = false;
+                    isMoveRight = false;
+
+                }
+
+            }
         }
 
-        if (!test)
-        {
-            if (OnAction != null)
-            {
-                OnAction(Time.deltaTime);
-
-            }
-            else if (OnMove != null)
-            {
-
-                OnMove();
-            }
-            else
-            {
-                isMoveLeft = false;
-                isMoveRight = false;
-
-            }
-
-        }
+       
 
 
     }
@@ -268,8 +293,12 @@ public class AI : Character
     public override void Move()
     {
 
-       
-      
+        if (isAction)
+            return;
+
+
+
+
         if (isMoveRight)
         {
             if (isGround)
@@ -474,7 +503,7 @@ public class AI : Character
    
     #endregion
 
-    #region ActionPullBall
+    #region AnimationPullBall
     
  
 
@@ -670,6 +699,55 @@ public class AI : Character
     /// <summary>
     /// 
     /// </summary>
+    /// 
+    #region AnimtionJump
+
+       
+
+   
+
+    public void OnActionSlampDunk()
+    {
+        if (i < ArrayAction.Length)
+        {
+            if (Vector3.Distance(ArrayAction[i].transform.position, transform.position) == 0)
+            {
+
+                ArrayAction[i].SetAction();
+                i++;
+            }
+            else
+            {
+               
+                transform.position = Vector3.MoveTowards(transform.position, ArrayAction[i].transform.position, Time.deltaTime * ArrayAction[i].time);
+            }
+
+        }
+
+    }
+
+    public void OnTriggerSlampDunk()
+    {
+        isAction = true;
+        StatusCurr = CharacterState.jumb2_slamdunk;
+        isComplete = false;
+        i = 0;
+        Body.simulated = false;
+        isMoveLeft = false;
+        isMoveRight = false;
+
+        Body.constraints = RigidbodyConstraints2D.FreezePositionY;
+    }
+
+
+    
+
+
+    #endregion
+
+
+  
+
     #region ActionKey
     public void Init()
     {
@@ -683,7 +761,7 @@ public class AI : Character
         ActionGame lc_onMoveToHoop = new ActionGame(null,OnMoveToHoop);
         ActionGame lc_OnJump_left = new ActionGame(OnJump,OnJumpLeft, null, 1.7f);
         ActionGame lc_OnJump_right = new ActionGame(OnJump,OnJumpRight, null, 1.7f);
-        
+        ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, null, 100f,true); 
         // Update To Directory
 
         //  Update
@@ -691,6 +769,7 @@ public class AI : Character
         Directory_OnActionGame.Add(Key_Move_Ide, lc_OnDie);
         Directory_OnActionGame.Add(Key_Move_Random, lc_OnMoveRandom);
         Directory_OnActionGame.Add(Key_Move_To_Hoop, lc_onMoveToHoop);
+        
 
       
 
@@ -699,7 +778,10 @@ public class AI : Character
         Directory_OnActionGame.Add(Key_Jump_Straight,lc_OnJump);
         Directory_OnActionGame.Add(Key_Jump_Left, lc_OnJump_left);
         Directory_OnActionGame.Add(Key_Jump_Right, lc_OnJump_right);
-        
+
+        // Action EFF
+      
+        Directory_OnActionGame.Add(Key_Slamp_Dunk, lc_OnSlampDunk);
 
         // Status
 
@@ -708,6 +790,7 @@ public class AI : Character
         Directory_StatusCpu.Add(Key_Trigger_Back, 0);
         Directory_StatusCpu.Add(Key_Trigger_Jump, 0);
         Directory_StatusCpu.Add(Key_Trigger_ThrowBall, 0);
+        Directory_StatusCpu.Add(Key_Trigger_Slamp_Dunk, 0);
 
         // Load Text Cpu
 
@@ -784,7 +867,7 @@ public class AI : Character
     private void FormatString(string line)
     {
         string ss = "";
-        Debug.Log("Line Format : " + line);
+       // Debug.Log("Line Format : " + line);
         string[] w = new string[1] { "." };
         string[] w1 = new string[1] { "=" };
         string[] w2 = new string[1] { "||" };
@@ -809,7 +892,7 @@ public class AI : Character
 
         for(int i=0; i < ArrayValue.Length; i++)
         {
-            Debug.Log(ArrayValue[i]);
+        //    Debug.Log(ArrayValue[i]);
             ArrayAction[i] = Directory_OnActionGame[ArrayValue[i]];
         }
 
@@ -821,6 +904,9 @@ public class AI : Character
        
 
     }
+
+
+   
 
     public void OnActionWithKey(string key)
     {
@@ -838,7 +924,22 @@ public class AI : Character
 
                 StartActionUpdate(a.ActionStart , a.ActionUpdate);
                 break;
+
+            case ActionGame.TypeAction.ActionEFF:
+
+                StartAcionEFFWithTime(a.ActionStart, a.ActionUpdate, a.ActionRemove, a.time);
+
+                break;
+              
+           
         }
+    }
+
+    public void OnActionEFFWithKey(string key)
+    {
+        ActionGame a = Directory_OnActionGame[key];
+        StartAcionEFFWithTime(a.ActionStart, a.ActionUpdate, a.ActionRemove, a.time);
+
     }
 
 
@@ -870,7 +971,32 @@ public class AI : Character
 
     }
 
+    public void StartAcionEFFWithTime(System.Action ActionTrigger, System.Action ActionUpdate, System.Action ActionRemove, float time)
+    {
+        if (ActionTrigger != null)
+        {
+            ActionTrigger();
+        }
 
+        System.Action expireAction = () =>
+        {
+            if (ActionRemove != null)
+            {
+                ActionRemove();
+            }
+
+        };
+
+        System.Action<float> UpdateAction = (t) =>
+        {
+            ActionUpdate();
+
+        };
+
+
+        SetupTimerActionEFF(time, UpdateAction, expireAction);
+
+    }
     public void StartActionUpdate(System.Action ActionTrigger,System.Action ActionUpdate)
     {
         if (ActionTrigger != null)
@@ -896,9 +1022,10 @@ public class AI : Character
 
         return null;
     }
+  
 
 
-
+    
     System.Action SetupTimer(float seconds, System.Action<float> updateAction, System.Action expireAction)
     {
 
@@ -940,6 +1067,50 @@ public class AI : Character
 
         return expireWrapper;
     }
+
+
+    System.Action SetupTimerActionEFF(float seconds, System.Action<float> updateAction, System.Action expireAction)
+    {
+
+        float timer = 0;
+
+        System.Action expireWrapper = null;
+
+        System.Action<float> updateWrapper = null;
+        updateWrapper = (dt) =>
+        {
+            timer += dt;
+
+            if (updateAction != null)
+            {
+                updateAction(dt);
+            }
+
+            if (timer >= seconds)
+            {
+                expireWrapper();
+            }
+        };
+
+        OnActionEFF += updateWrapper;
+
+
+
+        expireWrapper = () =>
+        {
+            OnActionEFF -= updateWrapper;
+
+
+
+            if (expireAction != null)
+            {
+                expireAction();
+            }
+        };
+
+        return expireWrapper;
+    }
+
 
     public void SetKeyTrigger(string key)
     {
@@ -992,7 +1163,7 @@ public class AI : Character
 
 public class ActionGame
 {
-    public enum TypeAction { Update, Action };
+    public enum TypeAction { Update, Action ,ActionEFF};
     public TypeAction typeAction;
     public bool isAction;
     public System.Action ActionUpdate;
@@ -1011,6 +1182,14 @@ public class ActionGame
     {
         this.ActionStart = ActionStart;
         typeAction = TypeAction.Action;
+        ActionUpdate = UpdateAction;
+        ActionRemove = RemoveAction;
+        this.time = time;
+    }
+    public ActionGame(System.Action ActionStart, System.Action UpdateAction, System.Action RemoveAction, float time,bool isActionEff)
+    {
+        this.ActionStart = ActionStart;
+        typeAction = TypeAction.ActionEFF;
         ActionUpdate = UpdateAction;
         ActionRemove = RemoveAction;
         this.time = time;

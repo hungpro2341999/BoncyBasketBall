@@ -12,7 +12,10 @@ public class CheckWithSlampDunk : Check
             Player a = (Player)character;
            
             a.ActiveActionWithKey(key);
-            
+
+            a.ArrayAction = transform.GetComponentsInChildren<Action>();
+
+            gameObject.SetActive(true);
             
            
             Debug.Log("Active ");

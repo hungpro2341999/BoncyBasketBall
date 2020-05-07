@@ -4,7 +4,7 @@ using UnityEngine;
 public enum StatusPlayer { Ground, Jump };
 public class Player : Character
 {
-   
+  
     // Start is called before the first frame update
     public StatusPlayer Status_Player;
     public const string key_Collison_1 = "Key_1";
@@ -36,6 +36,11 @@ public class Player : Character
 
     public const string Key_Slamp_Dunk = "SlampDunk";
     public const string Key_Stun = "Stun";
+    public Transform TranSlampDunk;
+
+    public Action[] ArrayAction;
+    public bool isComplete = false;
+    private int i = 0;
 
 
     Dictionary<string, int> Dictinory_Collison = new Dictionary<string, int>();
@@ -53,7 +58,7 @@ public class Player : Character
     {
         
         base.Start();
-
+        AnimStatus.Complete += OnComplete;
         TargetHoop = GameObject.FindGameObjectWithTag("TargetPlayer").transform.position;
 
 
@@ -80,12 +85,36 @@ public class Player : Character
 
         if (OnAction != null)
         {
-            Debug.Log("Action");
+           // Debug.Log("Action");
             OnAction(Time.deltaTime);
         }
         else
         {
-            Debug.Log("Ctrl");
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+
+                if (isGround)
+                {
+
+                    m_timeStartJump = timeStartJump;
+
+                    Body.velocity = new Vector2(Body.velocity.x, 0);
+                    Body.AddForce(Force * Vector2.up, ForceMode2D.Impulse);
+                    isStartJump = true;
+                    isGround = false;
+
+                    if (isBall)
+                    {
+                        isPullBall = true;
+                    }
+                    else
+                    {
+                        isPullBall = false;
+                    }
+                }
+            }
+
+           // Debug.Log("Ctrl");
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 PlayAnimation();
@@ -115,28 +144,7 @@ public class Player : Character
 
             }
 
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                if (isGround)
-                {
-
-                    m_timeStartJump = timeStartJump;
-                    StatusCurr = CharacterState.jumb1;
-                    Body.velocity = new Vector2(Body.velocity.x, 0);
-                    Body.AddForce(Force * Vector2.up, ForceMode2D.Impulse);
-                    isStartJump = true;
-                    isGround = false;
-                    StatusCurr = CharacterState.jumb1;
-                    if (isBall)
-                    {
-                        isPullBall = true;
-                    }
-                    else
-                    {
-                        isPullBall = false;
-                    }
-                }
-            }
+           
 
             if (Input.GetKeyDown(KeyCode.K))
             {
@@ -170,6 +178,15 @@ public class Player : Character
 
 
             }
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                isAttack = true;
+
+            }
+
+
+
+
 
             if (isStartJump)
             {
@@ -177,6 +194,7 @@ public class Player : Character
                 {
                     if (m_timeStartJump >= 0)
                     {
+                        StatusCurr = CharacterState.jumb1;
                         m_timeStartJump -= Time.deltaTime;
                     }
                     else
@@ -210,7 +228,7 @@ public class Player : Character
                 }
                 else
                 {
-                    m_timeStartJump = 0;
+                    m_timeStartJump = timeStartJump;
                     TriggerBallForward.gameObject.SetActive(true);
                     isPullBall = false;
                     isStartJump = false;
@@ -221,14 +239,16 @@ public class Player : Character
 
             }
         }
-
+       
 
     }
     private void LateUpdate()
     {
            
            Body.velocity = new Vector2 (Velocity.x,Body.velocity.y);
-        
+
+       
+
     }
     public override void CaculateStatus()
     {
@@ -306,19 +326,49 @@ public class Player : Character
 
     public void OnActionSlampDunk()
     {
-        StatusCurr = CharacterState.jumb2_slamdunk;
+        if (i < ArrayAction.Length)
+        {
+            if (Vector3.Distance(ArrayAction[i].transform.position, transform.position) ==0)
+            {
+
+                ArrayAction[i].SetAction();
+                i++;
+            }
+            else
+            {
+                StatusCurr = CharacterState.jumb2_slamdunk;
+                transform.position = Vector3.MoveTowards(transform.position, ArrayAction[i].transform.position, Time.deltaTime * ArrayAction[i].time);
+            }
+
+        }
        
+       
+   
+
+        
+
+     
+       
+    }
+
+    public void OnTriggerSlampDunk()
+    {
+       
+        i = 0;
+        StatusCurr = CharacterState.jumb2_slamdunk;
+        Body.simulated = false;
+        Body.constraints = RigidbodyConstraints2D.FreezePositionY;
     }
 
     public void UnActionSlampDunk()
     {
-     
-        StatusCurr = CharacterState.jumb3;
+       
+        // StatusCurr = CharacterState.jumb3;
     }
 
     public void Init()
     {
-        ActionGame lc_SlampDunk = new ActionGame(null, OnActionSlampDunk,UnActionSlampDunk, 2);
+        ActionGame lc_SlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk,UnActionSlampDunk, 100);
         Directory_OnActionGame.Add(Key_Slamp_Dunk, lc_SlampDunk);
         
 

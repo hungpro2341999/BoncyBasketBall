@@ -18,6 +18,8 @@ TagManager:
   - TargetCPU
   - TargetPlayer
   - Hand
+  - Action
+  - HandCPU
   layers:
   - Default
   - TransparentFX

@@ -14,7 +14,8 @@ public enum CharacterState
     move1,
     move2,
     stun,
-    test
+    test,
+    swing
 
 }
 public abstract class Character : MonoBehaviour
@@ -41,14 +42,14 @@ public abstract class Character : MonoBehaviour
     public bool isStartJump = false;
     public bool isBall;
     public float timeStartJump;
-   
+    public bool isAttack = false;
     protected float m_timeStartJump;
     protected float timejump;
     public bool isPullBall = false;
     // Start is called before the first frame update
     public virtual void  Start()
     {
-        
+       
         StatusCurr = CharacterState.idle;
         Body = GetComponent<Rigidbody2D>();
         HighWithGround = transform.position.y - Physics2D.RaycastAll(transform.position, Vector2.down, 20, LayerGround)[0].point.y;
@@ -128,21 +129,46 @@ public abstract class Character : MonoBehaviour
         if (AnimStatus != null)
         {
             AnimStatus.ClearTracks();
-            if (StatusCurr == CharacterState.idle)
+            if (StatusCurr == CharacterState.idle || StatusCurr == CharacterState.jumb2_slamdunk)
             {
+                AnimStatus.ClearTracks();
                 AnimStatus.SetAnimation(0, StatusCurr.ToString(), true);
             }
             else
             {
+                AnimStatus.ClearTracks();
                 AnimStatus.SetAnimation(0, StatusCurr.ToString(), false);
             }
-          
+
+            if (isAttack)
+            {
+                isAttack = false;
+                AnimStatus.ClearTracks();
+                AnimStatus.SetAnimation(0, "swing", false);
+
+
+            }
+
+
         }
-       
+
+
+
+
+
 
     }
     public virtual void CatchBall()
     {
+
+    }
+   public void OnComplete(Spine.TrackEntry trackEntry)
+    {
+        var animName = trackEntry.Animation.Name;
+        //if(animName == "swing")
+        //{
+        //    AnimStatus.SetAnimation(0, "idle", true);
+        //}
 
     }
 }
