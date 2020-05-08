@@ -20,6 +20,9 @@ TagManager:
   - Hand
   - Action
   - HandCPU
+  - PosInitCPU
+  - PosInitPlayer
+  - PosInitBall
   layers:
   - Default
   - TransparentFX
@@ -43,8 +46,8 @@ TagManager:
   - Net
   - Straigh
   - BG
-  - 
-  - 
+  - Score
+  - BG_2
   - 
   - 
   - 
@@ -59,6 +62,9 @@ TagManager:
     locked: 0
   - name: BG
     uniqueID: 269555423
+    locked: 0
+  - name: BG_2
+    uniqueID: 550061259
     locked: 0
   - name: Leg
     uniqueID: 3179752293
@@ -80,4 +86,7 @@ TagManager:
     locked: 0
   - name: Straigh
     uniqueID: 4200383831
+    locked: 0
+  - name: Score
+    uniqueID: 2895258557
     locked: 0

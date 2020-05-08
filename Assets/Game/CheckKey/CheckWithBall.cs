@@ -8,8 +8,17 @@ public class CheckWithBall : Check
     {
         if (collision.gameObject.layer==16)
         {
-          
-             character.CatchBall();
+            var a = (Ball)CtrlGamePlay.Ins.Ball;
+
+            if (!character.isStun)
+            {
+                if (!a.isHand)
+                {
+                    character.CatchBall();
+                }
+               
+            }
+             
 
         }
     }

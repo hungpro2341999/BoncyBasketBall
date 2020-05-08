@@ -4,6 +4,7 @@ using UnityEngine;
 using Spine.Unity;
 using UnityEngine.UI;
 using System.IO;
+using Spine;
 
 public enum RelizeBall { Right,Left,Up,Down};
 public enum IsSameDirectWithBall  { Yes, No };
@@ -71,12 +72,15 @@ public class AI : Character
 
     public int CountSperateDistance;
 
-
+    public float ForceBack;
+    public float timeStun;
 
     public bool isLimit = false;
 
     private float Amount;
     private float PosInit;
+
+
     public int CurrPos;
     public int PreviousPos;
     public bool ChangeStatus;
@@ -103,7 +107,7 @@ public class AI : Character
     public const string Key_Move_Ide = "Ide";
 
     public const string Key_Slamp_Dunk = "SlampDunk";
-
+    public const string Key_Stun = "Key_Stun";
 
 
     public const string Key_Trigger_Have_Ball = "Trigger_Ball";
@@ -113,11 +117,11 @@ public class AI : Character
     public const string Key_Trigger_Back = "Trigger_Back";
 
     public const string Key_Trigger_Slamp_Dunk = "Trigger_Slamp_Dunk";
-
-
   
 
-    
+
+
+
 
 
 
@@ -195,9 +199,17 @@ public class AI : Character
 
     public override void Start()
     {
-
-        // bla bla
+        base.Start();
         AnimStatus.Complete += OnComplete;
+        AnimStatus.Start += OnStartAnim;
+        AnimStatus.Interrupt += OnInterrupt;
+        AnimStatus.Dispose += OnDispose;
+        AnimStatus.Event += OnEvent;
+
+
+        CtrlGamePlay.Ins.eventRestGamePlay += Reset;
+        // bla bla
+        // AnimStatus.Complete += OnComplete;
 
         Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
 
@@ -219,9 +231,14 @@ public class AI : Character
     #region Core
     public override void CaculateStatus()
     {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            
+            OnAttack();
+        }
 
-      
-         if (OnActionEFF != null)
+
+        if (OnActionEFF != null)
          {
             Debug.Log("EFF_Action");
            OnActionEFF(Time.deltaTime);
@@ -293,10 +310,12 @@ public class AI : Character
     public override void Move()
     {
 
+     
+
         if (isAction)
             return;
 
-
+        
 
 
         if (isMoveRight)
@@ -357,14 +376,14 @@ public class AI : Character
         {
             if (!isGround)
             {
-                BoxCatchBall.gameObject.SetActive(false);
+               // BoxCatchBall.gameObject.SetActive(false);
                 if (m_timeStartJump > 0)
                 {
                     m_timeStartJump -= Time.deltaTime;
                 }
                 else
                 {
-                    TriggerBallForward.gameObject.SetActive(false);
+                   // TriggerBallForward.gameObject.SetActive(false);
                     if (Mathf.Sign(Body.velocity.y) == 1)
                     {
                         StatusCurr = CharacterState.jumb2;
@@ -393,8 +412,8 @@ public class AI : Character
             }
             else
             {
-                BoxCatchBall.gameObject.SetActive(true);
-                TriggerBallForward.gameObject.SetActive(true);
+             //   BoxCatchBall.gameObject.SetActive(true);
+             //   TriggerBallForward.gameObject.SetActive(true);
                 isPullBall = false;
                 isStartJump = false;
                 StatusCurr = CharacterState.idle;
@@ -412,7 +431,10 @@ public class AI : Character
             StatusCurr = CharacterState.idle;
         }
 
-
+        if(isAttack)
+        {
+            StatusCurr = CharacterState.swing;
+        }
 
 
     }
@@ -569,11 +591,8 @@ public class AI : Character
     }
    
 
-    private void OnTriggerMoveRandom()
-    {
-
-    }
-
+    
+    //private void  OnStun          
 
     private void OnMoveRandom()
     {
@@ -686,6 +705,67 @@ public class AI : Character
         isJump = false;
     }
 
+  
+    public void OnStun()
+    {
+
+        isAction = true;
+        StatusCurr = CharacterState.stun;
+        isStun = true;
+        isMoveLeft = false;
+        isMoveRight = false;
+        isJump = false;
+        
+
+    } 
+
+    public void OnTriggerStun()
+    {
+        Force_Back();
+    }
+
+    public void OnEndTriggerStun()
+        
+    {
+        isStun = false;
+        isAction = false;
+
+    }
+
+    public void OnAttack()
+    {
+        if(isGround && !isStartJump)
+        {
+            Debug.Log("Attack");
+            StatusCurr = CharacterState.swing;
+            isAttack = true;
+        }
+      
+    }
+
+
+
+
+    public override void Force_Back()
+    {
+        Debug.Log("ForceBack");
+        Body.AddForce(Vector2.right * ForceBack, ForceMode2D.Force);
+        if (isBall)
+        {
+            var Ball = CtrlGamePlay.Ins.Ball;
+          
+            isBall = false;
+           
+            Ball.transform.transform.parent = null;
+            Ball.GetComponent<CircleCollider2D>().isTrigger = false;
+            Ball.Body.isKinematic = false;
+            Ball.Body.simulated = true;
+            Ball.Body.AddForce(Vector2.up *10, ForceMode2D.Force);
+        }
+       
+    }
+
+
     // Trigger
     public void ActiveTriggerProctectBall()
     {
@@ -695,7 +775,18 @@ public class AI : Character
     public void Add_Action_AI()
     {
 
+
+
+
     }
+
+    public void OnSwing()
+    {
+
+    }
+
+    
+
     /// <summary>
     /// 
     /// </summary>
@@ -755,20 +846,24 @@ public class AI : Character
 
 
         ActionGame lc_OnActionMove = new ActionGame(null,OnMoveToBall);
-        ActionGame lc_OnJump = new ActionGame(OnJump,OnJumpStraight, null, 0.8f);
+        ActionGame lc_OnJump = new ActionGame(OnJump,OnJumpStraight, null,0.8f);
         ActionGame lc_OnDie = new ActionGame(null,OnMoveIde);
         ActionGame lc_OnMoveRandom = new ActionGame(null,OnMoveRandom);
         ActionGame lc_onMoveToHoop = new ActionGame(null,OnMoveToHoop);
-        ActionGame lc_OnJump_left = new ActionGame(OnJump,OnJumpLeft, null, 1.7f);
-        ActionGame lc_OnJump_right = new ActionGame(OnJump,OnJumpRight, null, 1.7f);
-        ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, null, 100f,true); 
+        ActionGame lc_OnJump_left = new ActionGame(OnJump,OnJumpLeft, null,1.7f);
+        ActionGame lc_OnJump_right = new ActionGame(OnJump,OnJumpRight, null,1.7f);
+        ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, null, 100f,true);
+        ActionGame lc_OnStun = new ActionGame(OnTriggerStun,OnStun,OnEndTriggerStun,2);
         // Update To Directory
+
+
 
         //  Update
         Directory_OnActionGame.Add(Key_Move_To_Ball, lc_OnActionMove);
         Directory_OnActionGame.Add(Key_Move_Ide, lc_OnDie);
         Directory_OnActionGame.Add(Key_Move_Random, lc_OnMoveRandom);
         Directory_OnActionGame.Add(Key_Move_To_Hoop, lc_onMoveToHoop);
+        Directory_OnActionGame.Add(Key_Stun, lc_OnStun);
         
 
       
@@ -835,6 +930,10 @@ public class AI : Character
 
 
     }
+
+   
+
+
 
     public void ReadFileCPU()
     {
@@ -1131,7 +1230,7 @@ public class AI : Character
         Directory_StatusCpu[Key_Trigger_ThrowBall] = 0;
     }
 
-   
+
 
 
 
@@ -1156,9 +1255,48 @@ public class AI : Character
     //    registry[name].listeners += action;
     //}
 
-  
+
+    public override void OnEvent(TrackEntry trackEntry, Spine.Event e)
+    {
+        if (trackEntry.Animation.Name == "swing")
+        {
+            var evenName = e.Data.Name;
+            if (evenName == "atk")
+            {
+                BoxHurt.gameObject.SetActive(true);
+                canHurt = true;
+            }
+
+        }
 
 
+
+    }
+    public override void OnComplete(TrackEntry trackEntry)
+    {
+        if (trackEntry.Animation.Name == "swing")
+        {
+            isAttack = false;
+        }
+    }
+
+    public override void Reset()
+    {
+        
+        OnActionEFF = null;
+        OnAction = null;
+        OnMove = null;
+        isMoveLeft = false;
+        isMoveRight = false;
+        isJump = false;
+        isAction = false;
+        isBall = false;
+        isPullBall = false;
+        isStun = false;
+      
+    }
+
+   
 }
 
 public class ActionGame

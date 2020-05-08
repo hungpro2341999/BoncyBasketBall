@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-
+using UnityEngine.UI;
 
 public enum StatusAI {DirectToBall,HaveBall,NotHaveBall,};
 
@@ -18,6 +17,9 @@ public class CtrlGamePlay : MonoBehaviour
    
     public static CtrlGamePlay Ins;
 
+    [Header("STatusGame")]
+    public bool isPlaying = false;
+
     public Character Player;
     public Character AI;
     public Character Ball;
@@ -25,12 +27,63 @@ public class CtrlGamePlay : MonoBehaviour
     public float WidthScreen;
     public float HeightScreen;
 
+   
+
     //
 
     public float h = 3;
     public float graviry = -9.8f;
 
-   
+    //  Delegate
+
+    public CheckInBall[] Board;
+
+
+    public delegate void OnResetGamePlay();
+    public delegate void OnGlobal();
+    public delegate void OnResetGame();
+
+    //   Event
+
+    public event OnResetGamePlay eventRestGamePlay;
+    public event OnGlobal event_Global_Game;
+    public event OnResetGame eventResetGame;
+
+
+    public Vector3 PosInitPlayer;
+    public Vector3 PosInitCPU;
+    public Vector3 PosInitBall;
+
+    
+
+    [Header("Render")]
+
+    public Text TextTime;
+    public Text TextPlayer;
+    public Text TextCPU;
+    public int ScorePlayer = 0;
+    public int ScoreAI = 0;
+
+
+    [Header("TimeGame")]
+
+    public float timeResetGamePlay;
+    public float timeGamePlay;
+
+    #region Private Static Variable
+
+    public static bool isGlobal = false;
+
+
+    #endregion
+
+
+    #region Private Variable
+
+    private float m_timeGame;
+
+    #endregion
+
 
 
     private void Awake()
@@ -43,6 +96,15 @@ public class CtrlGamePlay : MonoBehaviour
         {
             Ins = this;
         }
+
+        PosInitPlayer = GameObject.FindGameObjectWithTag("PosInitPlayer").transform.position;
+        PosInitCPU = GameObject.FindGameObjectWithTag("PosInitCPU").transform.position;
+        PosInitBall = GameObject.FindGameObjectWithTag("PosInitBall").transform.position;
+
+        eventRestGamePlay += ResetGamePlay;
+        eventResetGame += RestGame;
+
+
     }
     // Start is called before the first frame update
     void Start()
@@ -50,8 +112,15 @@ public class CtrlGamePlay : MonoBehaviour
         Physics2D.gravity = Vector3.up * graviry;
         var a = (Player)Player;
         a.isInputMove = true;
-        
+        eventResetGame();
+
+
+     
+
     }
+
+
+    
 
     // Update is called once per frame
     void Update()
@@ -59,6 +128,24 @@ public class CtrlGamePlay : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ResetGamePlay();
+        }
+           
+
+
+        if (m_timeGame >= 0)
+        {
+            TextTime.text = ((int)m_timeGame).ToString();
+            m_timeGame -= Time.deltaTime;
+        }
+        else
+        {
+            isPlaying = false;
+            
         }
      
     }
@@ -129,5 +216,62 @@ public class CtrlGamePlay : MonoBehaviour
             this.timeToTarget = timeToTarget;
         }
     }
+
+    #region  EventGame
+    public void Global()
+    {
+        var a = (Ball)Ball;
+        if (a.isHandByPlayer())
+        {
+            ScorePlayer++;
+        }
+        else
+        {
+            ScoreAI++;
+        }
+
+        RenderScore();
+    }
+    public void RestGame()
+    {
+        isPlaying = true;
+        m_timeGame = timeGamePlay;
+        Player.transform.position = PosInitPlayer;
+        AI.transform.position = PosInitCPU;
+        Ball.transform.position = PosInitBall;
+        RenderScore();
+    }
     
+
+
+
+    public void ResetGamePlay()
+    {
+        for(int i = 0; i < Board.Length; i++)
+        {
+            Board[i].RestorCheckBoard();
+        }
+        Player.transform.position = PosInitPlayer;
+        AI.transform.position = PosInitCPU;
+        Ball.transform.position = PosInitBall;
+        RenderScore();
+    }
+
+
+    #endregion
+
+    #region Method Priate
+
+    private void RenderScore()
+    {
+        TextPlayer.text = ScorePlayer.ToString();
+        TextCPU.text = ScoreAI.ToString();
+
+    }
+
+
+    #endregion
+
+
+
 }

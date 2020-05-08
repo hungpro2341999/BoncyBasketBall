@@ -21,6 +21,8 @@ public class CatchBall : MonoBehaviour
     {
         if (collision.gameObject.layer == 16)
         {
+
+            
             var Obj = collision.GetComponent<Ball>();
             collision.GetComponent<Ball>().Velocity = Vector3.zero;
             collision.GetComponent<Ball>().Body.isKinematic = true;

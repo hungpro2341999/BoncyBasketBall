@@ -9,16 +9,23 @@ public class CheckWithSlampDunk : Check
     {
         if(collision.gameObject.tag == "Hand")
         {
-            Player a = (Player)character;
-           
-            a.ActiveActionWithKey(key);
 
-            a.ArrayAction = transform.GetComponentsInChildren<Action>();
-
-            gameObject.SetActive(true);
             
-           
-            Debug.Log("Active ");
+
+            Player a = (Player)character;
+
+            if (a.isBall)
+            {
+                a.ActiveActionWithKey(key);
+
+                a.ArrayAction = transform.GetComponentsInChildren<Action>();
+
+                gameObject.SetActive(true);
+
+
+                Debug.Log("Active ");
+            }
+         
            
 
         }

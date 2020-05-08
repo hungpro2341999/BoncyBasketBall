@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Spine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public enum StatusPlayer { Ground, Jump };
@@ -22,7 +24,7 @@ public class Player : Character
     
     public bool isJump = false;
 
-   
+    public bool isActionGame;
     
    
     // For Player:
@@ -30,7 +32,7 @@ public class Player : Character
     public bool isRayToPlayer_2;
     [Header("CatchBall")]
     public Transform PosHand;
-    public Transform TriggerBallForward;
+    
     public Vector3 TargetHoop;
     [Header("Key Collison And Action ")]
 
@@ -41,6 +43,7 @@ public class Player : Character
     public Action[] ArrayAction;
     public bool isComplete = false;
     private int i = 0;
+    public bool isAction = false;
 
 
     Dictionary<string, int> Dictinory_Collison = new Dictionary<string, int>();
@@ -49,6 +52,8 @@ public class Player : Character
 
     Dictionary<string, ActionGame> Directory_OnActionGame = new Dictionary<string, ActionGame>();
     Dictionary<string, ActionGame[]> Directory_Key_Status = new Dictionary<string, ActionGame[]>();
+
+    
 
     private void Awake()
     {
@@ -59,6 +64,10 @@ public class Player : Character
         
         base.Start();
         AnimStatus.Complete += OnComplete;
+        AnimStatus.Start += OnStartAnim;
+        AnimStatus.Interrupt += OnInterrupt;
+        AnimStatus.Dispose += OnDispose;
+        AnimStatus.Event += OnEvent;
         TargetHoop = GameObject.FindGameObjectWithTag("TargetPlayer").transform.position;
 
 
@@ -68,6 +77,7 @@ public class Player : Character
 
     }
 
+  
     // Update is called once per frame
     public override void GetStatus()
     {
@@ -103,14 +113,14 @@ public class Player : Character
                     isStartJump = true;
                     isGround = false;
 
-                    if (isBall)
-                    {
-                        isPullBall = true;
-                    }
-                    else
-                    {
-                        isPullBall = false;
-                    }
+                    //if (isBall)
+                    //{
+                    //    isPullBall = true;
+                    //}
+                    //else
+                    //{
+                    //    isPullBall = false;
+                    //}
                 }
             }
 
@@ -146,17 +156,9 @@ public class Player : Character
 
            
 
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                if (isBall)
-                {
-                    isBall = false;
-                    CtrlGamePlay.Ins.Launch(Random.Range(5, 8), TargetHoop);
+           
 
-                }
-            }
-
-
+            
             if (Input.GetKeyUp(KeyCode.A))
             {
                 if (isGround)
@@ -180,7 +182,20 @@ public class Player : Character
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
+                StatusCurr = CharacterState.swing;
                 isAttack = true;
+                if (isStartJump)
+                {
+                    if (!isGround)
+                    {
+                        if (isBall)
+                        {
+                            isPullBall = true;
+                        }
+                    }
+                    
+                   
+                }
 
             }
 
@@ -190,6 +205,7 @@ public class Player : Character
 
             if (isStartJump)
             {
+              
                 if (!isGround)
                 {
                     if (m_timeStartJump >= 0)
@@ -199,20 +215,18 @@ public class Player : Character
                     }
                     else
                     {
-                        TriggerBallForward.gameObject.SetActive(false);
+                       
                         if (Mathf.Sign(Body.velocity.y) == 1)
                         {
+
                             StatusCurr = CharacterState.jumb2;
 
-                        }
-                        else
-                        {
                             if (isPullBall)
                             {
                                 if (isBall)
                                 {
                                     isBall = false;
-                                    CtrlGamePlay.Ins.Launch(Random.Range(1, 2), TargetHoop);
+                                    CtrlGamePlay.Ins.Launch(UnityEngine.Random.Range(1, 2), TargetHoop);
                                     isPullBall = false;
 
                                 }
@@ -220,6 +234,26 @@ public class Player : Character
 
 
                             }
+
+
+
+                        }
+                        else if(Mathf.Sign(Body.velocity.y) == -1)
+                        {
+                            isPullBall = false;
+                            //if (isPullBall)
+                            //{
+                            //    if (isBall)
+                            //    {
+                            //        isBall = false;
+                            //        CtrlGamePlay.Ins.Launch(Random.Range(1, 2), TargetHoop);
+                            //        isPullBall = false;
+
+                            //    }
+
+
+
+                            //}
                             StatusCurr = CharacterState.jumb3;
 
                         }
@@ -229,7 +263,7 @@ public class Player : Character
                 else
                 {
                     m_timeStartJump = timeStartJump;
-                    TriggerBallForward.gameObject.SetActive(true);
+                  
                     isPullBall = false;
                     isStartJump = false;
                     StatusCurr = CharacterState.idle;
@@ -342,14 +376,12 @@ public class Player : Character
 
         }
        
-       
+    }
+
    
 
-        
 
-     
-       
-    }
+
 
     public void OnTriggerSlampDunk()
     {
@@ -365,11 +397,37 @@ public class Player : Character
        
         // StatusCurr = CharacterState.jumb3;
     }
+    public void OnTriggerStun()
+    {
+       
+        StatusCurr = CharacterState.stun;
+        isStun = true;
+        Body.velocity = Vector3.zero;
+
+
+    }
+
+    public void OnEndTriggerStun()
+
+    {
+        isStun = false;
+        isAction = false;
+
+    }
+
+
 
     public void Init()
     {
+
+        // Action Game
         ActionGame lc_SlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk,UnActionSlampDunk, 100);
+        ActionGame lc_Stun = new ActionGame(OnTriggerStun, OnTriggerStun, OnEndTriggerStun, 2);
+
+        // AddToDirectoryGame
         Directory_OnActionGame.Add(Key_Slamp_Dunk, lc_SlampDunk);
+        Directory_OnActionGame.Add(Key_Stun, lc_Stun);
+
         
 
        
@@ -401,7 +459,7 @@ public class Player : Character
 
         }
     }
-
+  
 
     public void StartAcionWithTime(System.Action ActionTrigger, System.Action ActionUpdate, System.Action ActionRemove, float time)
     {
@@ -484,9 +542,41 @@ public class Player : Character
     }
 
 
+    //public override void OnComplete(TrackEntry trackEntry)
+    //{
+    //    var animName = trackEntry.Animation.Name;
+    //    if (animName == "swing")
+    //    {
 
-    #endregion 
+    //        StatusCurr = CharacterState.idle;
+    //    }
 
+    //    if (animName == "swing")
+    //    {
+    //        canHurt = false;
+    //    }
 
+    //}
 
+    #endregion
+
+    
+    
+
+    public override void OnEvent(TrackEntry trackEntry, Spine.Event e)
+    {
+        if (trackEntry.Animation.Name == "swing")
+        {
+            var evenName = e.Data.Name;
+            if (evenName == "atk")
+            {
+                BoxHurt.gameObject.SetActive(true);
+                canHurt = true;
+            }
+           
+        }
+
+      
+
+    }
 }

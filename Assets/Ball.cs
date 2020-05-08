@@ -17,7 +17,9 @@ public class Ball : Character
     public int[] RestoreLayer;
     public int posPercition;
 
-    
+    public bool isHand;
+
+    public  Character LastHand;
     public override void Start()
     {
         base.Start();
@@ -34,6 +36,28 @@ public class Ball : Character
 
 
 
+
+    }
+
+
+    public bool isHandByPlayer()
+    {
+        if (LastHand != null)
+        {
+            if(LastHand is AI)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+        return false;
 
     }
     public override void Move()
@@ -96,6 +120,20 @@ public class Ball : Character
             gameObject.GetComponent<SphereCollider>().isTrigger = false;
         }  
     }
+
+    public override void CaculateStatus()
+    {
+        if (Body.isKinematic)
+        {
+            isHand = true;
+        }
+        else
+        {
+            isHand = false;
+        }
+    }
+
+    
 
     public void PredictionFall()
     {
@@ -213,6 +251,18 @@ public class Ball : Character
         }
         
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 13)
+        {
+            LastHand = collision.gameObject.GetComponent<Character>();
+
+
+        }
+    }
+
+
 
 }
 
