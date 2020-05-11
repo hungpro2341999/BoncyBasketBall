@@ -46,7 +46,7 @@ public class ReadCPU : MonoBehaviour
 
     public void PrintToFile()
     {
-        int n = 5;
+        int n = 3;
        
         //Khởi tạo mảng
         int[] A = new int[n];
@@ -59,10 +59,11 @@ public class ReadCPU : MonoBehaviour
             xuat(A, n);
             gen(A, n);
         }
-        Debug.Log("WriteFile");
+        Debug.Log("WriteFile : " + s) ;
+       
         StreamWriter writer = new StreamWriter(rootFolder, false);
-        writer.Write(s);
-        writer.Close();
+        //writer.Write(s);
+        //writer.Close();
 
     }
 }

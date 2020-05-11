@@ -22,10 +22,13 @@ public class CheckInBall : MonoBehaviour
 
 
     }
-
-    private void Start()
+    private void Awake()
     {
         Init();
+    }
+    private void Start()
+    {
+       
     }
 
     public void Init()
@@ -70,7 +73,7 @@ public class CheckInBall : MonoBehaviour
 
                 if ((Global[Key_Baset_1] + Global[Key_Baset_2]) == 2)
                 {
-                    CtrlGamePlay.Ins.Global();
+                  //  CtrlGamePlay.Ins.Global();
                     isGlobal = true;
                 }
 

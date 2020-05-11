@@ -94,7 +94,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void GetStatus()
     {
-        if (Physics2D.RaycastAll(transform.position, Vector2.down, High, LayerGround).Length > 0)
+        if (Physics2D.RaycastAll(transform.position, Vector2.down, High, LayerGround).Length >0)
         {
             
             isGround = true;
@@ -171,28 +171,17 @@ public abstract class Character : MonoBehaviour
         var animName = trackEntry.Animation.Name;
         if(animName == "swing")
         {
-            if (Body.velocity.x == 0)
-            {
-                StatusCurr = CharacterState.idle;
-            }
-
-            else if (Mathf.Sign(Body.velocity.x) == 1)
-            {
-                StatusCurr = CharacterState.move2;
-
-            }
-            else if(Mathf.Sign(Body.velocity.x) == -1)
-            {
-                StatusCurr = CharacterState.move1;
-            }
-           
-          
-        }
-
-        if(animName == "swing")
-        {
+         
+            isAttack = false;
             canHurt = false;
         }
+
+      
+
+
+       
+
+      
 
     }
 
@@ -207,6 +196,7 @@ public abstract class Character : MonoBehaviour
         var animName = trackEntry.Animation.Name;
         if (animName == "swing")
         {
+            isAttack = false;
             BoxHurt.gameObject.SetActive(false);
             canHurt = false;
         }
@@ -217,6 +207,7 @@ public abstract class Character : MonoBehaviour
         var animName = trackEntry.Animation.Name;
         if (animName == "swing")
         {
+            isAttack = false;
             BoxHurt.gameObject.SetActive(false);
             canHurt = false;
         }
@@ -227,7 +218,7 @@ public abstract class Character : MonoBehaviour
         if (animName == "swing")
         {
             Debug.Log("End Anim");
-            isAttack = false;
+           
             BoxHurt.gameObject.SetActive(false);
             canHurt = false;
         }

@@ -59,8 +59,8 @@ namespace Spine.Unity.Examples {
 		}
 
 		public enum EquipType {
-			Gun,
-			Goggles
+			Head,Leg,Hand
+			
 		}
 
 		public void Equip (EquipAssetExample asset) {

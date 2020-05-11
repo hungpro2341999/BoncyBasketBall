@@ -74,6 +74,8 @@ public class Player : Character
 
         Init();
 
+        CtrlGamePlay.Ins.eventRestGamePlay += Event_Reset;
+        CtrlGamePlay.Ins.eventResetGame += Event_Reset;
 
     }
 
@@ -95,11 +97,12 @@ public class Player : Character
 
         if (OnAction != null)
         {
-           // Debug.Log("Action");
+            Debug.Log("Action");
             OnAction(Time.deltaTime);
         }
         else
         {
+            Debug.Log("Ctrol");
             if (Input.GetKeyDown(KeyCode.J))
             {
 
@@ -108,8 +111,10 @@ public class Player : Character
 
                     m_timeStartJump = timeStartJump;
 
-                    Body.velocity = new Vector2(Body.velocity.x, 0);
-                    Body.AddForce(Force * Vector2.up, ForceMode2D.Impulse);
+
+
+                    Body.velocity = new Vector2(Body.velocity.x, Force);
+                 //   Body.AddForce(Force * Vector2.up, ForceMode2D.Impulse);
                     isStartJump = true;
                     isGround = false;
 
@@ -125,19 +130,13 @@ public class Player : Character
             }
 
            // Debug.Log("Ctrl");
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                PlayAnimation();
-            }
+           
 
             if (Input.GetKeyDown(KeyCode.A))
             {
                 isInputMove = true;
                 Velocity = speed * Vector2.left;
-                if (isGround)
-                {
-                    StatusCurr = CharacterState.move1;
-                }
+               
 
 
             }
@@ -146,10 +145,7 @@ public class Player : Character
 
                 isInputMove = true;
                 Velocity = speed * Vector2.right;
-                if (isGround)
-                {
-                    StatusCurr = CharacterState.move2;
-                }
+               
 
 
             }
@@ -199,80 +195,86 @@ public class Player : Character
 
             }
 
-
-
-
-
-            if (isStartJump)
+            if (isGround)
             {
-              
-                if (!isGround)
+                if (!isAttack)
                 {
-                    if (m_timeStartJump >= 0)
+                    Debug.Log(Body.velocity.x);
+                    if (Body.velocity.x == 0)
                     {
-                        StatusCurr = CharacterState.jumb1;
-                        m_timeStartJump -= Time.deltaTime;
+                        StatusCurr = CharacterState.idle;
                     }
-                    else
+                    else if (Mathf.Sign(Body.velocity.x) == 1)
                     {
-                       
-                        if (Mathf.Sign(Body.velocity.y) == 1)
-                        {
-
-                            StatusCurr = CharacterState.jumb2;
-
-                            if (isPullBall)
-                            {
-                                if (isBall)
-                                {
-                                    isBall = false;
-                                    CtrlGamePlay.Ins.Launch(UnityEngine.Random.Range(1, 2), TargetHoop);
-                                    isPullBall = false;
-
-                                }
-
-
-
-                            }
-
-
-
-                        }
-                        else if(Mathf.Sign(Body.velocity.y) == -1)
-                        {
-                            isPullBall = false;
-                            //if (isPullBall)
-                            //{
-                            //    if (isBall)
-                            //    {
-                            //        isBall = false;
-                            //        CtrlGamePlay.Ins.Launch(Random.Range(1, 2), TargetHoop);
-                            //        isPullBall = false;
-
-                            //    }
-
-
-
-                            //}
-                            StatusCurr = CharacterState.jumb3;
-
-                        }
-
+                        StatusCurr = CharacterState.move2;
+                    }
+                    else if (Mathf.Sign(Body.velocity.x) == -1)
+                    {
+                        StatusCurr = CharacterState.move1;
                     }
                 }
                 else
                 {
-                    m_timeStartJump = timeStartJump;
-                  
-                    isPullBall = false;
-                    isStartJump = false;
-                    StatusCurr = CharacterState.idle;
+
+                    StatusCurr = CharacterState.swing;
                 }
-
-
-
+              
+               
             }
+            else
+            {
+                if (isStartJump)
+                {
+
+                    if (!isGround)
+                    {
+                        if (m_timeStartJump >=0)
+                        {
+                            StatusCurr = CharacterState.jumb1;
+                            m_timeStartJump -= Time.deltaTime;
+                        }
+                        else
+                        {
+
+                            if (Mathf.Sign(Body.velocity.y) == 1)
+                            {
+
+                                StatusCurr = CharacterState.jumb2;
+
+                                if (isPullBall)
+                                {
+                                    if (isBall)
+                                    {
+                                        isBall = false;
+                                        CtrlGamePlay.Ins.Launch(UnityEngine.Random.Range(1, 2), TargetHoop);
+                                        isPullBall = false;
+
+                                    }
+
+                                }
+
+                            }
+                            else if (Mathf.Sign(Body.velocity.y) == -1)
+                            {
+                                isPullBall = false;
+                                StatusCurr = CharacterState.jumb3;
+                            }
+                        }
+                    }
+                   
+
+
+
+                }
+            }
+
+
+
+        
         }
+
+       
+        
        
 
     }
@@ -579,4 +581,23 @@ public class Player : Character
       
 
     }
+
+
+    #region Event
+
+    public void Event_Reset()
+    {
+        OnAction = null;
+        Body.simulated = true;
+        StatusCurr = CharacterState.idle;
+        Body.constraints = RigidbodyConstraints2D.None;
+        Body.constraints = RigidbodyConstraints2D.FreezeRotation;
+        
+        Body.velocity = Vector3.zero;
+
+    }
+  
+       
+
+    #endregion
 }

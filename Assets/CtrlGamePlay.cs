@@ -112,7 +112,7 @@ public class CtrlGamePlay : MonoBehaviour
         Physics2D.gravity = Vector3.up * graviry;
         var a = (Player)Player;
         a.isInputMove = true;
-        eventResetGame();
+       // eventResetGame();
 
 
      
@@ -231,9 +231,14 @@ public class CtrlGamePlay : MonoBehaviour
         }
 
         RenderScore();
+        ResetGamePlay();
     }
     public void RestGame()
     {
+        for (int i = 0; i < Board.Length; i++)
+        {
+            Board[i].RestorCheckBoard();
+        }
         isPlaying = true;
         m_timeGame = timeGamePlay;
         Player.transform.position = PosInitPlayer;
@@ -247,7 +252,7 @@ public class CtrlGamePlay : MonoBehaviour
 
     public void ResetGamePlay()
     {
-        for(int i = 0; i < Board.Length; i++)
+        for (int i = 0; i < Board.Length; i++)
         {
             Board[i].RestorCheckBoard();
         }

@@ -44,8 +44,7 @@ namespace Spine.Unity.Examples {
 		}
 
 		void MatchImage () {
-			if (inventoryImage != null)
-				inventoryImage.sprite = asset.sprite;
+		
 		}
 
 		void Start () {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum PercitionGround { Ground_1,Ground_2,None};
 public enum BallFlying { Yes,No};
@@ -19,10 +20,15 @@ public class Ball : Character
 
     public bool isHand;
 
+    public static string KeyBall;
     public  Character LastHand;
+
+    public Text keyBall;
     public override void Start()
     {
         base.Start();
+        CtrlGamePlay.Ins.eventResetGame += Event_Reset;
+        CtrlGamePlay.Ins.eventRestGamePlay += Event_Reset;
     }
     // Start is called before the first frame update
    
@@ -34,10 +40,40 @@ public class Ball : Character
 
         PredictionFall();
 
+        ControllerBy();
 
-
-
+        keyBall.text = "KeyBall : "+KeyBall.ToString();
     }
+
+    public void ControllerBy()
+    {
+        string s = "";
+        string bitAI ="";
+        string bitPlayer = "";
+        if (CtrlGamePlay.Ins.AI.isBall)
+        {
+            bitAI = "1";
+        }
+        else
+        {
+            bitAI = "0";
+        }
+
+        if (CtrlGamePlay.Ins.Player.isBall)
+        {
+            bitPlayer = "1";
+        }
+        else
+        {
+            bitPlayer = "0";
+        }
+
+        s += bitAI + bitPlayer;
+
+        KeyBall = s;
+       
+    }
+
 
 
     public bool isHandByPlayer()
@@ -263,6 +299,11 @@ public class Ball : Character
     }
 
 
+    public void Event_Reset()
+    {
+        Body.velocity = Vector3.zero;
+        transform.parent = null;
 
+    }
 }
 
