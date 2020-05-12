@@ -22,7 +22,7 @@ public class Ball : Character
 
     public static string KeyBall;
     public  Character LastHand;
-
+    public static float VelocityBall = 1.5f;
     public Text keyBall;
     public override void Start()
     {
@@ -31,7 +31,7 @@ public class Ball : Character
         CtrlGamePlay.Ins.eventRestGamePlay += Event_Reset;
     }
     // Start is called before the first frame update
-   
+    
     public override void GetStatus()
     {
      
@@ -301,8 +301,10 @@ public class Ball : Character
 
     public void Event_Reset()
     {
+        Body.isKinematic = false;
+        Body.simulated = true;
         Body.velocity = Vector3.zero;
-        transform.parent = null;
+        transform.parent = CtrlGamePlay.Ins.TransGamePlay;
 
     }
 }

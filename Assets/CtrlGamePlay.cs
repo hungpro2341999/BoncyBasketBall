@@ -83,7 +83,9 @@ public class CtrlGamePlay : MonoBehaviour
     private float m_timeGame;
 
     #endregion
+    [Header("Transform")]
 
+    public Transform TransGamePlay;
 
 
     private void Awake()
@@ -112,7 +114,7 @@ public class CtrlGamePlay : MonoBehaviour
         Physics2D.gravity = Vector3.up * graviry;
         var a = (Player)Player;
         a.isInputMove = true;
-       // eventResetGame();
+        eventResetGame();
 
 
      
@@ -176,7 +178,7 @@ public class CtrlGamePlay : MonoBehaviour
 
     public void PushBall(Vector3 direct)
     {
-        Debug.Log("PushBall : "+direct);
+       // Debug.Log("PushBall : "+direct);
         var a = (Player)Player;
         var b = (AI)AI;
 
@@ -218,21 +220,31 @@ public class CtrlGamePlay : MonoBehaviour
     }
 
     #region  EventGame
-    public void Global()
+    public void GlobalCPU()
     {
-        var a = (Ball)Ball;
-        if (a.isHandByPlayer())
-        {
-            ScorePlayer++;
-        }
-        else
-        {
-            ScoreAI++;
-        }
-
+        ScorePlayer++;
         RenderScore();
-        ResetGamePlay();
+
+        StartCoroutine(Rest_Game_Play(timeResetGamePlay));
     }
+
+    public void GlobalPlayer()
+    {
+        ScoreAI++;
+       
+        RenderScore();
+
+        StartCoroutine(Rest_Game_Play(timeResetGamePlay));
+    }
+
+
+    IEnumerator Rest_Game_Play(float time)
+    {
+        
+        yield return new WaitForSeconds(time);
+        eventRestGamePlay();
+    }
+
     public void RestGame()
     {
         for (int i = 0; i < Board.Length; i++)

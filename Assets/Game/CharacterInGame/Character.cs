@@ -17,7 +17,8 @@ public enum CharacterState
     move2,
     stun,
     test,
-    swing
+    swing,
+    throw_on_earth
 
 }
 public abstract class Character : MonoBehaviour
@@ -44,7 +45,7 @@ public abstract class Character : MonoBehaviour
     public bool isStartJump = false;
     public bool isBall;
     public float timeStartJump;
-   
+  
     protected float m_timeStartJump;
     protected float timejump;
     public bool isPullBall = false;
@@ -169,26 +170,30 @@ public abstract class Character : MonoBehaviour
     {
         
         var animName = trackEntry.Animation.Name;
-        if(animName == "swing")
+        if(animName == "swing" )
         {
-         
-            isAttack = false;
             canHurt = false;
+            isAttack = false;
+          
+        }
+        if(animName == "throw_on_earth")
+        {
+            StatusCurr = CharacterState.idle;
+            isAttack = false;
         }
 
-      
-
-
-       
 
       
+
+
+
+
+
 
     }
 
     public void OnStartAnim(Spine.TrackEntry trackEntry)
     {
-        var animName = trackEntry.Animation.Name;
-      
     }
 
     public void OnInterrupt(Spine.TrackEntry trackEntry)
@@ -197,9 +202,20 @@ public abstract class Character : MonoBehaviour
         if (animName == "swing")
         {
             isAttack = false;
-            BoxHurt.gameObject.SetActive(false);
-            canHurt = false;
         }
+        //var animName = trackEntry.Animation.Name;
+        //if (animName == "swing")
+        //{
+        //    isAttack = false;
+        //    BoxHurt.gameObject.SetActive(false);
+        //    canHurt = false;
+        //}
+
+        //if (animName == "throw_on_earth")
+        //{
+        //    isAttack = false;
+
+        //}
     }
 
     public void OnDispose(Spine.TrackEntry trackEntry)
@@ -208,20 +224,24 @@ public abstract class Character : MonoBehaviour
         if (animName == "swing")
         {
             isAttack = false;
-            BoxHurt.gameObject.SetActive(false);
-            canHurt = false;
         }
+
+        //var animName = trackEntry.Animation.Name;
+        //if (animName == "swing")
+        //{
+
+        //    BoxHurt.gameObject.SetActive(false);
+        //    canHurt = false;
+        //}
+        //if (animName == "throw_on_earth")
+        //{
+        //    isAttack = false;
+
+        //}
     }
     public void OnEndAnimation(Spine.TrackEntry trackEntry)
     {
-        var animName = trackEntry.Animation.Name;
-        if (animName == "swing")
-        {
-            Debug.Log("End Anim");
-           
-            BoxHurt.gameObject.SetActive(false);
-            canHurt = false;
-        }
+     
     }
 
     public virtual void Force_Back()

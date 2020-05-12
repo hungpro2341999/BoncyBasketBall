@@ -1,55 +1,27 @@
 
 // I > FIND BALL
-// 1.TriggerHaveBall
-// 2.TriggerJump
-// 3.TriggerFrontWithPlayer
-// 4.TriggerbackWithPlayer
-// 5.TriggerThrowBall
-// 6.SlampDunk
-// Status = 1+2+3+4+5+6
+
+// 1.TriggerJump
+// 2.TriggerFrontWithPlayer
+// 3.TriggerbackWithPlayer
+
+
+// Status = 1+2+3
 //
 
 
 
 //
-0. 00000 = MoveToBall
-1. 00001 = MoveToBall
-2. 00010 = OnJumpRight 
-3. 00011 = OnActionJump
-4. 00100 = OnJumpleft
-5. 00101 = OnActionJump
-6. 00110 = OnActionJump
-7. 00111 = OnActionJump
-8. 01000 = OnActionJump
-9. 01001 = OnActionJump
-10. 01010 = OnActionJump
-11. 01011 = OnActionJump
-12. 01100 = OnActionJump 
-13. 01101 = OnActionJump
-14. 01110 = OnActionJump
-15. 01111 = OnActionJump
-16. 10000 = MoveToHoop
-17. 10001 = OnActionJump
-18. 10010 = MoveToHoop
-19. 10011 = MoveToHoop
-20. 10100 = OnJumpleft 
-21. 10101 = OnActionJump
-22. 10110 = MoveToHoop
-23. 10111 = OnActionJump
-24. 11000 = OnActionJump
-25. 11001 = OnActionJump
-26. 11010 = OnActionJump
-27. 11011 = OnActionJump
-28. 11100 = MoveToHoop
-29. 11101 = OnActionJump
-30. 11110 = MoveToHoop
-31. 11111 = OnActionJump
-
-
+0. 000 = MoveToBall
+1. 001 = OnJumpRight
+2. 010 = OnJumpleft
+3. 011 = MoveToBall
+4. 100 = OnActionJump
+5. 101 = OnActionJump
+6. 110 = OnActionJump
+7. 111 = OnActionJump
 
 --Staus--
-
-
 
 // II > HAVE BALL 
 
@@ -68,12 +40,13 @@
 6. 110 = MoveToHoop
 7. 111 = OnActionJump
 
+--Staus--
 
+// III> PLAYER HAVE BALL
 
+//1.Trigger_Front_With_Player
 
-// III> PLAYER_HAVE_BALL
+0. 0 = OnMoveToPlayer
+1. 1 = OnMoveToPlayer
 
-// 1.Trigger_With_Player
-
-// 
 

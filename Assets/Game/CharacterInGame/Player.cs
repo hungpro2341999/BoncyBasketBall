@@ -44,7 +44,7 @@ public class Player : Character
     public bool isComplete = false;
     private int i = 0;
     public bool isAction = false;
-
+    public float force_Back;
 
     Dictionary<string, int> Dictinory_Collison = new Dictionary<string, int>();
     public event System.Action<float> OnAction;
@@ -63,11 +63,13 @@ public class Player : Character
     {
         
         base.Start();
+        
         AnimStatus.Complete += OnComplete;
         AnimStatus.Start += OnStartAnim;
         AnimStatus.Interrupt += OnInterrupt;
         AnimStatus.Dispose += OnDispose;
         AnimStatus.Event += OnEvent;
+        AnimStatus.End += OnEnd;
         TargetHoop = GameObject.FindGameObjectWithTag("TargetPlayer").transform.position;
 
 
@@ -92,7 +94,7 @@ public class Player : Character
     public override void Move()
     {
 
-      
+       
 
 
         if (OnAction != null)
@@ -102,7 +104,7 @@ public class Player : Character
         }
         else
         {
-            Debug.Log("Ctrol");
+            Debug.Log("Control");
             if (Input.GetKeyDown(KeyCode.J))
             {
 
@@ -178,28 +180,50 @@ public class Player : Character
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
-                StatusCurr = CharacterState.swing;
-                isAttack = true;
-                if (isStartJump)
+
+
+              
+                if (isGround)
                 {
-                    if (!isGround)
+                    if (!isAttack)
                     {
+                        isAttack = true;
                         if (isBall)
                         {
-                            isPullBall = true;
+                            StatusCurr = CharacterState.throw_on_earth;
+                        }
+                        else
+                        {
+
+                            StatusCurr = CharacterState.swing;
                         }
                     }
-                    
                    
                 }
+                else
+                {
+                    if (isStartJump)
+                    {
+                        if (!isGround)
+                        {
+                            if (isBall)
+                            {
+                                isPullBall = true;
+                                isAttack = false;
+                            }
+                        }
+
+
+                    }
+                }
+              
 
             }
-
-            if (isGround)
-            {
+           
+                if (isGround)
+                {
                 if (!isAttack)
                 {
-                    Debug.Log(Body.velocity.x);
                     if (Body.velocity.x == 0)
                     {
                         StatusCurr = CharacterState.idle;
@@ -212,70 +236,69 @@ public class Player : Character
                     {
                         StatusCurr = CharacterState.move1;
                     }
+
                 }
+                //  Debug.Log(Body.velocity.x);
+
+
+
+
+            }
                 else
                 {
-
-                    StatusCurr = CharacterState.swing;
-                }
-              
-               
-            }
-            else
-            {
-                if (isStartJump)
-                {
-
-                    if (!isGround)
+                    if (isStartJump)
                     {
-                        if (m_timeStartJump >=0)
+                        
+                        if (!isGround)
                         {
-                            StatusCurr = CharacterState.jumb1;
-                            m_timeStartJump -= Time.deltaTime;
-                        }
-                        else
-                        {
-
-                            if (Mathf.Sign(Body.velocity.y) == 1)
+                            if (m_timeStartJump >= 0)
+                            {
+                                StatusCurr = CharacterState.jumb1;
+                                m_timeStartJump -= Time.deltaTime;
+                            }
+                            else
                             {
 
-                                StatusCurr = CharacterState.jumb2;
-
-                                if (isPullBall)
+                                if (Mathf.Sign(Body.velocity.y) == 1)
                                 {
-                                    if (isBall)
+
+                                    StatusCurr = CharacterState.jumb2;
+
+                                    if (isPullBall)
                                     {
-                                        isBall = false;
-                                        CtrlGamePlay.Ins.Launch(UnityEngine.Random.Range(1, 2), TargetHoop);
-                                        isPullBall = false;
+                                        if (isBall)
+                                        {
+                                            isBall = false;
+                                            CtrlGamePlay.Ins.Launch(UnityEngine.Random.Range(1, 2), TargetHoop);
+                                            isPullBall = false;
+
+                                        }
 
                                     }
 
                                 }
-
-                            }
-                            else if (Mathf.Sign(Body.velocity.y) == -1)
-                            {
-                                isPullBall = false;
-                                StatusCurr = CharacterState.jumb3;
+                                else if (Mathf.Sign(Body.velocity.y) == -1)
+                                {
+                                    isPullBall = false;
+                                    StatusCurr = CharacterState.jumb3;
+                                }
                             }
                         }
+
+
+
+
                     }
-                   
-
-
-
                 }
+
             }
 
-
-
         
-        }
 
-       
-        
-       
+
+
+
+
 
     }
     private void LateUpdate()
@@ -315,29 +338,25 @@ public class Player : Character
     public void Active_Key(string key)
     {
         Collison_Body[key] = 1;
-        ActiveAction();
-
+        
     }
     public void Reset_Key(string key)
     {
         Collison_Body[key] = 0;
     }
 
-    public void ActiveAction()
-    {
-      
-    }
+    
   
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.layer == 16)
         {
-
+            float vecBall = Ball.VelocityBall;
             Vector3 bounceDir = (other.gameObject.transform.position - gameObject.transform.position);
             Vector3 shootForce;
             bounceDir.Normalize();
-            shootForce = Vector3.Scale(bounceDir, new Vector3(0.3f, 0.3f, 0.3f))*Bounch * (1+high);
-            other.gameObject.GetComponent<Rigidbody2D>().AddForce(shootForce, ForceMode2D.Impulse);
+            shootForce = Vector3.Scale(bounceDir, new Vector3(vecBall, vecBall,vecBall));
+         
 
 
 
@@ -405,7 +424,30 @@ public class Player : Character
         StatusCurr = CharacterState.stun;
         isStun = true;
         Body.velocity = Vector3.zero;
+       
+        Force_Back();
+      
 
+
+    }
+   
+    public override void Force_Back()
+    {
+        Debug.Log("ForceBack");
+        Body.velocity = Vector3.zero;
+        //Body.AddForce(Vector2.right * force_Back, ForceMode2D.Force);
+        if (isBall)
+        {
+            var Ball = CtrlGamePlay.Ins.Ball;
+
+            isBall = false;
+
+            Ball.transform.transform.parent = null;
+            Ball.GetComponent<CircleCollider2D>().isTrigger = false;
+            Ball.Body.isKinematic = false;
+            Ball.Body.simulated = true;
+            Ball.Body.AddForce(Vector2.up * -10, ForceMode2D.Force);
+        }
 
     }
 
@@ -418,12 +460,12 @@ public class Player : Character
     }
 
 
-
+    #region KeyAction
     public void Init()
     {
 
         // Action Game
-        ActionGame lc_SlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk,UnActionSlampDunk, 100);
+        ActionGame lc_SlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk,UnActionSlampDunk, 10);
         ActionGame lc_Stun = new ActionGame(OnTriggerStun, OnTriggerStun, OnEndTriggerStun, 2);
 
         // AddToDirectoryGame
@@ -575,25 +617,45 @@ public class Player : Character
                 BoxHurt.gameObject.SetActive(true);
                 canHurt = true;
             }
-           
+
+        }
+        var evenName1 = e.Data.Name;
+        if (trackEntry.Animation.Name == "throw_on_earth")
+        {
+            Debug.Log("ThrowBall_1");
+            if (evenName1 == "atk")
+            {
+                Debug.Log("ThrowBall");
+                CtrlGamePlay.Ins.Launch(UnityEngine.Random.Range(2, 4), TargetHoop);
+            }
         }
 
-      
-
     }
+    public void OnEnd(TrackEntry trackEntry)
+    {
+        if (trackEntry.Animation.Name == "swing")
+        {
+            isAttack = false;
+        }
 
-
+        if (trackEntry.Animation.Name == "throw_on_earth")
+        {
+            isAttack = false;
+        }
+    }
+    #endregion KeyAction
     #region Event
 
     public void Event_Reset()
     {
+        Body.velocity = Vector3.zero;
         OnAction = null;
         Body.simulated = true;
         StatusCurr = CharacterState.idle;
         Body.constraints = RigidbodyConstraints2D.None;
         Body.constraints = RigidbodyConstraints2D.FreezeRotation;
-        
-        Body.velocity = Vector3.zero;
+        ArrayAction = new Action[0];
+      
 
     }
   

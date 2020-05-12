@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BoardGame { Player,CPU }
 public class CheckInBall : MonoBehaviour
 {
-
-
+   
+    public BoardGame BoardOf;
     // Start is called before the first frame update
     public Dictionary<string, int> Global = new Dictionary<string, int>();
 
@@ -73,7 +74,16 @@ public class CheckInBall : MonoBehaviour
 
                 if ((Global[Key_Baset_1] + Global[Key_Baset_2]) == 2)
                 {
-                  //  CtrlGamePlay.Ins.Global();
+                    switch (BoardOf)
+                    {
+                        case BoardGame.Player:
+                            CtrlGamePlay.Ins.GlobalPlayer();
+                            break;
+                        case BoardGame.CPU:
+                            CtrlGamePlay.Ins.GlobalCPU();
+                            break;
+                    }
+                    
                     isGlobal = true;
                 }
 
