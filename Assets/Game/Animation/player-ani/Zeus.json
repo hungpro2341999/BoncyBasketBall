@@ -1,6 +1,6 @@
 {
 "skeleton": {
-	"hash": "Lz1A7qJ7LniZPTW9+Pg89wG8Ggw",
+	"hash": "mGnPu+db0vY0uY+PForBJm+UW7U",
 	"spine": "3.8.95",
 	"x": -100.99,
 	"y": -37.95,
@@ -47,7 +47,8 @@
 	}
 ],
 "events": {
-	"atk": {}
+	"atk": {},
+	"move": {}
 },
 "animations": {
 	"idle": {
@@ -521,7 +522,7 @@
 			{ "time": 0.1, "name": "atk" }
 		]
 	},
-	"throw_on_earth": {
+	"throw1": {
 		"bones": {
 			"chan/1": {
 				"rotate": [
@@ -587,15 +588,12 @@
 					{}
 				],
 				"translate": [
-					{ "curve": "stepped" },
-					{ "time": 0.1667 },
-					{ "time": 0.2667, "y": 58.63, "curve": "stepped" },
-					{ "time": 0.3333, "y": 58.63 },
-					{ "time": 0.4333 }
+					{}
 				]
 			}
 		},
 		"events": [
+			{ "time": 0.1667, "name": "move" },
 			{ "time": 0.2667, "name": "atk" }
 		]
 	}

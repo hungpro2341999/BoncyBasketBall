@@ -8,6 +8,7 @@ public enum Ground { Ground_1, Ground_2 };
 public enum CharacterState
 {
     None,
+    throw1,
     idle,
     jumb1,
     jumb2,
@@ -18,7 +19,8 @@ public enum CharacterState
     stun,
     test,
     swing,
-    throw_on_earth
+    
+  
 
 }
 public abstract class Character : MonoBehaviour
@@ -34,26 +36,37 @@ public abstract class Character : MonoBehaviour
     public Ground GroundCurr;
     public LayerMask LayerGround;
     public Rigidbody2D Body;
-    public float speed;
-    public bool isGround;
-    public float High;
+  
     public Vector2 Velocity;
     public float Force;
+    public float ForceJumpOnGround;
     public float Bounch;
     public float high;
     public float HighWithGround;
     public bool isStartJump = false;
     public bool isBall;
-    public float timeStartJump;
+    public bool isGround;
+    public bool isJumpGround = false;
+    public bool isActiveHand = false;
+    public bool isMoveRight;
+    public bool isMoveLeft;
   
-    protected float m_timeStartJump;
-    protected float timejump;
     public bool isPullBall = false;
-    public bool isAttack;
+  
     public bool canHurt = false;
     public bool isStun = false;
-
+    public float timeStartJump;
     public Transform BoxHurt;
+    protected float m_timeStartJump;
+    protected float timejump;
+    public float speed;
+
+    public float High;
+
+    [Header("ThrowBall")]
+
+    public float PercentageThrowBall;
+    public float PercentageDistance;
     // Start is called before the first frame update
     public virtual void  Start()
     {
@@ -173,17 +186,18 @@ public abstract class Character : MonoBehaviour
         if(animName == "swing" )
         {
             canHurt = false;
-            isAttack = false;
+            isActiveHand = false;
           
         }
-        if(animName == "throw_on_earth")
+
+        if (animName == "throw1")
         {
-            StatusCurr = CharacterState.idle;
-            isAttack = false;
+            isJumpGround = false;
+            
+
         }
 
 
-      
 
 
 
@@ -198,46 +212,35 @@ public abstract class Character : MonoBehaviour
 
     public void OnInterrupt(Spine.TrackEntry trackEntry)
     {
+        
         var animName = trackEntry.Animation.Name;
         if (animName == "swing")
         {
-            isAttack = false;
+            isActiveHand = false;
+            BoxHurt.gameObject.SetActive(false);
+            canHurt = false;
         }
-        //var animName = trackEntry.Animation.Name;
-        //if (animName == "swing")
-        //{
-        //    isAttack = false;
-        //    BoxHurt.gameObject.SetActive(false);
-        //    canHurt = false;
-        //}
 
-        //if (animName == "throw_on_earth")
-        //{
-        //    isAttack = false;
-
-        //}
+        if (animName == "throw1")
+        {
+            isJumpGround = false;
+        }
     }
 
     public void OnDispose(Spine.TrackEntry trackEntry)
     {
+       
         var animName = trackEntry.Animation.Name;
         if (animName == "swing")
         {
-            isAttack = false;
+            isActiveHand = false;
+            BoxHurt.gameObject.SetActive(false);
+            canHurt = false;
         }
-
-        //var animName = trackEntry.Animation.Name;
-        //if (animName == "swing")
-        //{
-
-        //    BoxHurt.gameObject.SetActive(false);
-        //    canHurt = false;
-        //}
-        //if (animName == "throw_on_earth")
-        //{
-        //    isAttack = false;
-
-        //}
+        if (animName == "throw1")
+        {
+            isJumpGround = false;
+        }
     }
     public void OnEndAnimation(Spine.TrackEntry trackEntry)
     {

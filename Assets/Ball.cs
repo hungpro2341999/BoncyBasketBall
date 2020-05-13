@@ -301,6 +301,7 @@ public class Ball : Character
 
     public void Event_Reset()
     {
+        GetComponent<CircleCollider2D>().isTrigger = false;
         Body.isKinematic = false;
         Body.simulated = true;
         Body.velocity = Vector3.zero;

@@ -10,14 +10,14 @@ public enum StatusBall {DirectToGround,DirectNotToGround,DirectToPlayer,DirectTo
 public enum PrecitionBall { Player,AI,Ground,Left,Right,Up,HeadPlayer_1,HeadPlayer_2, HeadPlayer_3};
 public enum StatusAction { };
 
-
+public enum TypeScore {Point_2,Point_3,Clean_Shoot,JumpBall}
 
 public class CtrlGamePlay : MonoBehaviour
 {
    
     public static CtrlGamePlay Ins;
 
-    [Header("STatusGame")]
+    [Header("StatusGame")]
     public bool isPlaying = false;
 
     public Character Player;
@@ -54,26 +54,46 @@ public class CtrlGamePlay : MonoBehaviour
     public Vector3 PosInitCPU;
     public Vector3 PosInitBall;
 
+    [Header("Perb")]
+
+    public Score_Game objScore;
     
+    
+
 
     [Header("Render")]
 
     public Text TextTime;
     public Text TextPlayer;
     public Text TextCPU;
-    public int ScorePlayer = 0;
-    public int ScoreAI = 0;
+   
 
 
     [Header("TimeGame")]
 
     public float timeResetGamePlay;
     public float timeGamePlay;
+    public float timeWaitForPerSecond;
 
+
+    [Header("SCore")]
+    public int ScorePlayer = 0;
+    public int ScoreAI = 0;
+    public Sprite[] ImgScore;
+    public GameObject[] WaitForStart;
+
+    [Header("Anim_Game_Play")]
+   
+    public Animator Anim_Score;
+
+    [Header("Source")]
+
+    public Sprite[] Scoure_Img_Score;
+    
     #region Private Static Variable
 
     public static bool isGlobal = false;
-
+    
 
     #endregion
 
@@ -86,6 +106,7 @@ public class CtrlGamePlay : MonoBehaviour
     [Header("Transform")]
 
     public Transform TransGamePlay;
+    public Transform TransScore;
 
 
     private void Awake()
@@ -100,8 +121,8 @@ public class CtrlGamePlay : MonoBehaviour
         }
 
         PosInitPlayer = GameObject.FindGameObjectWithTag("PosInitPlayer").transform.position;
-        PosInitCPU = GameObject.FindGameObjectWithTag("PosInitCPU").transform.position;
-        PosInitBall = GameObject.FindGameObjectWithTag("PosInitBall").transform.position;
+        PosInitCPU    = GameObject.FindGameObjectWithTag("PosInitCPU").transform.position;
+        PosInitBall   = GameObject.FindGameObjectWithTag("PosInitBall").transform.position;
 
         eventRestGamePlay += ResetGamePlay;
         eventResetGame += RestGame;
@@ -114,7 +135,7 @@ public class CtrlGamePlay : MonoBehaviour
         Physics2D.gravity = Vector3.up * graviry;
         var a = (Player)Player;
         a.isInputMove = true;
-        eventResetGame();
+    //    eventResetGame();
 
 
      
@@ -134,7 +155,7 @@ public class CtrlGamePlay : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            ResetGamePlay();
+            StartCoroutine(IE_WaitForGameStart());
         }
            
 
@@ -161,12 +182,32 @@ public class CtrlGamePlay : MonoBehaviour
      
     }
 
+    public void CpuThrowBall()
+    {
+        var CPU = (AI)AI;
+
+        float PercentageX =  CPU.TargetHoop.x + Random.Range(-CPU.PercentageThrowBall,CPU.PercentageThrowBall)*CPU.PercentageDistance;
+        float PercentageY = CPU.TargetHoop.y + Random.Range(0, CPU.PercentageThrowBall) * CPU.PercentageDistance;
+        float yJump = Mathf.Abs(transform.position.y - Ball.transform.position.y);
+        yJump += Random.Range(2, 4);
+        Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
+    }
+    public void PlayerThrowBall()
+    {
+        var player = (Player)Player;
+
+        float PercentageX = player.TargetHoop.x + Random.Range(-player.PercentageThrowBall, player.PercentageThrowBall) * player.PercentageDistance;
+        float PercentageY = player.TargetHoop.y + Random.Range(0, player.PercentageThrowBall) * player.PercentageDistance;
+        float yJump = Mathf.Abs(transform.position.y - Ball.transform.position.y);
+        yJump += Random.Range(2, 4);
+        Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
+    }
     public void Launch(float height,Vector3 Target)
     {
        
         var a = (Player)Player;
         var b = (AI)AI;
-
+       
         a.isBall = false;
         b.isBall = false;
         Ball.transform.transform.parent = null;
@@ -274,8 +315,62 @@ public class CtrlGamePlay : MonoBehaviour
         RenderScore();
     }
 
+    public void SetScore(TypeScore score)
+    {
+        var a = Instantiate(objScore, TransScore);
+        switch (score)
+        {
+            case TypeScore.Point_2:
+                a.ChangeImg(Scoure_Img_Score[0]);
+                break;
+            case TypeScore.Point_3:
+                a.ChangeImg(Scoure_Img_Score[1]);
+                break;
+            case TypeScore.Clean_Shoot:
+                a.ChangeImg(Scoure_Img_Score[2]);
+                break;
+            case TypeScore.JumpBall:
+                a.ChangeImg(Scoure_Img_Score[3]);
+                break;
+        }
+        
+    }
+
+    IEnumerator IE_WaitForGameStart()
+    {
+        for (int i = 0; i < WaitForStart.Length; i++)
+        {
+            WaitForStart[i].gameObject.SetActive(false);
+        }
+        yield return new WaitForSeconds(0);
+
+        for (int i = 0; i < WaitForStart.Length; i++)
+        {
+
+            yield return new WaitForSeconds(timeWaitForPerSecond);
+            WaitForStart[i].gameObject.SetActive(true);
+        }
+    }
+    
 
     #endregion
+
+    #region Animation
+
+    public void OpenAnimScore()
+    {
+
+        Anim_Score.SetBool("Open",true);
+
+    }
+    public void EndAnimScore()
+    {
+        Anim_Score.SetBool("Open", false);
+    }
+
+
+    #endregion
+
 
     #region Method Priate
 
@@ -285,6 +380,8 @@ public class CtrlGamePlay : MonoBehaviour
         TextCPU.text = ScoreAI.ToString();
 
     }
+
+ 
 
 
     #endregion

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Zeus_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: f504c3632411b984a9cba126491582ac, type: 2}
+  - {fileID: 11400000, guid: 41d675e05c24e7a40a1572fae090b7e4, type: 2}
   scale: 0.01
-  skeletonJSON: {fileID: 4900000, guid: 337e109cd530efb4faf498dcdecce8be, type: 3}
+  skeletonJSON: {fileID: 4900000, guid: e3100789f2da7cf4c88a4601fadaa34c, type: 3}
   skeletonDataModifiers: []
   fromAnimation: []
   toAnimation: []

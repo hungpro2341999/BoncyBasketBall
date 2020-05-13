@@ -32,13 +32,13 @@
 // Status = 1+2+3
 
 0. 000 = MoveToHoop
-1. 001 = OnActionJump
+1. 001 = OnThrownOnGround
 2. 010 = OnActionJump
-3. 011 = OnActionJump
+3. 011 = OnThrownOnGround
 4. 100 = OnActionJump
-5. 101 = OnActionJump
+5. 101 = OnThrownOnGround
 6. 110 = MoveToHoop
-7. 111 = OnActionJump
+7. 111 = OnThrownOnGround
 
 --Staus--
 

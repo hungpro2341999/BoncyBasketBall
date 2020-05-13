@@ -16,10 +16,24 @@ public class CheckInBall : MonoBehaviour
 
     public bool isCanGlobal = false;
     public bool isGlobal = false;
+    public Transform Hool;
+    public Transform TargetHool;
 
     private void Update()
     {
-       
+        if(BoardOf == BoardGame.Player)
+        {
+            Vector2 rotation = TargetHool.position - Hool.position;
+            float angle = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
+            Hool.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        }
+        else
+        {
+            Vector2 rotation =   Hool.position- TargetHool.position;
+            float angle = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
+            Hool.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
 
 
     }
@@ -83,7 +97,7 @@ public class CheckInBall : MonoBehaviour
                             CtrlGamePlay.Ins.GlobalCPU();
                             break;
                     }
-                    
+
                     isGlobal = true;
                 }
 

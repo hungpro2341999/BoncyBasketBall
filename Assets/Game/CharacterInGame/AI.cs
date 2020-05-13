@@ -32,12 +32,14 @@ public class AI : Character
 
     public float ForceHead;
     public float SpeedShoe;
+  
 
     #endregion
 
+  
+    
 
-    public bool isMoveRight;
-    public bool isMoveLeft;
+
     public bool isJump;
     public bool isJump_x2;
     public bool isThrowBall;
@@ -53,6 +55,7 @@ public class AI : Character
     public float delayAI;
 
     public float xTargetHoop;
+    public float yTargetHoop;
     [Header("STATUS")]
     // Status
 
@@ -97,7 +100,7 @@ public class AI : Character
     [Header("CPU")]
     // Key Action
 
-
+    public const string Key_Thown_On_Ground = "OnThrownOnGround";
     public const string Key_Jump_Right = "OnJumpRight";
     public const string Key_Jump_Left = "OnJumpleft";
     public const string Key_Jump_Straight = "OnActionJump";
@@ -113,10 +116,14 @@ public class AI : Character
     public const string Key_Slamp_Dunk = "SlampDunk";
     public const string Key_Stun = "Key_Stun";
 
+
+
     // Action Trigger
     public const string Key_Action_Trigger_Attack = "Action_Attack";
 
     public const string Key_Action_Trigger_CatchBall = "Action_Catch_Ball";
+
+   
 
 
 
@@ -253,6 +260,7 @@ public class AI : Character
 
         TargetHoop = GameObject.FindGameObjectWithTag("TargetCPU").transform.position;
         xTargetHoop = GameObject.FindGameObjectWithTag("TargetHoop").transform.position.x;
+        yTargetHoop = GameObject.FindGameObjectWithTag("TargetHoop").transform.position.x;
         base.Start();
 
 
@@ -393,31 +401,34 @@ public class AI : Character
 
         if (isMoveLeft)
         {
-           
-
             Velocity = speed * Vector2.left;
         }
+
+
         if (isGround)
         {
-
-            if (isJump)
+            if (!isJumpGround)
             {
-
-                m_timeStartJump = timeStartJump;
-                if (isBall)
+                if (isJump)
                 {
-                    isPullBall = true;
+
+                    m_timeStartJump = timeStartJump;
+                    if (isBall)
+                    {
+                        isPullBall = true;
+                    }
+                    isJump = false;
+
+                    isGround = false;
+                    isStartJump = true;
+
+
+
+                    Body.velocity = new Vector2(Body.velocity.x, Force);
+
                 }
-                isJump = false;
-
-                isGround = false;
-                isStartJump = true;
-
-
-
-                Body.velocity = new Vector2(Body.velocity.x, Force);
-                
             }
+           
         }
 
 
@@ -430,20 +441,20 @@ public class AI : Character
 
         if (isGround)
         {
-            if (!isAttack)
+            if (!isJumpGround && !isActiveHand)
             {
             //    Debug.Log(Body.velocity.x);
-                if (Body.velocity.x == 0)
+                if (!isMoveLeft && !isMoveRight)
                 {
                     StatusCurr = CharacterState.idle;
                 }
-                else if (Mathf.Sign(Body.velocity.x) == 1)
-                {
-                    StatusCurr = CharacterState.move1;
-                }
-                else if (Mathf.Sign(Body.velocity.x) == -1)
+                else if (isMoveLeft && !isMoveRight)
                 {
                     StatusCurr = CharacterState.move2;
+                }
+                else if (!isMoveLeft && isMoveRight)
+                {
+                    StatusCurr = CharacterState.move1;
                    
                 }
             }
@@ -453,40 +464,43 @@ public class AI : Character
         }
         else
         {
-           
-                    // BoxCatchBall.gameObject.SetActive(false);
-                    if (m_timeStartJump >=0)
+            if (!isJumpGround)
+            {
+                // BoxCatchBall.gameObject.SetActive(false);
+                if (m_timeStartJump >= 0)
+                {
+                    StatusCurr = CharacterState.jumb1;
+                    m_timeStartJump -= Time.deltaTime;
+
+                }
+                else
+                {
+                    // TriggerBallForward.gameObject.SetActive(false);
+                    if (Mathf.Sign(Body.velocity.y) == 1 || Mathf.Sign(Body.velocity.y) == 0)
                     {
-                      StatusCurr = CharacterState.jumb1;
-                      m_timeStartJump -= Time.deltaTime;
+                        StatusCurr = CharacterState.jumb2;
 
                     }
-                    else
+                    else if (Mathf.Sign(Body.velocity.y) == -1)
                     {
-                        // TriggerBallForward.gameObject.SetActive(false);
-                        if (Mathf.Sign(Body.velocity.y) == 1 || Mathf.Sign(Body.velocity.y) == 0)
+                        if (isPullBall)
                         {
-                            StatusCurr = CharacterState.jumb2;
-
-                        }
-                        else if (Mathf.Sign(Body.velocity.y) == -1)
-                        {
-                            if (isPullBall)
+                            if (isBall)
                             {
-                                if (isBall)
-                                {
-                                    isBall = false;
-                                    CtrlGamePlay.Ins.Launch(Random.Range(2, 3), TargetHoop);
-                                    isPullBall = false;
-
-                                }
+                                isBall = false;
+                                CtrlGamePlay.Ins.CpuThrowBall();
+                                isPullBall = false;
 
                             }
-                            StatusCurr = CharacterState.jumb3;
 
                         }
+                        StatusCurr = CharacterState.jumb3;
 
                     }
+
+                }
+            }
+                  
         }
      
 
@@ -813,6 +827,8 @@ public class AI : Character
         isJump = false;
     }
 
+    
+
 
     public void OnStun()
     {
@@ -829,7 +845,9 @@ public class AI : Character
 
     public void OnTriggerStun()
     {
+        Velocity = Vector3.zero;
         Force_Back();
+       
     }
 
     public void OnEndTriggerStun()
@@ -842,33 +860,53 @@ public class AI : Character
     
     public void OnAttack()
     {
-        if (isGround )
+      
+        if (isGround)
         {
-            if (delay <= 0)
+            if (!isJumpGround)
             {
-                delay = 0.4f;
-                Debug.Log("Attack");
-                StatusCurr = CharacterState.swing;
-                isAttack = true;
+                if (delay <= 0)
+                {
+                    delay = 0.4f;
+                    Debug.Log("Attack");
+                    StatusCurr = CharacterState.swing;
+                    isActiveHand = true;
+                }
+                else
+                {
+                    delay -= Time.deltaTime;
+
+                }
+
             }
-            else
-            {
-                delay -= Time.deltaTime;
-               
-            }
-           
+
         }
 
     }
+    public void OnStartThrowOnEarth()
+    {
+        isJumpGround = true;
+        StatusCurr = CharacterState.throw1;
+    }
 
+    public void OnUpdateThrowOnEarth()
+    {
+        isMoveLeft = false;
+        isMoveRight = false;
+    }
 
+    public void OnEndThrowOnEarth()
+    {
+        isMoveLeft = false;
+        isMoveRight = true;
+    }
 
 
 
     public override void Force_Back()
     {
-        
-       // Body.AddForce(Vector3.left* ForceBack, ForceMode2D.Force);
+        Body.velocity = Vector3.zero;
+     
         if (isBall)
         {
             var Ball = CtrlGamePlay.Ins.Ball;
@@ -894,18 +932,16 @@ public class AI : Character
             if (delay <= 0)
             {
 
-
                 delay = 0.5f;
-                isAttack = true;
-                    Debug.Log("Catch Ball");
-                    // StatusCurr = CharacterState.swing;
-
+                isActiveHand = true;
+                StatusCurr = CharacterState.swing;
+                   
                 
             }
             else
             {
-               
-                change = false;
+
+                delay -= Time.deltaTime;
                
             }
            
@@ -919,11 +955,16 @@ public class AI : Character
 
         if (delay <= 0)
         {
-            delay = 0.5f;
+            delay = 0.6f;
             if (isGround)
             {
-                isAttack = true;
-                Debug.Log("attackPlayer");
+                if (!isJumpGround)
+                {
+                    StatusCurr = CharacterState.swing;
+                    isActiveHand = true;
+                    Debug.Log("attackPlayer");
+                }
+               
             }
         }
         else
@@ -936,12 +977,15 @@ public class AI : Character
     public void OnStartActionAttack()
     {
         delay = 0;
-        isAttack = true;
+       
+       
+       
+      
     }
     public void OnStartActionCatchBall()
     {
-        delay = 0;
-           isAttack = false;
+          
+        
     }
 
 
@@ -1027,7 +1071,7 @@ public class AI : Character
         ActionGame lc_OnAttack = new ActionGame(OnStartActionAttack, OnActtionTriggerAttack, null);
         ActionGame lc_OnCatchBall = new ActionGame(OnStartActionCatchBall, OnActtionTriggerCatchBall, null);
 
-      
+        ActionGame lc_OnThrowOnGround = new ActionGame(OnStartThrowOnEarth,OnUpdateThrowOnEarth,OnEndThrowOnEarth,0.5f);
 
 
         // Update To Directory
@@ -1042,7 +1086,7 @@ public class AI : Character
         Directory_OnActionGame.Add(Key_Stun, lc_OnStun);
         Directory_OnActionGame.Add(Key_Move_To_Player, lc_OnActionMoveToPlayer);
 
-
+     
 
 
         //  Action
@@ -1050,7 +1094,8 @@ public class AI : Character
         Directory_OnActionGame.Add(Key_Jump_Straight, lc_OnJump);
         Directory_OnActionGame.Add(Key_Jump_Left, lc_OnJump_left);
         Directory_OnActionGame.Add(Key_Jump_Right, lc_OnJump_right);
-
+        Directory_OnActionGame.Add(Key_Thown_On_Ground, lc_OnThrowOnGround);
+       
         // Action EFF
 
         Directory_OnActionGame.Add(Key_Slamp_Dunk, lc_OnSlampDunk);
@@ -1798,12 +1843,26 @@ public class AI : Character
             }
 
         }
-        var evenName1 = e.Data.Name;
-        if(evenName1 == "at")
+
+        if (trackEntry.Animation.Name == "throw1")
         {
+            var evenName1 = e.Data.Name;
 
+            if (evenName1 == "move")
+            {
+                Body.velocity = new Vector2(Body.velocity.x, ForceJumpOnGround);
+            }
+
+            if (evenName1 == "atk")
+            {
+                if (isBall)
+                {
+                    CtrlGamePlay.Ins.CpuThrowBall();
+                }
+                Debug.Log("ThrowBall");
+
+            }
         }
-
 
 
     }
@@ -1811,8 +1870,13 @@ public class AI : Character
     {
         if (trackEntry.Animation.Name == "swing")
         {
-            Debug.Log("Swing Complete");
-            isAttack = false;
+           
+            isActiveHand = false;
+        }
+        if (trackEntry.Animation.Name == "throw1")
+        {
+            isJumpGround = false; 
+           
         }
     }
 
