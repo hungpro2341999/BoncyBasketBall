@@ -41,10 +41,10 @@ namespace Spine.Unity.Examples {
 		public string baseSkinName = "base";
 		public Material sourceMaterial; // This will be used as the basis for shader and material property settings.
 
-		[Header("Visor")]
-		public Sprite visorSprite;
-		[SpineSlot] public string visorSlot;
-		[SpineAttachment(slotField:"visorSlot", skinField:"baseSkinName")] public string visorKey = "goggles";
+		[Header("Head")]
+		public Sprite HeadSprite;
+		[SpineSlot] public string HeadSlot;
+		[SpineAttachment(slotField:"Head", skinField:"Head")] public string HeadKey = "KeyHead";
 
 		[Header("Gun")]
 		public Sprite gunSprite;
@@ -59,8 +59,14 @@ namespace Spine.Unity.Examples {
 		public Material runtimeMaterial;
 		#endregion
 
+
+
 		Skin customSkin;
 
+		private void OnEnable()
+		{
+			
+		}
 		void OnValidate () {
 			if (sourceMaterial == null) {
 				var skeletonGraphic = GetComponent<SkeletonGraphic>();
@@ -68,9 +74,13 @@ namespace Spine.Unity.Examples {
 					sourceMaterial = skeletonGraphic.SkeletonDataAsset.atlasAssets[0].PrimaryMaterial;
 			}
 		}
-
-		IEnumerator Start () {
-			yield return new WaitForSeconds(1f); // Delay for 1 second. For testing.
+		void Start()
+		{
+		StartCoroutine(StartSkin());
+		
+		}
+		IEnumerator StartSkin () {
+			yield return new WaitForSeconds(0.5f); // Delay for 1 second. For testing.
 			Apply();
 		}
 
@@ -93,10 +103,10 @@ namespace Spine.Unity.Examples {
 			// Step 1.4 Add the remapped clone to the new custom skin.
 
 			// Let's do this for the visor.
-			int visorSlotIndex = skeleton.FindSlotIndex(visorSlot); // You can access GetAttachment and SetAttachment via string, but caching the slotIndex is faster.
-			Attachment baseAttachment = baseSkin.GetAttachment(visorSlotIndex, visorKey); // STEP 1.1
-			Attachment newAttachment = baseAttachment.GetRemappedClone(visorSprite, sourceMaterial); // STEP 1.2 - 1.3
-			customSkin.SetAttachment(visorSlotIndex, visorKey, newAttachment); // STEP 1.4
+			int visorSlotIndex = skeleton.FindSlotIndex(HeadSlot); // You can access GetAttachment and SetAttachment via string, but caching the slotIndex is faster.
+			Attachment baseAttachment = baseSkin.GetAttachment(visorSlotIndex, HeadKey); // STEP 1.1
+			Attachment newAttachment = baseAttachment.GetRemappedClone(HeadSprite, sourceMaterial); // STEP 1.2 - 1.3
+			customSkin.SetAttachment(visorSlotIndex, HeadKey, newAttachment); // STEP 1.4
 
 			// And now for the gun.
 			int gunSlotIndex = skeleton.FindSlotIndex(gunSlot);
@@ -132,5 +142,13 @@ namespace Spine.Unity.Examples {
 
 			Resources.UnloadUnusedAssets();
 		}
+
+		public void Attachment_Head(Sprite Img)
+		{
+			this.HeadSprite = Img;
+			Apply();
+		}
 	}
+
+
 }

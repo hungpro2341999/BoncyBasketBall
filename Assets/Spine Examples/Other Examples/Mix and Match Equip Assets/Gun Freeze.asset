@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Gun Freeze
   m_EditorClassIdentifier: 
   equipType: 1
-  sprite: {fileID: 21300000, guid: 12a8cbeb6076cba4884939dd994a67fd, type: 3}
+  sprite: {fileID: 21300000, guid: 1cf36deff35261b4cabbccdad71c8bf3, type: 3}
   description: A freeze gun. There's nothing you can do.
   yourStats: 234
