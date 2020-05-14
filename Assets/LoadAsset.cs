@@ -42,7 +42,7 @@ public class LoadAsset : Editor
     public void Load_Asset_Head()
     {
         List<Sprite> ImgHead = new List<Sprite>();
-       var a =  GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/char Bouncy Basketball");
+       var a =  GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/Hand");
         for(int i = 0; i < a.Count; i++)
         {
             ImgHead.Add(a[i]);
@@ -52,33 +52,36 @@ public class LoadAsset : Editor
         for(int i = 0; i < ImgHead.Count; i++)
         {
 
+            //InforItem aa = new InforItem();
+            //aa.id = i;
+            //aa.Img = ImgHead[i];
+
+            //Hands.Add(aa);
+
+            string s = ImgHead[i].name;
             InforItem aa = new InforItem();
             aa.id = i;
             aa.Img = ImgHead[i];
+          
 
+            if (s.StartsWith("d"))
+            {
+                aa.type = TypeItem.Default;
+            }
+            else if (s.StartsWith("t"))
+            {
+               
+                aa.type = TypeItem.FullItem;
+
+            }
+            else
+            {
+                aa.type = TypeItem.Item;
+
+            }
             Hands.Add(aa);
-
-            //string s = ImgHead[i].name;
-            //InforItem aa = new InforItem();
-            //aa.Img = ImgHead[i];
-
-            //if (s.StartsWith("0"))
-            //{
-            //    aa.type = TypeItem.Default;
-            //}
-            //else if(s.StartsWith("b")|| s.StartsWith("s"))
-            //{
-            //    aa.type = TypeItem.Item;
-
-            //}
-            //else
-            //{
-
-            //    aa.type = TypeItem.FullItem;
-            //}
-            //Hands.Add(aa);
         }
-         Data.Heads.Heads = Hands;
+         Data.Hands.Heads = Hands;
     }
 
     //public void Load_A

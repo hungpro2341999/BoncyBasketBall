@@ -46,10 +46,15 @@ namespace Spine.Unity.Examples {
 		[SpineSlot] public string HeadSlot;
 		[SpineAttachment(slotField:"Head", skinField:"Head")] public string HeadKey = "KeyHead";
 
-		[Header("Gun")]
-		public Sprite gunSprite;
+		[Header("Hand")]
+		public Sprite handSprite;
 		[SpineSlot] public string gunSlot;
-		[SpineAttachment(slotField:"gunSlot", skinField:"baseSkinName")] public string gunKey = "gun";
+		[SpineAttachment(slotField:"Hand", skinField:"Hand")] public string handKey = "gun";
+
+		[Header("Item")]
+		public Sprite ItemHandSprite;
+		[SpineSlot] public string ItemHandSlot;
+		[SpineAttachment(slotField: "ItemHand", skinField: "ItemHand")] public string ItemHandKey = "ItemHand";
 
 		[Header("Runtime Repack Required!!")]
 		public bool repack = true;
@@ -110,9 +115,15 @@ namespace Spine.Unity.Examples {
 
 			// And now for the gun.
 			int gunSlotIndex = skeleton.FindSlotIndex(gunSlot);
-			Attachment baseGun = baseSkin.GetAttachment(gunSlotIndex, gunKey); // STEP 1.1
-			Attachment newGun = baseGun.GetRemappedClone(gunSprite, sourceMaterial); // STEP 1.2 - 1.3
-			if (newGun != null) customSkin.SetAttachment(gunSlotIndex, gunKey, newGun); // STEP 1.4
+			Attachment baseGun = baseSkin.GetAttachment(gunSlotIndex, handKey); // STEP 1.1
+			Attachment newGun = baseGun.GetRemappedClone(handSprite, sourceMaterial); // STEP 1.2 - 1.3
+			if (newGun != null) customSkin.SetAttachment(gunSlotIndex, handKey, newGun); // STEP 1.4
+																						 // add Item Hand
+			int ItemHandSlotIndex = skeleton.FindSlotIndex(ItemHandSlot);
+			Attachment baseItemHand = baseSkin.GetAttachment(ItemHandSlotIndex, ItemHandKey); // STEP 1.1
+			Attachment newItemHand = baseItemHand.GetRemappedClone(ItemHandSprite, sourceMaterial); // STEP 1.2 - 1.3
+			if (newItemHand != null) customSkin.SetAttachment(ItemHandSlotIndex, ItemHandKey, newItemHand); // STEP 1.4
+
 
 			// customSkin.RemoveAttachment(gunSlotIndex, gunKey); // To remove an item.
 			// customSkin.Clear()
@@ -146,6 +157,12 @@ namespace Spine.Unity.Examples {
 		public void Attachment_Head(Sprite Img)
 		{
 			this.HeadSprite = Img;
+			Apply();
+		}
+
+		public void Attachment_Hand(Sprite Img)
+		{
+			this.handSprite = Img;
 			Apply();
 		}
 	}

@@ -23,6 +23,7 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
 
         [Header("Item")]
         public List<Item> Item_Heads = new List<Item>();
+        public List<Item> Item_Hands = new List<Item>();
 
         private void Awake()
         {
@@ -50,17 +51,26 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
         public void LoadShop()
         {
             // LoadHand
-            var a = CtrlDataGame.Ins.Resource.Heads.Heads;
-            for (int i = 0; i < a.Count; i++)
-            {
-                var Inforitem = a[i];
-                var Item = Instantiate(objItem, trans_Push_Shop_Hand);
-                Item.LoadItem(Inforitem.Img, Inforitem.cost, Inforitem.id);
-                Item_Heads.Add(Item);
+            //var a = CtrlDataGame.Ins.Resource.Heads.Heads;
+            //for (int i = 0; i < a.Count; i++)
+            //{
+            //    var Inforitem = a[i];
+            //    var Item = Instantiate(objItem, trans_Push_Shop_Head);
+            //    Item.LoadItem(Inforitem.Img, Inforitem.cost, Inforitem.id);
+            //    Item_Heads.Add(Item);
 
 
 
-            }
+            //}
+
+        var aa = CtrlDataGame.Ins.Resource.Hands.Heads;
+        for(int i = 0; i < aa.Count; i++)
+        {
+            var Inforitem = aa[i];
+            var Item = Instantiate(objItem, trans_Push_Shop_Hand);
+            Item.LoadItem(Inforitem.Img, Inforitem.cost, Inforitem.id);
+            Item_Hands.Add(Item);
+        }
         }
 
         public void SelectShopHand()

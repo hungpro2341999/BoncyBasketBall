@@ -10,7 +10,7 @@ public class DataGame : ScriptableObject
 {
 
     public Head Heads;
-    
+    public Hand Hands;
  
     // Start is called before the first frame update
     void Start()
@@ -39,11 +39,17 @@ public class Head
    
 
 }
+[System.Serializable]
+public class Hand : Head
+{
+  
+}
 
 
 [System.Serializable]
 public class InforItem
 {
+    public TypeItem type;
     public int id;
     public Sprite Img;
     public int cost;

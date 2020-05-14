@@ -23,6 +23,7 @@ using UnityEngine.EventSystems;
         this.idItem = id;
         this.Img.sprite = sprite;
         this.cost = cost;
+        Img.SetNativeSize();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -33,8 +34,9 @@ using UnityEngine.EventSystems;
 
     public virtual void Click()
     {
-            
-            ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
+
+       // ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
+        ShopCtrl.Ins.TargetGraphic.Attachment_Hand(Img.sprite);
     }
 
     public void Unselect()
