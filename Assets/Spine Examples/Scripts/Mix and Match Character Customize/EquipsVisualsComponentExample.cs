@@ -36,9 +36,9 @@ using Spine.Unity.AttachmentTools;
 namespace Spine.Unity.Examples {
 	public class EquipsVisualsComponentExample : MonoBehaviour {
 		
-		public SkeletonGraphic skeletonAnimation;
+		public SkeletonAnimation skeletonAnimation;
 
-		[SpineSkin]
+		[SpineSkin] 
 		public string templateSkinName;
 
 		Spine.Skin equipsSkin;

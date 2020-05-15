@@ -529,6 +529,7 @@ namespace Spine.Unity.AttachmentTools {
 
 		static Texture2D ToTexture (this Sprite s, TextureFormat textureFormat = SpineTextureFormat,
 			bool mipmaps = UseMipMaps, bool linear = false) {
+			
 
 			var spriteTexture = s.texture;
 			var r = s.textureRect;

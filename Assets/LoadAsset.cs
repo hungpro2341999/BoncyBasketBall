@@ -8,6 +8,9 @@ using UnityEditor;
 public class LoadAsset : Editor
 {
     public DataGame Data;
+
+
+
     public override void OnInspectorGUI()
     {
         Data = (DataGame)target;
@@ -42,48 +45,58 @@ public class LoadAsset : Editor
     public void Load_Asset_Head()
     {
         List<Sprite> ImgHead = new List<Sprite>();
-       var a =  GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/Hand");
-        for(int i = 0; i < a.Count; i++)
+        List<InforItem> Hands = new List<InforItem>();
+        var a = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/Leg");
+        for (int i = 0; i < a.Count; i++)
         {
             ImgHead.Add(a[i]);
             i += 1;
         }
-        List<InforItem> Hands = new List<InforItem>();
-        for(int i = 0; i < ImgHead.Count; i++)
+
+        //for(int i = 0; i < ImgHead.Count; i++)
+        //{
+        //    InforItem aa = new InforItem();
+        //    aa.id = i;
+        //    aa.Img = ImgHead[i];
+        //    Hands.Add(aa);
+
+
+        //}
+
+        for (int i = 0; i < ImgHead.Count; i++)
         {
 
-            //InforItem aa = new InforItem();
-            //aa.id = i;
-            //aa.Img = ImgHead[i];
-
-            //Hands.Add(aa);
-
-            string s = ImgHead[i].name;
             InforItem aa = new InforItem();
             aa.id = i;
             aa.Img = ImgHead[i];
-          
 
-            if (s.StartsWith("d"))
+
+            var s = aa.Img.name;
+
+
+
+            if (s.StartsWith("0"))
             {
                 aa.type = TypeItem.Default;
             }
-            else if (s.StartsWith("t"))
+            else if (s.StartsWith("b") || s.StartsWith("s"))
             {
-               
-                aa.type = TypeItem.FullItem;
+
+                aa.type = TypeItem.Item;
 
             }
             else
             {
-                aa.type = TypeItem.Item;
+                aa.type = TypeItem.FullItem;
+                
 
             }
             Hands.Add(aa);
+           
         }
-         Data.Hands.Heads = Hands;
+        Data.Leg.Heads = Hands;
     }
 
-    //public void Load_A
+   
 
 }

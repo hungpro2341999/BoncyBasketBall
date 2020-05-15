@@ -59,7 +59,7 @@ namespace Spine.Unity.Examples {
 		}
 
 		public enum EquipType {
-			Head,Leg,Hand
+			Head,Leg,Hand,ItemLeg,ItemHand
 			
 		}
 

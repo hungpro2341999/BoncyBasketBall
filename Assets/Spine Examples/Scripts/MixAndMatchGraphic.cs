@@ -51,10 +51,20 @@ namespace Spine.Unity.Examples {
 		[SpineSlot] public string gunSlot;
 		[SpineAttachment(slotField:"Hand", skinField:"Hand")] public string handKey = "gun";
 
-		[Header("Item")]
+		[Header("HandItem")]
 		public Sprite ItemHandSprite;
 		[SpineSlot] public string ItemHandSlot;
 		[SpineAttachment(slotField: "ItemHand", skinField: "ItemHand")] public string ItemHandKey = "ItemHand";
+
+		[Header("Item_Leg")]
+		public Sprite ItemLegSprite;
+		[SpineSlot] public string ItemLegSlot;
+		[SpineAttachment(slotField: "ItemLeg", skinField: "ItemLeg")] public string ItemLegKey = "ItemLeg";
+
+		[Header("Leg")]
+		public Sprite LegSprite;
+		[SpineSlot] public string LegSlot;
+		[SpineAttachment(slotField: "Leg", skinField: "Leg")] public string LegKey = "Leg";
 
 		[Header("Runtime Repack Required!!")]
 		public bool repack = true;
@@ -90,7 +100,7 @@ namespace Spine.Unity.Examples {
 		}
 
 		[ContextMenu("Apply")]
-		void Apply () {
+		public void Apply () {
 			var skeletonGraphic = GetComponent<SkeletonGraphic>();
 			var skeleton = skeletonGraphic.Skeleton;
 
@@ -123,6 +133,21 @@ namespace Spine.Unity.Examples {
 			Attachment baseItemHand = baseSkin.GetAttachment(ItemHandSlotIndex, ItemHandKey); // STEP 1.1
 			Attachment newItemHand = baseItemHand.GetRemappedClone(ItemHandSprite, sourceMaterial); // STEP 1.2 - 1.3
 			if (newItemHand != null) customSkin.SetAttachment(ItemHandSlotIndex, ItemHandKey, newItemHand); // STEP 1.4
+
+			// add Item leg
+			int ItemLegSlotIndex = skeleton.FindSlotIndex(ItemLegSlot);
+			Attachment baseItemLeg = baseSkin.GetAttachment(ItemLegSlotIndex, ItemLegKey); // STEP 1.1
+			Attachment newItemLeg = baseItemLeg.GetRemappedClone(ItemLegSprite, sourceMaterial); // STEP 1.2 - 1.3
+			if (newItemLeg != null) customSkin.SetAttachment(ItemLegSlotIndex, ItemLegKey, newItemLeg); // STEP 1.4
+
+			// add Leg
+
+			int LegSlotIndex = skeleton.FindSlotIndex(LegSlot);
+			Attachment baseLeg = baseSkin.GetAttachment(LegSlotIndex, LegKey); // STEP 1.1
+			Attachment newLeg = baseLeg.GetRemappedClone(LegSprite, sourceMaterial); // STEP 1.2 - 1.3
+			if (newLeg != null) customSkin.SetAttachment(LegSlotIndex, LegKey, newLeg); // STEP 1.4
+
+
 
 
 			// customSkin.RemoveAttachment(gunSlotIndex, gunKey); // To remove an item.
@@ -157,14 +182,28 @@ namespace Spine.Unity.Examples {
 		public void Attachment_Head(Sprite Img)
 		{
 			this.HeadSprite = Img;
-			Apply();
+			
 		}
 
 		public void Attachment_Hand(Sprite Img)
 		{
 			this.handSprite = Img;
-			Apply();
+		 
 		}
+		public void Attachment_Item_Hand(Sprite Img)
+		{
+			this.ItemHandSprite = Img;
+		}
+
+		public void Attachment_Item_Leg(Sprite Img)
+		{
+			this.ItemLegSprite = Img;
+		}
+		public void Attachment_Leg(Sprite Img)
+		{
+			this.LegSprite = Img;
+		}
+
 	}
 
 
