@@ -35,11 +35,21 @@ using UnityEngine.UI;
 
 namespace Spine.Unity.Examples {
 	public class EquipButtonExample : MonoBehaviour {
-		public EquipAssetExample asset;
-		public EquipSystemExample equipSystem;
+		public EquipAssetExample Hand;
+        public EquipAssetExample ItemHand;
+        public EquipAssetExample Head;
+        public EquipAssetExample Leg;
+        public EquipAssetExample ItemLeg;
+
+        public EquipSystemExample equipSystem;
 		public Image inventoryImage;
 
-		void OnValidate () {
+
+        private void Update()
+        {
+          
+        }
+        void OnValidate () {
 			MatchImage();
 		}
 
@@ -50,10 +60,17 @@ namespace Spine.Unity.Examples {
 		void Start () {
 			MatchImage();
 
-			var button = GetComponent<Button>();
-			button.onClick.AddListener(
-				delegate { equipSystem.Equip(asset); }
-			);
+			
 		}
+
+        public void EquipCharacter()
+        {
+            equipSystem.Equip(Hand);
+            equipSystem.Equip(ItemHand);
+            equipSystem.Equip(Leg);
+            equipSystem.Equip(ItemLeg);
+            equipSystem.Equip(Head);
+        }
+
 	}
 }

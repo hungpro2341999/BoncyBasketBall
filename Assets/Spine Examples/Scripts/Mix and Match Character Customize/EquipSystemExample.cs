@@ -57,6 +57,11 @@ namespace Spine.Unity.Examples {
 			[SpineAttachment(skinField:"templateSkin")]
 			public string templateAttachment;
 		}
+		public void RemoveItemHand()
+		{
+			
+		}
+
 
 		public enum EquipType {
 			Head,Leg,Hand,ItemLeg,ItemHand
@@ -70,7 +75,9 @@ namespace Spine.Unity.Examples {
 			var skeletonData = skeletonDataAsset.GetSkeletonData(true);
 			int slotIndex = skeletonData.FindSlotIndex(howToEquip.slot);
 			var attachment = GenerateAttachmentFromEquipAsset(asset, slotIndex, howToEquip.templateSkin, howToEquip.templateAttachment);
+
 			target.Equip(slotIndex, howToEquip.templateAttachment, attachment);
+
 		}
 
 		Attachment GenerateAttachmentFromEquipAsset (EquipAssetExample asset, int slotIndex, string templateSkinName, string templateAttachmentName) {

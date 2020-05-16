@@ -132,8 +132,12 @@ namespace Spine.Unity.Examples {
 			int ItemHandSlotIndex = skeleton.FindSlotIndex(ItemHandSlot);
 			Attachment baseItemHand = baseSkin.GetAttachment(ItemHandSlotIndex, ItemHandKey); // STEP 1.1
 			Attachment newItemHand = baseItemHand.GetRemappedClone(ItemHandSprite, sourceMaterial); // STEP 1.2 - 1.3
+
 			if (newItemHand != null) customSkin.SetAttachment(ItemHandSlotIndex, ItemHandKey, newItemHand); // STEP 1.4
 
+
+			//
+		    //	customSkin.RemoveAttachment(ItemHandSlotIndex, ItemHandKey);
 			// add Item leg
 			int ItemLegSlotIndex = skeleton.FindSlotIndex(ItemLegSlot);
 			Attachment baseItemLeg = baseSkin.GetAttachment(ItemLegSlotIndex, ItemLegKey); // STEP 1.1
@@ -146,12 +150,14 @@ namespace Spine.Unity.Examples {
 			Attachment baseLeg = baseSkin.GetAttachment(LegSlotIndex, LegKey); // STEP 1.1
 			Attachment newLeg = baseLeg.GetRemappedClone(LegSprite, sourceMaterial); // STEP 1.2 - 1.3
 			if (newLeg != null) customSkin.SetAttachment(LegSlotIndex, LegKey, newLeg); // STEP 1.4
+			
+			//skeleton.FindSlot(ItemHandSlot).Attachment = null;
 
 
 
 
-			// customSkin.RemoveAttachment(gunSlotIndex, gunKey); // To remove an item.
-			// customSkin.Clear()
+			// customSkin.RemoveAttachment(ItemHandSlotIndex, ItemHandKey); // To remove an item.
+			//customSkin.Clear();
 			// Use skin.Clear() To remove all customizations.
 			// Customizations will fall back to the value in the default skin if it was defined there.
 			// To prevent fallback from happening, make sure the key is not defined in the default skin.
@@ -188,7 +194,10 @@ namespace Spine.Unity.Examples {
 		public void Attachment_Hand(Sprite Img)
 		{
 			this.handSprite = Img;
-		 
+
+		
+
+
 		}
 		public void Attachment_Item_Hand(Sprite Img)
 		{

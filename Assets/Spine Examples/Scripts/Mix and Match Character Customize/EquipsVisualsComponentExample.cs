@@ -62,6 +62,7 @@ namespace Spine.Unity.Examples {
 		public void Equip (int slotIndex, string attachmentName, Attachment attachment) {
 			equipsSkin.SetAttachment(slotIndex, attachmentName, attachment);
 			skeletonAnimation.Skeleton.SetSkin(equipsSkin);
+			
 			RefreshSkeletonAttachments();
 		}
 

@@ -12,6 +12,7 @@ public class DataGame : ScriptableObject
     public Head Heads;
     public Hand Hands;
     public Leg Leg;
+    public Sprite Sprite_Null;
     // Start is called before the first frame update
     void Start()
     {

@@ -13,13 +13,14 @@ public class CtrlDataGame : MonoBehaviour
     public static string Key_Item_Leg = "Item_Leg";
 
     public DataGame Resource;
+
+
     public static CtrlDataGame Ins;
 
-    public EquipAssetExample EquipHand;
-    public EquipAssetExample EquipItemHand;
-    public EquipAssetExample EquipLeg;
-    public EquipAssetExample EquipItemLeg;
-    public EquipAssetExample EquipHead;
+
+    [Header("TargetCharacter")]
+    public EquipButtonExample TargetCharacter;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -38,6 +39,7 @@ public class CtrlDataGame : MonoBehaviour
         if (!PlayerPrefs.HasKey(Key_Head))
         {
             PlayerPrefs.SetInt(Key_Head, 0);
+           
         }
         if (!PlayerPrefs.HasKey(Key_Hand))
         {
@@ -57,6 +59,8 @@ public class CtrlDataGame : MonoBehaviour
         }
 
 
+
+
     }
 
     void Start()
@@ -67,8 +71,65 @@ public class CtrlDataGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            ApplySkin();
+        }
     }
+
+    public void SetHand(int id)
+    {
+        PlayerPrefs.SetInt(Key_Hand, id);
+        PlayerPrefs.Save();
+    }
+
+    public void SetItemHand(int id)
+    {
+        PlayerPrefs.SetInt(Key_Item_Hand, id);
+        PlayerPrefs.Save();
+    }
+
+    public void SetLeg(int id)
+    {
+        PlayerPrefs.SetInt(Key_Leg, id);
+        PlayerPrefs.Save();
+    }
+
+    public void SetItemLeg(int id)
+    {
+        PlayerPrefs.SetInt(Key_Item_Leg, id);
+        PlayerPrefs.Save();
+    }
+
+    public void SetHead(int id)
+    {
+        PlayerPrefs.SetInt(Key_Head,id);
+        PlayerPrefs.Save();
+    }
+
+
+    public int GetIdHead()
+    {
+        return PlayerPrefs.GetInt(Key_Head);
+    }
+    public int GetIdLeg()
+    {
+        return PlayerPrefs.GetInt(Key_Leg);
+    }
+    public int GetIdItemLeg()
+    {
+        return PlayerPrefs.GetInt(Key_Item_Leg);
+    }
+    public int GetIdHand()
+    {
+        return PlayerPrefs.GetInt(Key_Hand);
+    }
+    public int GetIdItemHand()
+    {
+        return PlayerPrefs.GetInt(Key_Item_Hand);
+    }
+
+
 
     public Sprite GetHand()
     {
@@ -83,16 +144,52 @@ public class CtrlDataGame : MonoBehaviour
     public Sprite GetLeg()
     {
         int id = PlayerPrefs.GetInt(Key_Head, 0);
-        return CtrlDataGame.Ins.Resource.Hands.Heads[id].Img;
+        return CtrlDataGame.Ins.Resource.Leg.Heads[id].Img;
     }
-    public Sprite GetHand()
+    public Sprite GetItemLeg()
     {
         int id = PlayerPrefs.GetInt(Key_Head, 0);
-        return CtrlDataGame.Ins.Resource.Hands.Heads[id].Img;
+        return CtrlDataGame.Ins.Resource.Leg.Heads[id].Img;
     }
-    public Sprite GetHand()
+    public Sprite GetHead()
     {
         int id = PlayerPrefs.GetInt(Key_Head, 0);
-        return CtrlDataGame.Ins.Resource.Hands.Heads[id].Img;
+        return CtrlDataGame.Ins.Resource.Heads.Heads[id].Img;
     }
+
+    public void ChangeHand(Sprite s)
+    {
+        TargetCharacter.Hand.sprite = s;
+    }
+    public void ChangeItemHand(Sprite s)
+    {
+        TargetCharacter.ItemHand.sprite = s;
+    }
+    public void ChangeHead(Sprite s)
+    {
+        TargetCharacter.Head.sprite = s;
+    }
+    public void ChangeLeg(Sprite s)
+    {
+        TargetCharacter.Leg.sprite = s;
+    }
+    public void ChangeItemLeg(Sprite s)
+    {
+        TargetCharacter.ItemLeg.sprite = s;
+    }
+    public void ApplySkin()
+    {
+
+        ChangeHand(GetHand());
+        ChangeItemHand(GetItemHand());
+        ChangeHead(GetHead());
+        ChangeLeg(GetLeg());
+        ChangeItemLeg(GetItemLeg());
+        TargetCharacter.EquipCharacter();
+        
+
+    }
+
+   
+    
 }

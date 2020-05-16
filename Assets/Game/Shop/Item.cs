@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 {
 
  
-    public float idItem;
+    public int idItem;
     public Image Img;
     public Text TextCost;
     public float cost;
@@ -17,6 +17,10 @@ using UnityEngine.EventSystems;
 
     public Image ImgSelect;
     public Image ImgBuyed;
+
+    public bool isBuy;
+    public bool isUsing;
+    public bool isFree;
     public virtual void ChangeItem(Sprite img)
     {
         this.Img.sprite = img;
@@ -43,17 +47,17 @@ using UnityEngine.EventSystems;
     public virtual void Click()
     {
 
-       // ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
+        // ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
         ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
-       
+        ShopCtrl.Ins.CurrSelectHead = this;
 
         var a = ShopCtrl.Ins.Item_Heads;
-        for(int i = 0; i < a.Count; i++)
+        for (int i = 0; i < a.Count; i++)
         {
-            
-            if(a[i].idItem == idItem)
+
+            if (a[i].idItem == idItem)
             {
-               
+
                 Select();
             }
             else
@@ -61,6 +65,7 @@ using UnityEngine.EventSystems;
                 Unselect();
             }
         }
+       
         ShopCtrl.Ins.TargetGraphic.Apply();
     }
     public virtual void Select()

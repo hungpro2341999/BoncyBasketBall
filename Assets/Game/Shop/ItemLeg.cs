@@ -9,14 +9,24 @@ public class ItemLeg : ItemHand
         if (type == TypeItem.Default)
         {
             ShopCtrl.Ins.TargetGraphic.Attachment_Leg(Img.sprite);
+            ShopCtrl.Ins.CurrSelectLeg = this;
         }
         else if (type == TypeItem.FullItem)
         {
             ShopCtrl.Ins.TargetGraphic.Attachment_Leg(Img.sprite);
+            ShopCtrl.Ins.TargetGraphic.Attachment_Item_Leg(CtrlDataGame.Ins.Resource.Sprite_Null);
+            ShopCtrl.Ins.CurrSelectLeg = this;
         }
         else
         {
-            ShopCtrl.Ins.TargetGraphic.Attachment_Item_Leg(Img.sprite);
+            if (ShopCtrl.Ins.GetTypeLegByID(ShopCtrl.Ins.CurrSelectLeg.idItem) != TypeItem.FullItem)
+            {
+                ShopCtrl.Ins.TargetGraphic.Attachment_Item_Leg(Img.sprite);
+            }
+            else
+            {
+                ShopCtrl.Ins.TargetGraphic.Attachment_Item_Leg(CtrlDataGame.Ins.Resource.Sprite_Null);
+            }
         }
 
         ShopCtrl.Ins.TargetGraphic.Apply();
