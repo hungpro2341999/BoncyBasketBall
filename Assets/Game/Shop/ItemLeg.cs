@@ -28,8 +28,34 @@ public class ItemLeg : ItemHand
                 ShopCtrl.Ins.TargetGraphic.Attachment_Item_Leg(CtrlDataGame.Ins.Resource.Sprite_Null);
             }
         }
-
+        ShopCtrl.Ins.SelectItemLeg(idItem);
         ShopCtrl.Ins.TargetGraphic.Apply();
+
+    }
+    public override void Buy()
+    {
+        if (isBuy)
+        {
+            if (CtrlDataGame.Ins.GetCoin() >= cost)
+            {
+                int coin = CtrlDataGame.Ins.GetCoin() - cost;
+                CtrlDataGame.Ins.SaveCoin(coin);
+                isBuy = false;
+                isUsing = true;
+                LoadStatusItem();
+                ShopCtrl.Ins.SaveShopLeg();
+                ShopCtrl.Ins.SelectItemLeg(idItem);
+                if(type == TypeItem.FullItem || type == TypeItem.Default)
+                {
+                    CtrlDataGame.Ins.SetLeg(this.idItem);
+                }
+                else
+                {
+                    CtrlDataGame.Ins.SetItemLeg(this.idItem);
+                }
+              
+            }
+        }
 
     }
 

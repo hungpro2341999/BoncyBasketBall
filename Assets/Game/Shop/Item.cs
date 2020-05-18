@@ -12,15 +12,22 @@ using UnityEngine.EventSystems;
     public int idItem;
     public Image Img;
     public Text TextCost;
-    public float cost;
+    public int cost;
     public TypeItem type;
 
     public Image ImgSelect;
-    public Image ImgBuyed;
+    public Image ImgSelect2;
 
     public bool isBuy;
     public bool isUsing;
     public bool isFree;
+
+    public Transform Transcost;
+
+    private void Start()
+    {
+     
+    }
     public virtual void ChangeItem(Sprite img)
     {
         this.Img.sprite = img;
@@ -50,24 +57,19 @@ using UnityEngine.EventSystems;
         // ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
         ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
         ShopCtrl.Ins.CurrSelectHead = this;
-
-        var a = ShopCtrl.Ins.Item_Heads;
-        for (int i = 0; i < a.Count; i++)
-        {
-
-            if (a[i].idItem == idItem)
-            {
-
-                Select();
-            }
-            else
-            {
-                Unselect();
-            }
-        }
-       
+        ShopCtrl.Ins.SelectItemHead(ShopCtrl.Ins.CurrSelectHead.idItem);
+        
+      
         ShopCtrl.Ins.TargetGraphic.Apply();
     }
+
+    public void Select_2()
+    {
+        ImgSelect.gameObject.SetActive(true);
+        ImgSelect2.gameObject.SetActive(true);
+    }
+
+
     public virtual void Select()
     {
         Debug.Log("Check :: ");
@@ -75,30 +77,118 @@ using UnityEngine.EventSystems;
     }
     public virtual void Unselect()
     {
-        Debug.Log("UnCheck :: ");
+        ImgSelect2.gameObject.SetActive(false);
+        // Debug.Log("UnCheck :: ");
         ImgSelect.gameObject.SetActive(false);
     }
 
     public virtual void Use()
     {
-     
-        ImgBuyed.enabled = true;
+
+        ImgSelect2.gameObject.SetActive(true);
     }
 
     public virtual void UnUse()
     {
-        ImgBuyed.enabled = false;
+        ImgSelect2.gameObject.SetActive(false);
     }
 
     public  virtual void Default()
     {
         ImgSelect.gameObject.SetActive(false);
-        ImgBuyed.gameObject.SetActive(false);
+        ImgSelect2.gameObject.SetActive(false);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Click();
     }
+
+    public void LoadSaveData(bool isFree , bool isBuy, bool isUse)
+    {
+        this.isFree = isFree;
+        this.isBuy = isBuy;
+        this.isUsing = isUse;
+        LoadStatusItem();
+    }
+
+
+    public void LoadStatusItem()
+    {
+        if (isFree)
+        {
+            if (!isUsing)
+            {
+                FreeItem();
+            }
+            else
+            {
+                 ItemUsing();
+            }
+            
+        }
+        else
+        {
+            if (isUsing)
+            {
+                ItemUsing();
+            }
+            else if (isBuy)
+            {
+                isSelling();
+            }
+            else
+            {
+                ItemOwn();
+            }
+        }
+    }
+
+    public virtual void FreeItem()
+    {
+      
+        ImgSelect.gameObject.SetActive(false); 
+        Transcost.gameObject.SetActive(false);
+       
+    }
+
+    public virtual void ItemUsing()
+    {
+        ImgSelect2.gameObject.SetActive(true);
+        ImgSelect.gameObject.SetActive(true);
+        Transcost.gameObject.SetActive(false);
+    }
+
+    public virtual void isSelling()
+    {
+        ImgSelect.gameObject.SetActive(false);
+        Transcost.gameObject.SetActive(true);
+    }
+    public virtual void ItemOwn()
+    {
+        Transcost.gameObject.SetActive(false);
+    }
+
+    public virtual void Buy()
+    {
+        if (isBuy)
+        {
+            if (CtrlDataGame.Ins.GetCoin() >= cost)
+            {
+                int coin = CtrlDataGame.Ins.GetCoin() - cost;
+                CtrlDataGame.Ins.SaveCoin(coin);
+                isBuy = false;
+                isUsing = true;
+                LoadStatusItem();
+                ShopCtrl.Ins.SaveShopHead();
+                ShopCtrl.Ins.SelectItemHead(idItem);
+                CtrlDataGame.Ins.SetHead(this.idItem);
+            }
+        }
+        
+    }
+
+    
+
 }
 

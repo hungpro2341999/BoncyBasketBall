@@ -41,6 +41,12 @@ namespace Spine.Unity.Examples {
         public EquipAssetExample Leg;
         public EquipAssetExample ItemLeg;
 
+
+        public EquipAssetExample[] HeadAsset;
+        public EquipAssetExample[] HandAsset;
+        public EquipAssetExample[] ItemHandAsset;
+        public EquipAssetExample[] LegAsset;
+        public EquipAssetExample[] ItemLegAsset;
         public EquipSystemExample equipSystem;
 		public Image inventoryImage;
 
@@ -48,6 +54,49 @@ namespace Spine.Unity.Examples {
         private void Update()
         {
           
+        }
+      
+        public void Init()
+        {
+            var a = CtrlDataGame.Ins.AssetSkin.AssetHead;
+            HeadAsset = a.ToArray();
+
+            var aa = CtrlDataGame.Ins.AssetSkin.AssetHand;
+
+            List<EquipAssetExample> AssetHand = new List<EquipAssetExample>();
+            List<EquipAssetExample> AssetItemHand = new List<EquipAssetExample>();
+            for (int i = 0; i < aa.Count; i++)
+            {
+                if(aa[i].equipType == EquipSystemExample.EquipType.Hand)
+                {
+                    AssetHand.Add(aa[i]);
+                }
+                else
+                {
+                    AssetItemHand.Add(aa[i]);
+                }
+            }
+
+            var aaa = CtrlDataGame.Ins.AssetSkin.AssetLeg;
+            List<EquipAssetExample> AssetLeg = new List<EquipAssetExample>();
+            List<EquipAssetExample> AssetItemLeg = new List<EquipAssetExample>();
+
+            for (int i = 0; i < aaa.Count; i++)
+            {
+                if (aaa[i].equipType == EquipSystemExample.EquipType.Leg)
+                {
+                    AssetLeg.Add(aa[i]);
+                }
+                else
+                {
+                    AssetItemLeg.Add(aa[i]);
+                }
+            }
+
+            this.HandAsset = AssetHand.ToArray();
+            this.ItemHandAsset = AssetItemHand.ToArray();
+            this.LegAsset = AssetLeg.ToArray();
+            this.ItemLegAsset = AssetItemLeg.ToArray();
         }
         void OnValidate () {
 			MatchImage();
@@ -59,18 +108,113 @@ namespace Spine.Unity.Examples {
 
 		void Start () {
 			MatchImage();
-
+            Init();
 			
 		}
 
+        public void EquipCharacter(int id)
+        {
+            Head = HeadAsset[id];
+            EquipCharacter();
+        }
+
+        public void EquipHand(int id)
+        {
+           
+
+            for (int i = 0; i < HandAsset.Length; i++)
+            {
+                if (HandAsset[i].idItem == id)
+                {
+                    Hand = HandAsset[i];
+                    break;
+                }
+            }
+
+        }
+
+        public void EquipItemHand(int id)
+        {
+
+            for (int i = 0; i < ItemHandAsset.Length; i++)
+            {
+                if (ItemHandAsset[i].idItem == id)
+                {
+                    ItemHand = ItemHandAsset[i];
+                    break;
+                }
+            }
+
+          
+        }
+
+        public void EquipLeg(int id)
+        {
+            for(int i = 0; i < LegAsset.Length; i++)
+            {
+                if(LegAsset[i].idItem == id)
+                {
+                    Leg = LegAsset[i];
+                    break;
+                }
+            }
+          
+        }
+
+        public void EquipItemLeg(int id)
+        {
+            for (int i = 0; i < ItemLegAsset.Length; i++)
+            {
+                if (ItemLegAsset[i].idItem == id)
+                {
+                    ItemLeg = ItemLegAsset[i];
+                    break;
+                }
+            }
+
+          
+        }
+        public void EquipHead(int id)
+        {
+
+            
+            Head = HeadAsset[id];
+        }
+
+        public void EquipHandNull()
+        {
+            Hand = CtrlDataGame.Ins.AssetSkin.Null_Hand;
+        }
+        public void EquipItemHandNull()
+        {
+            ItemHand = CtrlDataGame.Ins.AssetSkin.Null_Item_Hand;
+        }
+
+        public void EquipLegNull()
+        {
+            Leg = CtrlDataGame.Ins.AssetSkin.Null_Leg;
+        }
+
+        public void EquipItemLegNull()
+        {
+            ItemLeg = CtrlDataGame.Ins.AssetSkin.Null_Item_Leg;
+        }
+
         public void EquipCharacter()
         {
-            equipSystem.Equip(Hand);
+
+           
             equipSystem.Equip(ItemHand);
             equipSystem.Equip(Leg);
             equipSystem.Equip(ItemLeg);
+            equipSystem.Equip(Hand);
             equipSystem.Equip(Head);
+         
         }
+
+       
+
+      
 
 	}
 }

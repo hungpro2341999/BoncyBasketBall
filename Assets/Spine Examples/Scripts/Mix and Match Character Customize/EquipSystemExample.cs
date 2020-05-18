@@ -23,6 +23,7 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
  * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
@@ -38,6 +39,7 @@ namespace Spine.Unity.Examples {
 
 		// Implementing IHasSkeletonDataAsset allows Spine attribute drawers to automatically detect this component as a skeleton data source.
 		public SkeletonDataAsset skeletonDataAsset;
+		public SkeletonDataAsset baseAsset;
 		SkeletonDataAsset IHasSkeletonDataAsset.SkeletonDataAsset { get { return this.skeletonDataAsset; } }
 
 		public Material sourceMaterial;
@@ -68,6 +70,17 @@ namespace Spine.Unity.Examples {
 			
 		}
 
+		public void ResetData()
+		{
+			baseAsset.Clear();
+			baseAsset.GetSkeletonData(true);
+			target.skeletonAnimation.skeletonDataAsset = baseAsset;
+			target.skeletonAnimation.Initialize(true);
+			target.skeletonAnimation.skeleton.SetToSetupPose();
+			//Sprite
+			target.skeletonAnimation.LateUpdate();
+		}
+
 		public void Equip (EquipAssetExample asset) {
 			var equipType = asset.equipType;
 			EquipHook howToEquip = equippables.Find(x => x.type == equipType);
@@ -75,7 +88,7 @@ namespace Spine.Unity.Examples {
 			var skeletonData = skeletonDataAsset.GetSkeletonData(true);
 			int slotIndex = skeletonData.FindSlotIndex(howToEquip.slot);
 			var attachment = GenerateAttachmentFromEquipAsset(asset, slotIndex, howToEquip.templateSkin, howToEquip.templateAttachment);
-
+		
 			target.Equip(slotIndex, howToEquip.templateAttachment, attachment);
 
 		}

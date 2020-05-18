@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Spine.Unity.Examples;
 
-[CustomEditor(typeof(DataGame))]
+[CustomEditor(typeof(EquipAssetExample))]
 
 public class LoadAsset : Editor
 {
     public DataGame Data;
-
+    public EquipAssetExample Data1;
 
 
     public override void OnInspectorGUI()
     {
-        Data = (DataGame)target;
+        Data1 = (EquipAssetExample)target;
         base.OnInspectorGUI();
         //data = (CardData)target;
 
@@ -44,59 +45,141 @@ public class LoadAsset : Editor
     }
     public void Load_Asset_Head()
     {
-        List<Sprite> ImgHead = new List<Sprite>();
-        List<InforItem> Hands = new List<InforItem>();
-        var a = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/Leg");
-        for (int i = 0; i < a.Count; i++)
-        {
-            ImgHead.Add(a[i]);
-            i += 1;
-        }
 
-        //for(int i = 0; i < ImgHead.Count; i++)
+        LoadAssetHand();
+
+
+        //List<Sprite> ImgHead = new List<Sprite>();
+        //List<InforItem> Hands = new List<InforItem>();
+        //var a = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/Leg");
+        //for (int i = 0; i < a.Count; i++)
         //{
+        //    ImgHead.Add(a[i]);
+        //    i += 1;
+        //}
+
+        ////for(int i = 0; i < ImgHead.Count; i++)
+        ////{
+        ////    InforItem aa = new InforItem();
+        ////    aa.id = i;
+        ////    aa.Img = ImgHead[i];
+        ////    Hands.Add(aa);
+
+
+        ////}
+
+        //for (int i = 0; i < ImgHead.Count; i++)
+        //{
+
         //    InforItem aa = new InforItem();
         //    aa.id = i;
         //    aa.Img = ImgHead[i];
+
+
+        //    var s = aa.Img.name;
+
+
+
+        //    if (s.StartsWith("0"))
+        //    {
+        //        aa.type = TypeItem.Default;
+        //    }
+        //    else if (s.StartsWith("b") || s.StartsWith("s"))
+        //    {
+
+        //        aa.type = TypeItem.Item;
+
+        //    }
+        //    else
+        //    {
+        //        aa.type = TypeItem.FullItem;
+
+
+        //    }
         //    Hands.Add(aa);
 
-
         //}
-
-        for (int i = 0; i < ImgHead.Count; i++)
+        //Data.Leg.Heads = Hands;
+    }
+    public void LoadAssetHead()
+    {
+        List<Sprite> img = new List<Sprite>();
+        var a = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/AssetSkin/HeadAsset");
+        for (int i = 0; i < a.Count; i++)
         {
-
-            InforItem aa = new InforItem();
-            aa.id = i;
-            aa.Img = ImgHead[i];
-
-
-            var s = aa.Img.name;
+            img.Add(a[i]);
+            i += 1;
+        }
 
 
+        var aa = GameHelper.GetAllAssetAtPath<EquipAssetExample>(null, "Assets/Game/HeadAsset");
 
-            if (s.StartsWith("0"))
+        for (int i = 0; i < aa.Count; i++)
+        {
+            
+            aa[i].equipType = EquipSystemExample.EquipType.Head;
+            aa[i].sprite = img[i];
+        }
+    }
+    public void LoadAssetHand()
+    {
+        List<Sprite> img = new List<Sprite>();
+        var a = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/Hand");
+        for (int i = 0; i < a.Count; i++)
+        {
+            img.Add(a[i]);
+            i += 1;
+        }
+
+
+        var aa = GameHelper.GetAllAssetAtPath<EquipAssetExample>(null, "Assets/Game/AssetSkin/HandAsset");
+
+      
+
+        for (int i = 0; i < aa.Count; i++)
+        {
+            
+            aa[i].sprite = img[i];
+            if(img[i].name.StartsWith("v"))
             {
-                aa.type = TypeItem.Default;
-            }
-            else if (s.StartsWith("b") || s.StartsWith("s"))
-            {
-
-                aa.type = TypeItem.Item;
-
+                aa[i].equipType = EquipSystemExample.EquipType.ItemHand;
             }
             else
             {
-                aa.type = TypeItem.FullItem;
-                
-
+                aa[i].equipType = EquipSystemExample.EquipType.Hand;
             }
-            Hands.Add(aa);
-           
         }
-        Data.Leg.Heads = Hands;
     }
 
-   
+    public void LoadAssetLeg()
+    {
+        List<Sprite> img = new List<Sprite>();
+        var a = GameHelper.GetAllAssetAtPath<Sprite>(null, "Assets/Game/Leg");
+        for (int i = 0; i < a.Count; i++)
+        {
+            img.Add(a[i]);
+            i += 1;
+        }
+
+
+        var aa = GameHelper.GetAllAssetAtPath<EquipAssetExample>(null, "Assets/Game/AssetSkin/LegAsset");
+
+
+
+        for (int i = 0; i < aa.Count; i++)
+        {
+
+            aa[i].sprite = img[i];
+            if (img[i].name.StartsWith("s") || img[i].name.StartsWith("b"))
+            {
+                aa[i].equipType = EquipSystemExample.EquipType.ItemLeg;
+            }
+            else
+            {
+                aa[i].equipType = EquipSystemExample.EquipType.Leg;
+            }
+        }
+    }
+
 
 }

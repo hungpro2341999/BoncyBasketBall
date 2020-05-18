@@ -1847,7 +1847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &217728272
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2840,8 +2840,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000015258789}
-  m_SizeDelta: {x: -15, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000019898085}
+  m_SizeDelta: {x: -5.2, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &325066997
 MonoBehaviour:
@@ -2880,7 +2880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 1
+  m_VerticalFit: 2
 --- !u!1 &327133365
 GameObject:
   m_ObjectHideFlags: 0
@@ -3398,8 +3398,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 77dd230c704d44e44ab8254e4dd4ab6f, type: 2}
+  baseAsset: {fileID: 11400000, guid: 77dd230c704d44e44ab8254e4dd4ab6f, type: 2}
   sourceMaterial: {fileID: 2100000, guid: 2d61f540f58529e48b934f3ff6579a85, type: 2}
-  applyPMA: 1
+  applyPMA: 0
   equippables:
   - type: 0
     slot: Zeus
@@ -7245,7 +7246,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9809,7 +9810,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1244894710
 Transform:
   m_ObjectHideFlags: 0
@@ -9951,6 +9952,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Resource: {fileID: 11400000, guid: 57801b77ded1d4c47aa840644acfd8cd, type: 2}
+  AssetSkin: {fileID: 11400000, guid: 897aef08b229fca4186f44fc1b41bd66, type: 2}
   TargetCharacter: {fileID: 1701769102}
 --- !u!4 &1247130967
 Transform:
@@ -13305,6 +13307,9 @@ MonoBehaviour:
   - {fileID: 1016306320}
   SelectLeg:
   - {fileID: 1612570731}
+  CurrSelectHand: {fileID: 0}
+  CurrSelectLeg: {fileID: 0}
+  CurrSelectHead: {fileID: 0}
 --- !u!1 &1592714833
 GameObject:
   m_ObjectHideFlags: 0
@@ -13338,7 +13343,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.9999971}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -14210,6 +14215,11 @@ MonoBehaviour:
   Head: {fileID: 11400000, guid: b59ef0df9163aca41ae3ae9b7f7f06aa, type: 2}
   Leg: {fileID: 11400000, guid: 33951705a9855c14994741ba6c874330, type: 2}
   ItemLeg: {fileID: 11400000, guid: d003511b4f7149349b0962a9bb5852b1, type: 2}
+  HeadAsset: []
+  HandAsset: []
+  ItemHandAsset: []
+  LegAsset: []
+  ItemLegAsset: []
   equipSystem: {fileID: 362036265}
   inventoryImage: {fileID: 0}
 --- !u!114 &1701769103
@@ -14937,7 +14947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1783855331
 RectTransform:
   m_ObjectHideFlags: 0

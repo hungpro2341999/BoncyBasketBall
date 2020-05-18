@@ -34,9 +34,13 @@ using UnityEngine;
 namespace Spine.Unity.Examples {
     [CreateAssetMenu(fileName = "Equipt", menuName = "Use")]
     public class EquipAssetExample : ScriptableObject {
+        public int idItem;
 		public EquipSystemExample.EquipType equipType;
 		public Sprite sprite;
 		public string description;
 		public int yourStats;
-	}
+        public Sprite[] listSprite;
+
+       
+    }
 }

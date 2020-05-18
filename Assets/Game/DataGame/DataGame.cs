@@ -9,6 +9,8 @@ public enum TypeItem {Default,Item,FullItem}
 public class DataGame : ScriptableObject
 {
 
+  
+
     public Head Heads;
     public Hand Hands;
     public Leg Leg;
@@ -16,7 +18,7 @@ public class DataGame : ScriptableObject
     // Start is called before the first frame update
     void Start()
     {
-        
+        Init();
     }
 
     // Update is called once per frame
@@ -27,10 +29,16 @@ public class DataGame : ScriptableObject
 
     public void LoadToGame()
     {
-
+        
     }
 
-  
+    public void Init()
+    {
+        
+    } 
+
+   
+   
 }
 [System.Serializable]
 public class Head

@@ -70,16 +70,15 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
         // Update is called once per frame
         void Update()
         {
-
+      
         }
 
         public void LoadShop()
         {
-        CtrlDataGame.Ins.SetHand(1);
-        CtrlDataGame.Ins.SetItemHand(23);
-        CtrlDataGame.Ins.SetLeg(1);
 
-        CtrlDataGame.Ins.SetItemLeg(18);
+        //  PlayerPrefs.DeleteKey(Key_First_Shop);
+
+
         // LoadHead
         var a = CtrlDataGame.Ins.Resource.Heads.Heads;
         
@@ -118,7 +117,7 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
             Item_Legs.Add(Item);
             Item.Default();
         }
-
+   
         if (!PlayerPrefs.HasKey(Key_First_Shop))
         {
             PlayerPrefs.SetInt(Key_First_Shop, 0);
@@ -134,18 +133,20 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
         var dataHead = GetDataHead();
         for(int i = 0; i < dataHead.Count; i++)
         {
-            var s = dataHead[i];
-
-            Item_Heads[i].isFree = s.isFree;
-            Item_Heads[i].isBuy = s.isBuy;
-            Item_Heads[i].isUsing = s.isUse;
+            Item_Heads[i].LoadSaveData(dataHead[i].isFree, dataHead[i].isBuy, dataHead[i].isUse);
 
         }
 
         var dataHand = GetDataHand();
         for(int i = 0; i < dataHand.Count; i++)
         {
-            var s = dataHand 
+            Item_Hands[i].LoadSaveData(dataHand[i].isFree, dataHand[i].isBuy, dataHand[i].isUse);
+        }
+
+        var dataLeg = GetDataLeg();
+        for(int i = 0; i < dataLeg.Count; i++)
+        {
+            Item_Legs[i].LoadSaveData(dataLeg[i].isFree, dataLeg[i].isBuy, dataLeg[i].isUse);
         }
 
 
@@ -158,19 +159,35 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
         CurrSelectLeg =  GetLegById(CtrlDataGame.Ins.GetIdLeg());
         CurrSelectHead = GetHeadById(CtrlDataGame.Ins.GetIdHead());
 
+        SelectItemHand(CurrSelectHand.idItem);
+        SelectItemLeg(CurrSelectLeg.idItem);
+        SelectItemHead(CurrSelectHead.idItem);
 
         Debug.Log(CurrSelectHand.idItem);
 
           TargetGraphic.Attachment_Head(CtrlDataGame.Ins.GetHead());
           if(CurrSelectHand.type  == TypeItem.Default)
         {
-            Item item = GetHandById(CtrlDataGame.Ins.GetIdItemHand());
+            Item item = null;
+            if (CtrlDataGame.Ins.GetIdItemHand() != -1)
+            {
+               item = GetHandById(CtrlDataGame.Ins.GetIdItemHand());
+            }
+            
             Item item1 = GetHandById(CtrlDataGame.Ins.GetIdHand());
-            Debug.Log(CtrlDataGame.Ins.GetIdItemHand() + "  " + CtrlDataGame.Ins.GetIdHand());
-            Debug.Log("Item : " + item.idItem + " Hand  " + item1.idItem);
+           // Debug.Log(CtrlDataGame.Ins.GetIdItemHand() + "  " + CtrlDataGame.Ins.GetIdHand());
+          //  Debug.Log("Item : " + item.idItem + " Hand  " + item1.idItem);
             
             TargetGraphic.Attachment_Hand(item1.Img.sprite);
-            TargetGraphic.Attachment_Item_Hand(item.Img.sprite);
+            if (item != null)
+            {
+                TargetGraphic.Attachment_Item_Hand(item.Img.sprite);
+            }
+            else
+            {
+                TargetGraphic.Attachment_Item_Hand(CtrlDataGame.Ins.Resource.Sprite_Null);
+            }
+           
 
         }
         else
@@ -182,14 +199,29 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
         // Leg
 
         if (CurrSelectLeg.type == TypeItem.Default)
+
         {
-            Item item = GetLegById(CtrlDataGame.Ins.GetIdItemLeg());
+            Item item = null;
+            if (CtrlDataGame.Ins.GetIdItemLeg()!=-1)
+            {
+                item = GetLegById(CtrlDataGame.Ins.GetIdItemLeg());
+            }
+             
             Item item1 = GetLegById(CtrlDataGame.Ins.GetIdLeg());
-            Debug.Log(CtrlDataGame.Ins.GetIdItemLeg() + "  " + CtrlDataGame.Ins.GetIdLeg());
-            Debug.Log("Item : " + item.idItem + " Hand  " + item1.idItem);
+          //  Debug.Log(CtrlDataGame.Ins.GetIdItemLeg() + "  " + CtrlDataGame.Ins.GetIdLeg());
+          //  Debug.Log("Item : " + item.idItem + " Hand  " + item1.idItem);
 
             TargetGraphic.Attachment_Leg(item1.Img.sprite);
-            TargetGraphic.Attachment_Item_Leg(item.Img.sprite);
+
+            if (item != null)
+            {
+                TargetGraphic.Attachment_Item_Leg(item.Img.sprite);
+            }
+            else
+            {
+                TargetGraphic.Attachment_Item_Leg(CtrlDataGame.Ins.Resource.Sprite_Null);
+            }
+           
 
         }
         else
@@ -345,14 +377,17 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
             }
             else
             {
-                item = new ItemSave(Item_Heads[i].idItem, false, false, false);
+                item = new ItemSave(Item_Heads[i].idItem, true, false, false);
             }
             saveHeads.Add(item);
-
             
+
+
         }
 
-        string json = JsonUtility.ToJson(saveHeads);
+        ListItemSave ListSave = new ListItemSave(saveHeads);
+
+        string json = JsonUtility.ToJson(ListSave);
         PlayerPrefs.SetString(Key_Shop_Head, json);
         PlayerPrefs.Save();
     }
@@ -371,16 +406,20 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
             }
             else
             {
-                item = new ItemSave(Item_Hands[i].idItem, false, false, false);
+                item = new ItemSave(Item_Hands[i].idItem, true, false, false);
             }
             saveHeads.Add(item);
 
 
         }
 
-        string json = JsonUtility.ToJson(saveHeads);
+        ListItemSave ListSave = new ListItemSave(saveHeads);
+
+
+        string json = JsonUtility.ToJson(ListSave);
         PlayerPrefs.SetString(Key_Shop_Hand, json);
         PlayerPrefs.Save();
+        Debug.Log("Data Hand : " + JsonUtility.FromJson<ListItemSave>(PlayerPrefs.GetString(Key_Shop_Hand)).ListItems.Count);
     }
 
     private void InitShopLeg()
@@ -395,14 +434,17 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
             }
             else
             {
-                item = new ItemSave(Item_Legs[i].idItem, false, false, false);
+                item = new ItemSave(Item_Legs[i].idItem, true, false, false);
             }
             saveHeads.Add(item);
 
 
         }
 
-        string json = JsonUtility.ToJson(saveHeads);
+        ListItemSave ListSave = new ListItemSave(saveHeads);
+
+
+        string json = JsonUtility.ToJson(ListSave);
         PlayerPrefs.SetString(Key_Shop_Leg, json);
         PlayerPrefs.Save();
     }
@@ -411,17 +453,165 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
 
     public List<ItemSave> GetDataHead()
     {
+        
         return JsonUtility.FromJson<ListItemSave>(PlayerPrefs.GetString(Key_Shop_Head)).ListItems;
     }
 
     public List<ItemSave> GetDataHand()
     {
+        Debug.Log("Data Hand : " + JsonUtility.FromJson<ListItemSave>(PlayerPrefs.GetString(Key_Shop_Hand)).ListItems.Count);
         return JsonUtility.FromJson<ListItemSave>(PlayerPrefs.GetString(Key_Shop_Hand)).ListItems;
     }
 
     public List<ItemSave> GetDataLeg()
     {
         return JsonUtility.FromJson<ListItemSave>(PlayerPrefs.GetString(Key_Shop_Leg)).ListItems;
+    }
+
+    public void SelectItemHead(int id)
+    {
+
+        for(int i = 0; i < Item_Heads.Count; i++)
+        {
+            if (Item_Heads[i].idItem == id)
+            {
+                if (!Item_Heads[i].isBuy)
+                {
+                    CtrlDataGame.Ins.SetHead(Item_Heads[i].idItem);
+
+                    Item_Heads[i].Select_2();
+                }
+                else
+                {
+                    Item_Heads[i].Select();
+                }
+               
+            }
+            else
+            {
+                Item_Heads[i].Unselect();
+            }
+        }
+
+    }
+
+    public void SelectItemHand(int id)
+    {
+        for (int i = 0; i < Item_Hands.Count; i++)
+        {
+            if (Item_Hands[i].idItem == id)
+            {
+                if (!Item_Hands[i].isBuy)
+                {
+                    if (Item_Hands[i].type == TypeItem.FullItem )
+                    {
+                        CtrlDataGame.Ins.SetHand(Item_Hands[i].idItem);
+                        CtrlDataGame.Ins.SetItemHand(-1);
+                    }
+                    else if( Item_Hands[i].type == TypeItem.Default)
+                    {
+                        CtrlDataGame.Ins.SetHand(Item_Hands[i].idItem);
+                    }
+                    else
+                    {
+                        CtrlDataGame.Ins.SetItemHand(Item_Hands[i].idItem);
+                    }
+                    Item_Hands[i].Select_2();
+                }
+                else
+                {
+                    Item_Hands[i].Select();
+                }
+            }
+            else
+            {
+                Item_Hands[i].Unselect();
+            }
+        }
+    }
+
+    public void SelectItemLeg(int id)
+    {
+        for (int i = 0; i < Item_Legs.Count; i++)
+        {
+            if (Item_Legs[i].idItem == id)
+            {
+                if (!Item_Legs[i].isBuy)
+                {
+                    if (Item_Legs[i].type == TypeItem.FullItem )
+                    {
+                        CtrlDataGame.Ins.SetLeg(Item_Legs[i].idItem);
+                        CtrlDataGame.Ins.SetItemLeg(-1);
+                    }
+                    else if(Item_Legs[i].type == TypeItem.Default)
+                    {
+
+                        CtrlDataGame.Ins.SetLeg(Item_Legs[i].idItem);
+                    }
+                    else
+                    {
+                        CtrlDataGame.Ins.SetItemLeg(Item_Legs[i].idItem);
+                    }
+                   
+                    Item_Legs[i].Select_2();
+                }
+                else
+                {
+                    Item_Legs[i].Select();
+                }
+            }
+            else
+            {
+                Item_Legs[i].Unselect();
+            }
+        }
+    }
+
+     public void SaveShopHand()
+     {
+        List<ItemSave> listItem = new List<ItemSave>();  
+        for(int i = 0; i < Item_Hands.Count; i++)
+        {
+            
+            ItemSave item = new ItemSave(Item_Hands[i].idItem, Item_Hands[i].isBuy, Item_Hands[i].isUsing, Item_Hands[i].isFree);
+            listItem.Add(item);
+        }
+
+        ListItemSave ListSave = new ListItemSave(listItem);
+        Save(ListSave,Key_Shop_Hand);
+
+    }
+    public void SaveShopHead()
+    {
+        List<ItemSave> listItem = new List<ItemSave>();
+        for (int i = 0; i < Item_Heads.Count; i++)
+        {
+
+            ItemSave item = new ItemSave(Item_Heads[i].idItem, Item_Heads[i].isBuy, Item_Heads[i].isUsing, Item_Heads[i].isFree);
+            listItem.Add(item);
+        }
+
+        ListItemSave ListSave = new ListItemSave(listItem);
+        Save(ListSave, Key_Shop_Head);
+    }
+    public void SaveShopLeg()
+    {
+        List<ItemSave> listItem = new List<ItemSave>();
+        for (int i = 0; i < Item_Legs.Count; i++)
+        {
+
+            ItemSave item = new ItemSave(Item_Legs[i].idItem, Item_Legs[i].isBuy, Item_Legs[i].isUsing, Item_Legs[i].isFree);
+            listItem.Add(item);
+        }
+
+        ListItemSave ListSave = new ListItemSave(listItem);
+        Save(ListSave, Key_Shop_Leg);
+    }
+    private void Save(ListItemSave save,string key)
+    {
+        string json = JsonUtility.ToJson(save);
+        PlayerPrefs.SetString(key, json);
+        PlayerPrefs.Save();
     }
 
 }
