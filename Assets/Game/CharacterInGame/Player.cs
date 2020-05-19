@@ -7,6 +7,11 @@ using UnityEngine.UI;
 public enum StatusPlayer { Ground, Jump };
 public class Player : Character
 {
+
+    [Header("TriggerSlampDunk")]
+
+    public List<CheckWithSlampDunk> ListCheckWithSlampDunk = new List<CheckWithSlampDunk>();
+
     [Header("Button")]
     public ButtonControl btn_Right;
     public ButtonControl btn_Left;
@@ -110,6 +115,112 @@ public class Player : Character
       
 
     }
+
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("A");
+            Velocity = speed * Vector2.left;
+            isMoveLeft = true;
+            isMoveRight = false;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Debug.Log("D");
+            Velocity = speed * Vector2.right;
+            isMoveLeft = false;
+            isMoveRight = true;
+        }
+
+
+
+
+
+
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            if (isGround)
+            {
+                StatusCurr = CharacterState.idle;
+            }
+            isMoveLeft = false;
+            isMoveRight = false;
+            Velocity = Vector2.zero;
+
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            if (isGround)
+            {
+                StatusCurr = CharacterState.idle;
+            }
+            isMoveLeft = false;
+            isMoveRight = false;
+            Velocity = Vector2.zero;
+
+
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+
+           
+
+            if (isGround)
+            {
+                if (!isBall)
+                {
+                    if (!isActiveHand)
+                    {
+                       
+                        isActiveHand = true;
+                        StatusCurr = CharacterState.swing;
+                    }
+
+                }
+                else
+                {
+                    if (!isJumpGround)
+                    {
+                        isJumpGround = true;
+                        StatusCurr = CharacterState.throw1;
+                    }
+
+                }
+
+            }
+            else
+            {
+                if (isStartJump)
+                {
+                    if (!isGround)
+                    {
+                        if (isBall)
+                        {
+                            if (isActiveAction())
+                            {
+                                var a = GetActionActive();
+                                a.ActiveAction();
+                            }
+                            else
+                            {
+                                isPullBall = true;
+                            }
+                          
+
+                        }
+                    }
+
+
+                }
+            }
+
+
+        }
+    }
     public override void Move()
     {
 
@@ -150,97 +261,6 @@ public class Player : Character
 
 
 
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("A");
-                Velocity = speed * Vector2.left;
-                isMoveLeft = true;
-                isMoveRight = false;
-            }
-
-
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                Debug.Log("D");
-                Velocity = speed * Vector2.right;
-                isMoveLeft = false;
-                isMoveRight = true;
-            }
-
-
-
-
-
-
-            if (Input.GetKeyUp(KeyCode.A))
-            {
-                if (isGround)
-                {
-                    StatusCurr = CharacterState.idle;
-                }
-                isMoveLeft = false;
-                isMoveRight =false;
-                Velocity = Vector2.zero;
-
-            }
-            if (Input.GetKeyUp(KeyCode.D))
-            {
-                if (isGround)
-                {
-                    StatusCurr = CharacterState.idle;
-                }
-                isMoveLeft = false;
-                isMoveRight = false;
-                Velocity = Vector2.zero;
-
-
-            }
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-
-
-
-                if (isGround)
-                {
-                    if (!isBall)
-                    {
-                        if (!isActiveHand)
-                        {
-                            isActiveHand = true;
-                            StatusCurr = CharacterState.swing;
-                        }
-                      
-                    }
-                    else
-                    {
-                        if (!isJumpGround)
-                        {
-                            isJumpGround = true;
-                            StatusCurr = CharacterState.throw1;
-                        }
-
-                    }
-
-                }
-                else
-                {
-                    if (isStartJump)
-                    {
-                        if (!isGround)
-                        {
-                            if (isBall)
-                            {
-                                isPullBall = true;
-
-                            }
-                        }
-
-
-                    }
-                }
-
-
-            }
 
             if (isGround)
             {
@@ -319,6 +339,29 @@ public class Player : Character
             }
 
         
+    }
+
+    public bool isActiveAction()
+    {
+        for(int i = 0; i < ListCheckWithSlampDunk.Count; i++)
+        {
+            if (ListCheckWithSlampDunk[i].WaithForAction)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public CheckWithSlampDunk GetActionActive()
+    {
+        for (int i = 0; i < ListCheckWithSlampDunk.Count; i++)
+        {
+            if (ListCheckWithSlampDunk[i].WaithForAction)
+            {
+                return ListCheckWithSlampDunk[i]; 
+            }
+        }
+        return null;
     }
 
     public void MoveLeft()
@@ -533,11 +576,12 @@ public class Player : Character
     public void OnTriggerStun()
     {
        
-        StatusCurr = CharacterState.stun;
+     
         isStun = true;
-        Body.velocity = Vector3.zero;
+      
         isAction = true;
         Force_Back();
+        Velocity = Vector3.zero;
       
 
 
@@ -589,7 +633,7 @@ public class Player : Character
 
         // Action Game
         ActionGame lc_SlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk,UnActionSlampDunk, 10);
-        ActionGame lc_Stun = new ActionGame(OnTriggerStun, OnStartTriggerStun, OnEndTriggerStun, 2);
+        ActionGame lc_Stun = new ActionGame(OnTriggerStun, OnStartTriggerStun, OnEndTriggerStun, 0);
 
         // AddToDirectoryGame
         Directory_OnActionGame.Add(Key_Slamp_Dunk, lc_SlampDunk);
@@ -773,6 +817,7 @@ public class Player : Character
 
     public void Event_Reset()
     {
+        Velocity = Vector3.zero;
         Body.velocity = Vector3.zero;
         OnAction = null;
         Body.simulated = true;
@@ -783,6 +828,8 @@ public class Player : Character
       
 
     }
+
+   
   
        
 

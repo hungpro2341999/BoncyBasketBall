@@ -62,6 +62,7 @@ public abstract class Character : MonoBehaviour
     public float speed;
 
     public float High;
+    public string KeyInput = "";
 
     [Header("ThrowBall")]
 
@@ -80,14 +81,30 @@ public abstract class Character : MonoBehaviour
         }
         
     }
-
+   
     // Update is called once per frame
-    public virtual void Update()
+    public virtual void FixedUpdate()
     {
         GetStatus();
+        InputPlayer();
         CaculateStatus();
         Move();
         SetUpAnimation();
+    }
+    public virtual void InputPlayer()
+    {
+        string isFlyForward = "";
+        if (Mathf.Sign(Body.velocity.y) != 0)
+        {
+            isFlyForward = (((Mathf.Sign(Body.velocity.y)) == 1) ? 1 : 0).ToString();
+        }
+        else
+        {
+            isFlyForward = 0.ToString();
+        }
+       
+        KeyInput = isFlyForward + (isMoveRight ? 1 : 0).ToString() + (isMoveLeft ? 1 : 0).ToString() + (isBall ? 1 : 0).ToString();
+
     }
 
     public virtual void Move()

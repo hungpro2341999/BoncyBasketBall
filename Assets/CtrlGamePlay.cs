@@ -135,9 +135,9 @@ public class CtrlGamePlay : MonoBehaviour
         Physics2D.gravity = Vector3.up * graviry;
         var a = (Player)Player;
         a.isInputMove = true;
-    //    eventResetGame();
+        //    eventResetGame();
 
-
+       // Time.timeScale = 0.4f;
      
 
     }
@@ -190,6 +190,7 @@ public class CtrlGamePlay : MonoBehaviour
         float PercentageY = CPU.TargetHoop.y + Random.Range(0, CPU.PercentageThrowBall) * CPU.PercentageDistance;
         float yJump = Mathf.Abs(transform.position.y - Ball.transform.position.y);
         yJump += Random.Range(2, 4);
+        yJump = Mathf.Clamp(yJump, 0, 3.5f);
         Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
     }
     public void PlayerThrowBall()
@@ -200,6 +201,7 @@ public class CtrlGamePlay : MonoBehaviour
         float PercentageY = player.TargetHoop.y + Random.Range(0, player.PercentageThrowBall) * player.PercentageDistance;
         float yJump = Mathf.Abs(transform.position.y - Ball.transform.position.y);
         yJump += Random.Range(2, 4);
+        yJump = Mathf.Clamp(yJump, 0, 5);
         Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
     }
     public void Launch(float height,Vector3 Target)

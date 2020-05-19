@@ -12,16 +12,16 @@
 
 
 //
-0. 000 = MoveToBall
-1. 001 = OnJumpRight
-2. 010 = OnJumpleft
+0. 000 = MoveToBall 
+1. 001 = OnJumpRight || OnActionMoveToBall 
+2. 010 = OnJumpleft || OnActionMoveToBall
 3. 011 = MoveToBall
-4. 100 = OnActionJump
-5. 101 = OnActionJump
-6. 110 = OnActionJump
+4. 100 = OnActionJump 
+5. 101 = OnActionJump 
+6. 110 = OnActionJump || OnActionMoveToBall
 7. 111 = OnActionJump
-
 --Staus--
+
 
 // II > HAVE BALL 
 
@@ -31,22 +31,23 @@
 
 // Status = 1+2+3
 
-0. 000 = MoveToHoop
-1. 001 = OnThrownOnGround
-2. 010 = OnActionJump
-3. 011 = OnThrownOnGround
-4. 100 = OnActionJump
-5. 101 = OnThrownOnGround
+0. 000 = MoveToHoop || OnActionMoveBackHaveBall
+1. 001 = OnThrownOnGround ||  JumpThrowBall
+2. 010 = MoveToHoop
+3. 011 = OnThrownOnGround ||  JumpThrowBall
+4. 100 = OnJumpleft || MoveToHoop
+5. 101 = OnActionMoveBackHaveBall
 6. 110 = MoveToHoop
-7. 111 = OnThrownOnGround
+7. 111 = OnThrownOnGround ||  JumpThrowBall
 
 --Staus--
 
 // III> PLAYER HAVE BALL
 
 //1.Trigger_Front_With_Player
-
-0. 0 = OnMoveToPlayer
-1. 1 = OnMoveToPlayer
-
+//2.Trigger_Back_With_Player
+0. 01 = OnJumpRight
+1. 10 = OnMoveToPlayer 
+2. 00 = OnMoveToPlayer 
+3. 11 = OnMoveToPlayer
 

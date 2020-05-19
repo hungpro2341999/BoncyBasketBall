@@ -14,6 +14,11 @@ public class CtrlDataGame : MonoBehaviour
     public const string KeyCoin = "Key_Coins";
     public DataGame Resource;
     public AssetSkin AssetSkin;
+    [SerializeField]
+    public EquipsVisualsComponentExample SkinCPU;
+    [SerializeField]
+    public EquipsVisualsComponentExample SkinPlayer;
+
 
 
     public static CtrlDataGame Ins;
@@ -33,8 +38,10 @@ public class CtrlDataGame : MonoBehaviour
         {
             Ins = this;
         }
-    }
 
+        CtrlGamePlay.Ins.eventResetGame += ApplySKinPlayer;
+    }
+   
     public void Init()
     {
         if (!PlayerPrefs.HasKey(Key_Head))
@@ -70,7 +77,8 @@ public class CtrlDataGame : MonoBehaviour
 
     void Start()
     {
-        
+
+      
     }
 
     // Update is called once per frame
@@ -78,15 +86,11 @@ public class CtrlDataGame : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.U))
         {
-          
-            ApplySkin();
+            ApplySKinPlayer();
+            ApplySkinCpu();
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            TargetCharacter.equipSystem.ResetData();
-           
-        }
+       
     }
 
     public void SetHand(int id)
@@ -205,44 +209,84 @@ public class CtrlDataGame : MonoBehaviour
 
    
 
-   
+    public void ApplySKinPlayer()
+    {
 
-   
-
+        CtrlDataGame.Ins.TargetCharacter.equipSystem.target = SkinPlayer;
+        ApplySkin();
+    }
+    
+    public void ApplySkinCpu()
+    {
+        CtrlDataGame.Ins.TargetCharacter.equipSystem.target = SkinCPU;
+        ApplyCPU();
+    }
+    
    
     public void ApplySkin()
     {
 
 
-        ChangeHand(CtrlDataGame.Ins.GetIdHand());
-        if (CtrlDataGame.Ins.GetIdItemHand() != -1)
+      
+        
+        if(ShopCtrl.Ins.GetTypeHandByID(CtrlDataGame.Ins.GetIdHand()) == TypeItem.FullItem)
+        {
+            ChangeHand(CtrlDataGame.Ins.GetIdHand());
+            TargetCharacter.EquipItemHandNull();
+          
+           
+        }
+        else
+        {
+            ChangeHand(CtrlDataGame.Ins.GetIdHand());
+            if (CtrlDataGame.Ins.GetIdItemHand() != -1)
+            {
+
+                ChangeItemHand(CtrlDataGame.Ins.GetIdItemHand());
+            }
+            else
+            {
+                TargetCharacter.EquipItemHandNull();
+            }
+        }
+
+
+
+        if (ShopCtrl.Ins.GetTypeLegByID(CtrlDataGame.Ins.GetIdLeg()) == TypeItem.FullItem)
         {
            
-            ChangeItemHand(CtrlDataGame.Ins.GetIdItemHand());
+                ChangeLeg(CtrlDataGame.Ins.GetIdLeg());
+                TargetCharacter.EquipItemLegNull();
+          
         }
         else
         {
-           TargetCharacter.EquipItemHandNull();
+            ChangeLeg(CtrlDataGame.Ins.GetIdLeg());
+            if (CtrlDataGame.Ins.GetIdItemLeg() != -1)
+            {
+                ChangeItemLeg(CtrlDataGame.Ins.GetIdItemLeg());
+            }
+            else
+            {
+                TargetCharacter.EquipItemLegNull();
+            }
+
+      
         }
-       
-        ChangeHead(CtrlDataGame.Ins.GetIdHead());
-        if (CtrlDataGame.Ins.GetIdItemLeg() != -1)
-        {
             
-            ChangeItemLeg(CtrlDataGame.Ins.GetIdItemLeg());
-        }
-        else
-        {
-            TargetCharacter.EquipItemLegNull();
-        }
+      
        
         ChangeLeg(CtrlDataGame.Ins.GetIdLeg());
-
+        ChangeHead(CtrlDataGame.Ins.GetIdHead());
+        Debug.Log("Hand : " + CtrlDataGame.Ins.GetIdHand());
         TargetCharacter.EquipCharacter();
 
 
     }
-
+    public void ApplyCPU()
+    {
+        TargetCharacter.CpuCharacter();
+    }
     public int GetCoin()
     {
         return PlayerPrefs.GetInt(KeyCoin);

@@ -50,7 +50,10 @@ namespace Spine.Unity.Examples {
         public EquipSystemExample equipSystem;
 		public Image inventoryImage;
 
-
+        private void Awake()
+        {
+            Init();
+        }
         private void Update()
         {
           
@@ -85,11 +88,11 @@ namespace Spine.Unity.Examples {
             {
                 if (aaa[i].equipType == EquipSystemExample.EquipType.Leg)
                 {
-                    AssetLeg.Add(aa[i]);
+                    AssetLeg.Add(aaa[i]);
                 }
                 else
                 {
-                    AssetItemLeg.Add(aa[i]);
+                    AssetItemLeg.Add(aaa[i]);
                 }
             }
 
@@ -126,6 +129,7 @@ namespace Spine.Unity.Examples {
             {
                 if (HandAsset[i].idItem == id)
                 {
+                    Debug.Log("id :" + HandAsset[i].name);
                     Hand = HandAsset[i];
                     break;
                 }
@@ -140,6 +144,7 @@ namespace Spine.Unity.Examples {
             {
                 if (ItemHandAsset[i].idItem == id)
                 {
+                    
                     ItemHand = ItemHandAsset[i];
                     break;
                 }
@@ -177,7 +182,7 @@ namespace Spine.Unity.Examples {
         public void EquipHead(int id)
         {
 
-            
+            Debug.Log(id + "Errror");
             Head = HeadAsset[id];
         }
 
@@ -202,16 +207,32 @@ namespace Spine.Unity.Examples {
 
         public void EquipCharacter()
         {
-
-           
+            //  Hand = HandAsset[Random.Range(0, HandAsset.Length)];
+            equipSystem.Equip(Head);
+            Debug.Log("Asset  :" +Head.name);
             equipSystem.Equip(ItemHand);
+            
             equipSystem.Equip(Leg);
             equipSystem.Equip(ItemLeg);
             equipSystem.Equip(Hand);
-            equipSystem.Equip(Head);
-         
-        }
+            
 
+        }
+        public void CpuCharacter()
+        {
+            Head = HeadAsset[3];
+            Debug.Log("Asset  :" + Head.name);
+            Leg = LegAsset[2];
+            Hand = HandAsset[2];
+            ItemLeg = CtrlDataGame.Ins.AssetSkin.Null_Item_Leg;
+            ItemHand = CtrlDataGame.Ins.AssetSkin.Null_Item_Hand;
+            equipSystem.Equip(Head);
+            equipSystem.Equip(ItemLeg);
+            equipSystem.Equip(ItemHand);
+            equipSystem.Equip(Hand);
+            equipSystem.Equip(Leg);
+          
+        }
        
 
       
