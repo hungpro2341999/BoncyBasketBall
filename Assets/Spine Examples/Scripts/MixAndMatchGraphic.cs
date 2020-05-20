@@ -185,6 +185,9 @@ namespace Spine.Unity.Examples {
 			Resources.UnloadUnusedAssets();
 		}
 
+
+
+
 		public void Attachment_Head(Sprite Img)
 		{
 			this.HeadSprite = Img;

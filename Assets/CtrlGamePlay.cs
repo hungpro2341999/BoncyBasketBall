@@ -132,6 +132,7 @@ public class CtrlGamePlay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 120;
         Physics2D.gravity = Vector3.up * graviry;
         var a = (Player)Player;
         a.isInputMove = true;
@@ -148,6 +149,7 @@ public class CtrlGamePlay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Application.targetFrameRate = 120;
         if (Input.GetKeyDown(KeyCode.W))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -186,22 +188,25 @@ public class CtrlGamePlay : MonoBehaviour
     {
         var CPU = (AI)AI;
 
-        float PercentageX =  CPU.TargetHoop.x + Random.Range(-CPU.PercentageThrowBall,CPU.PercentageThrowBall)*CPU.PercentageDistance;
-        float PercentageY = CPU.TargetHoop.y + Random.Range(0, CPU.PercentageThrowBall) * CPU.PercentageDistance;
+        CPU.type = CPU.GetTypeScore();
+        int currPos = (int)Mathf.Abs((CtrlGamePlay.Ins.WidthScreen / 2 - CPU.transform.position.x) / CPU.Amount);
+        float PercentageX =  CPU.TargetHoop.x + Random.Range(-CPU.PercentageThrowBall,CPU.PercentageThrowBall)*CPU.PercentageDistance *Mathf.Clamp((currPos), 1, 12) * 0.5f;
+        float PercentageY = CPU.TargetHoop.y + Random.Range(0, CPU.PercentageThrowBall) * CPU.PercentageDistance * Mathf.Clamp((currPos), 1, 12) * 0.2f;
         float yJump = Mathf.Abs(transform.position.y - Ball.transform.position.y);
         yJump += Random.Range(2, 4);
-        yJump = Mathf.Clamp(yJump, 0, 3.5f);
+        yJump = Mathf.Clamp(yJump, 0.5f, 5);
         Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
     }
     public void PlayerThrowBall()
     {
         var player = (Player)Player;
-
-        float PercentageX = player.TargetHoop.x + Random.Range(-player.PercentageThrowBall, player.PercentageThrowBall) * player.PercentageDistance;
-        float PercentageY = player.TargetHoop.y + Random.Range(0, player.PercentageThrowBall) * player.PercentageDistance;
+        player.type = player.GetTypeScore();
+        int currPos = (int)Mathf.Abs((CtrlGamePlay.Ins.WidthScreen / 2 - player.transform.position.x) / player.Amount);
+        float PercentageX = player.TargetHoop.x + Random.Range(-player.PercentageThrowBall, player.PercentageThrowBall) * Mathf.Clamp((currPos), 1, 12) * 0.5f;
+        float PercentageY = player.TargetHoop.y + ((Random.Range(0, player.PercentageThrowBall) * player.PercentageDistance * Mathf.Clamp((currPos), 1, 12)*0.2f));
         float yJump = Mathf.Abs(transform.position.y - Ball.transform.position.y);
         yJump += Random.Range(2, 4);
-        yJump = Mathf.Clamp(yJump, 0, 5);
+        yJump = Mathf.Clamp(yJump,0.5f, 5);
         Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
     }
     public void Launch(float height,Vector3 Target)
@@ -216,7 +221,16 @@ public class CtrlGamePlay : MonoBehaviour
         Ball.GetComponent<CircleCollider2D>().isTrigger = false;
         Ball.Body.isKinematic = false;
         Ball.Body.simulated = true;
-        Ball.Body.velocity = CaculateVelocity(height,Target).InitVelocity;
+        Debug.Log("Velocity : "+CaculateVelocity(height, Target).InitVelocity);
+        try
+        {
+            Ball.Body.velocity = CaculateVelocity(height, Target).InitVelocity;
+        }
+        catch(System.Exception e)
+        {
+           
+        }
+       
     }
 
     public void PushBall(Vector3 direct)
@@ -231,6 +245,7 @@ public class CtrlGamePlay : MonoBehaviour
         Ball.GetComponent<CircleCollider2D>().isTrigger = false;
         Ball.Body.isKinematic = false;
         Ball.Body.simulated = true;
+        
         Ball.Body.AddForce(direct, ForceMode2D.Force);
 
 
@@ -240,13 +255,17 @@ public class CtrlGamePlay : MonoBehaviour
     {
        Vector3 Target = TargetTo;
         float h = height;
+        if (h < 1)
+        {
+            h = Random.Range(2, 4);
+        }
         float displacementY = Target.y - Ball.transform.position.y;
         Vector3 displacementX = new Vector3((Target.x - Ball.transform.position.x),0,0);
 
         float time = Mathf.Sqrt(-2 * h / graviry) + Mathf.Sqrt(2 * (displacementY - h) / graviry);
 
         Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * graviry * h);
-        Vector3 velocityX = displacementX / time;
+        Vector3 velocityX = displacementX / Mathf.Clamp(time,0.5f,100);
 
         return new LauchData(velocityX + velocityY * -Mathf.Sign(graviry), time);
 
@@ -267,6 +286,8 @@ public class CtrlGamePlay : MonoBehaviour
     {
         ScorePlayer++;
         RenderScore();
+
+       
 
         StartCoroutine(Rest_Game_Play(timeResetGamePlay));
     }
@@ -316,6 +337,9 @@ public class CtrlGamePlay : MonoBehaviour
         Ball.transform.position = PosInitBall;
         RenderScore();
     }
+
+
+    
 
     public void SetScore(TypeScore score)
     {

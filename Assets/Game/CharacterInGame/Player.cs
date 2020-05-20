@@ -67,8 +67,10 @@ public class Player : Character
     Dictionary<string, ActionGame> Directory_OnActionGame = new Dictionary<string, ActionGame>();
     Dictionary<string, ActionGame[]> Directory_Key_Status = new Dictionary<string, ActionGame[]>();
 
-    
-
+    public float Amount;
+    private float PosInit;
+    public int CountSperateDistance;
+   
     private void Awake()
     {
         InitKey();
@@ -100,9 +102,10 @@ public class Player : Character
         btn_Swing.eventDownButton += Swing;
         btn_Right.eventUpButton   += UnMoveRight;
         btn_Left.eventUpButton    += UnMoveLeft;
-      
 
-      
+
+        Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
+        PosInit = -CtrlGamePlay.Ins.WidthScreen / 2;
     }
 
   
@@ -221,6 +224,9 @@ public class Player : Character
 
         }
     }
+
+    
+
     public override void Move()
     {
 
@@ -393,7 +399,10 @@ public class Player : Character
         isMoveRight = false;
         Velocity = Vector2.zero;
     }
-
+    public bool isInAction()
+    {
+        return OnAction == null;
+    }
     public void Swing()
     {
         if (isGround)
@@ -402,6 +411,7 @@ public class Player : Character
             {
                 if (!isActiveHand)
                 {
+
                     isActiveHand = true;
                     StatusCurr = CharacterState.swing;
                 }
@@ -426,7 +436,16 @@ public class Player : Character
                 {
                     if (isBall)
                     {
-                        isPullBall = true;
+                        if (isActiveAction())
+                        {
+                            var a = GetActionActive();
+                            a.ActiveAction();
+                        }
+                        else
+                        {
+                            isPullBall = true;
+                        }
+
 
                     }
                 }
@@ -464,6 +483,7 @@ public class Player : Character
     }
     public override void CaculateStatus()
     {
+        LoadCurrPosionPlayer();
         base.CaculateStatus();
         if(high >= 0.5f)
         {
@@ -477,6 +497,16 @@ public class Player : Character
        
         
         base.CaculateStatus();
+    }
+
+
+    public void LoadCurrPosionPlayer()
+    {
+
+        int point = (int)((PosInit - transform.position.x) / Amount);
+
+        CurrPos = Mathf.Abs(point);
+
     }
 
     public void InitKey()
@@ -570,8 +600,10 @@ public class Player : Character
 
     public void UnActionSlampDunk()
     {
-       
-        // StatusCurr = CharacterState.jumb3;
+        
+        Body.simulated = true;
+        Body.constraints = RigidbodyConstraints2D.None;
+        Body.constraints = RigidbodyConstraints2D.FreezeRotation; ;
     }
     public void OnTriggerStun()
     {
@@ -632,7 +664,7 @@ public class Player : Character
     {
 
         // Action Game
-        ActionGame lc_SlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk,UnActionSlampDunk, 10);
+        ActionGame lc_SlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk,UnActionSlampDunk, 2);
         ActionGame lc_Stun = new ActionGame(OnTriggerStun, OnStartTriggerStun, OnEndTriggerStun, 0);
 
         // AddToDirectoryGame
@@ -817,6 +849,7 @@ public class Player : Character
 
     public void Event_Reset()
     {
+        isBall = false;
         Velocity = Vector3.zero;
         Body.velocity = Vector3.zero;
         OnAction = null;

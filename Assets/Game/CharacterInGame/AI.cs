@@ -21,7 +21,7 @@ public class AI : Character
 {
 
 
-
+   
 
 
 
@@ -82,11 +82,11 @@ public class AI : Character
     public bool isLimit = false;
   
 
-    private float Amount;
+    public float Amount;
     private float PosInit;
 
 
-    public int CurrPos;
+    
     public int PreviousPos;
     public bool ChangeStatus;
 
@@ -283,12 +283,20 @@ public class AI : Character
             OnAttack();
         }
 
-
+        RaycastHit2D hits = Physics2D.Raycast(Vector3.left * 0.5f + transform.position - Vector3.up * 0.5f, Vector2.left, 1.2f);
         // 
-        if (Physics2D.Raycast(Vector3.left * 0.5f + transform.position - Vector3.up * 0.5f, Vector2.left, 1.2f, LayerPlayer))
+        if (hits.collider!=null)
         {
-            Debug.Log("Coll");
-            Directory_StatusCpu[Key_Trigger_Front] = 1;
+            if(hits.collider.gameObject.layer == 16)
+            {
+                Debug.Log("Coll");
+                Directory_StatusCpu[Key_Trigger_Front] = 1;
+            }
+            else
+            {
+                Directory_StatusCpu[Key_Trigger_Front] = 0;
+            }
+         
         }
         else
         {
@@ -831,7 +839,9 @@ public class AI : Character
       
         if (isBall)
         {
-            if (delay_move_Back_throw_ball > 0)
+            if (isComplte_move_Back_throw_ball)
+                return;
+                if (delay_move_Back_throw_ball > 0)
             {
                 delay_move_Back_throw_ball -= Time.deltaTime;
             }
@@ -839,7 +849,11 @@ public class AI : Character
             {
                 if (Random.Range(0, 2) == 0)
                 {
+                    if (isComplte_move_Back_throw_ball)
+                        return;
+                    isComplte_move_Back_throw_ball = true;
                     isJump = true;
+                    hasPullBall = true;
                 }
                 else
                 {
@@ -878,7 +892,7 @@ public class AI : Character
     public void EndActionMoveBackHaveBall()
     {
        
-        changeStatus = true;
+       changeStatus = true;
     }
 
 
@@ -887,7 +901,7 @@ public class AI : Character
 
    
 
-    public void OnMoveToPlayer()
+    public virtual void OnMoveToPlayer()
     {
         var a = CtrlGamePlay.Ins.Player;
         if (Mathf.Abs(transform.position.x - a.transform.position.x) >= 0.5f)
@@ -1210,7 +1224,7 @@ public class AI : Character
 
    
 
-    public void Init()
+    public virtual void Init()
     {
         // Initialize Action With Key
 
@@ -1232,7 +1246,7 @@ public class AI : Character
 
         ActionGame lc_OnActionMoveToBall = new ActionGame(null, OnMoveToBall, EndAction, 1);
 
-        ActionGame lc_OnMoveBackHaveBall = new ActionGame(OnStartMoveBackHaveBall, OnMoveBackHaveBall, EndActionMoveBackHaveBall, 1);
+        ActionGame lc_OnMoveBackHaveBall = new ActionGame(OnStartMoveBackHaveBall, OnMoveBackHaveBall, EndActionMoveBackHaveBall, 2.5f);
 
         ActionGame lc_OnActionJumpThrowBall = new ActionGame(OnJumpThrowBall, OnStartThrowBall, EndAction, 1);
 

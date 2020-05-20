@@ -13,7 +13,7 @@ public class CheckInBall : MonoBehaviour
     public const string Key_Baset_1 = "Basket_1";
     public const string Key_Baset_2 = "Basket_2";
     public const string Key_Global = "Global";
-
+    public const string Key_Coll_2 = "Coll_2";
     public bool isCanGlobal = false;
     public bool isGlobal = false;
     public Transform Hool;
@@ -51,6 +51,7 @@ public class CheckInBall : MonoBehaviour
         Global.Add(Key_Baset_1, 0);
         Global.Add(Key_Baset_2, 0);
         Global.Add(Key_Global, 0);
+        Global.Add(Key_Coll_2, 0);
 
     }
 
@@ -61,6 +62,7 @@ public class CheckInBall : MonoBehaviour
         Global[Key_Global] = 0;
         Global[Key_Baset_1] = 0;
         Global[Key_Baset_2] = 0;
+        Global[Key_Coll_2] = 0;
     }
 
     public void SetKey(string key)
@@ -88,13 +90,40 @@ public class CheckInBall : MonoBehaviour
 
                 if ((Global[Key_Baset_1] + Global[Key_Baset_2]) == 2)
                 {
+                    var ball = (Ball)CtrlGamePlay.Ins.Ball;
+                    var player = (Player)CtrlGamePlay.Ins.Player;
+                    var cpu = (AI)CtrlGamePlay.Ins.AI;
                     switch (BoardOf)
                     {
                         case BoardGame.Player:
+                           
+
+                           
                             CtrlGamePlay.Ins.GlobalPlayer();
                             break;
                         case BoardGame.CPU:
+                            if (ball.LastHand is Player)
+                            {
+                                if (player.type == TypeScore.Point_2)
+                                {
+                                    if (player.isInAction())
+                                    {
+                                        player.type = TypeScore.JumpBall;
+                                    }
+                                }
+                                else
+                                {
+                                    if (Global[Key_Coll_2] == 0)
+                                    {
+                                        player.type = TypeScore.Clean_Shoot;
+                                    }
+                                }
+
+                            }
+                            
+                            
                             CtrlGamePlay.Ins.GlobalCPU();
+                            CtrlGamePlay.Ins.SetScore(player.type);
                             break;
                     }
 
@@ -123,6 +152,7 @@ public class CheckInBall : MonoBehaviour
             Global[Key_Global] = 0;
             Global[Key_Baset_1] = 0;
             Global[Key_Baset_2] = 0;
+            Global[Key_Coll_2] = 0;
         }
 
     }

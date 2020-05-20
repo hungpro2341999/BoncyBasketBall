@@ -18,7 +18,7 @@ public class CtrlDataGame : MonoBehaviour
     public EquipsVisualsComponentExample SkinCPU;
     [SerializeField]
     public EquipsVisualsComponentExample SkinPlayer;
-
+    public List<Mission> MissionGame;
 
 
     public static CtrlDataGame Ins;

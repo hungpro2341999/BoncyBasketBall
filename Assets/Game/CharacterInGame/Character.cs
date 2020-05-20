@@ -26,6 +26,7 @@ public enum CharacterState
 public abstract class Character : MonoBehaviour
 {
     [Header("Animation")]
+    public TypeScore type;
     public CharacterState StatusCurr;
 
     public CharacterState PerviousStatus;
@@ -60,10 +61,10 @@ public abstract class Character : MonoBehaviour
     protected float m_timeStartJump;
     protected float timejump;
     public float speed;
-
+   
     public float High;
     public string KeyInput = "";
-
+    public int CurrPos;
     [Header("ThrowBall")]
 
     public float PercentageThrowBall;
@@ -276,5 +277,16 @@ public abstract class Character : MonoBehaviour
     public virtual void Reset()
     {
 
+    }
+    public  TypeScore GetTypeScore()
+    {
+        if (CurrPos >= 7)
+        {
+            return TypeScore.Point_2;
+        }
+        else
+        {
+            return TypeScore.Point_3;
+        }
     }
 }
