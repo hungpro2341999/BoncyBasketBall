@@ -70,6 +70,8 @@ public class Player : Character
     public float Amount;
     private float PosInit;
     public int CountSperateDistance;
+
+    
    
     private void Awake()
     {
@@ -105,7 +107,7 @@ public class Player : Character
 
 
         Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
-        PosInit = -CtrlGamePlay.Ins.WidthScreen / 2;
+        PosInit = CtrlGamePlay.Ins.WidthScreen / 2;
     }
 
   
@@ -294,9 +296,10 @@ public class Player : Character
                 }
                 else
                 {
-
+                isActiveHand = false;
                 if (!isJumpGround)
                 {
+                  
                     if (isStartJump)
                     {
 
@@ -645,7 +648,7 @@ public class Player : Character
             Ball.GetComponent<CircleCollider2D>().isTrigger = false;
             Ball.Body.isKinematic = false;
             Ball.Body.simulated = true;
-            Ball.Body.AddForce(Vector2.up * -10, ForceMode2D.Force);
+            Ball.Body.AddForce(Vector2.up, ForceMode2D.Force);
         }
 
     }

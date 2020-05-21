@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CheckSlampDunkCPU : Check
 {
+    private void Start()
+    {
+        character = CtrlGamePlay.Ins.AI;
+    }
     public string KeyAciton;
     public override void CheckKey(Collider2D collision)
     {

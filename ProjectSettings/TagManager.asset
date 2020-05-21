@@ -24,6 +24,7 @@ TagManager:
   - PosInitPlayer
   - PosInitBall
   - TargetHoop
+  - Percition01
   layers:
   - Default
   - TransparentFX
@@ -50,8 +51,8 @@ TagManager:
   - Score
   - BG_2
   - BackGround
-  - 
-  - 
+  - PercitionBall
+  - PercitionBall01
   - 
   - 
   - 

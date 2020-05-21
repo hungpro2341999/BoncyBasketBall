@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CheckWithSlampDunk : Check
 {
-    public string KeyActive;
+    public string[] KeyActive;
     public bool WaithForAction = false;
     // Start is called before the first frame update
     public override void CheckKey(Collider2D collision)
@@ -12,7 +12,7 @@ public class CheckWithSlampDunk : Check
         if(collision.gameObject.tag == "Hand")
         {
             Player a = (Player)character;
-            if (KeyActive == a.KeyInput)
+            if (isCorrectKey(a.KeyInput))
             {
                 WaithForAction = true;
             }
@@ -45,7 +45,17 @@ public class CheckWithSlampDunk : Check
             Debug.Log("Active ");
         }
     }
-
+    public bool isCorrectKey(string key)
+    {
+        for(int i = 0; i < KeyActive.Length; i++)
+        {
+            if(KeyActive[i] == key)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 

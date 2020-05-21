@@ -29,7 +29,7 @@ public class MissonCtrl : MonoBehaviour
         var a = CtrlDataGame.Ins.MissionGame;
         for(int i = 0; i < a.Count; i++)
         {
-            var mission = Instantiate(ObjDailyMission, TranMisson);
+        //    var mission = Instantiate(ObjDailyMission, TranMisson);
             
         }
 

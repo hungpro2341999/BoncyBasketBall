@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CheckWithPlayer : Check
 {
+    private void Start()
+    {
+        character = CtrlGamePlay.Ins.AI;
+    }
     // Start is called before the first frame update
     public override void CheckKey(Collider2D collision)
     {

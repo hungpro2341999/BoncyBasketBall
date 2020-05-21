@@ -1,0 +1,38 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CheckWithPercitonBall01 : Check
+{
+    public override void CheckKey(Collider2D collision)
+    {
+
+        if (collision.gameObject.tag == "Percition01")
+        {
+            //  Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
+            if (character is AI)
+            {
+                var AI = (AI)character;
+                AI.SetKeyTrigger(key);
+
+            }
+
+        }
+    }
+
+    public override void UnCheckKey(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Percition01")
+        {
+            if (character is AI)
+            {
+                var AI = (AI)character;
+                AI.SetRestoreTrigger(key);
+
+
+            }
+
+
+        }
+    }
+}

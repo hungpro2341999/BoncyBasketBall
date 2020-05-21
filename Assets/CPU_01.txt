@@ -2,12 +2,15 @@
 // 1.MoveToCatchBall
 // 2.CpuHaveBall
 // 3.PlayerHaveBall
+// 4.CpuProtectBall
 
-
-
-0. 00 = 0 
-1. 01 = 2
-2. 10 = 1
+//  Status   =  CPuHaveBall + PlayerHaveBall +BallToBoardCPU
+0. 000 = 1 
+1. 010 = 3
+2. 100 = 2
+3. 001 = 0
+4. 011 = 0
+5. 101 = 2
 
 
 --Staus--
@@ -62,4 +65,13 @@
 1. 10 = OnMoveToPlayer 
 2. 00 = OnMoveToPlayer 
 3. 11 = OnMoveToPlayer
+
+--Staus--
+
+// IV> Protect Ball
+//1. TriggerJumpProtect
+
+0. 0 = OnActionJump
+1. 1 = OnActionMoveProtectBall
+
 

@@ -224,11 +224,12 @@ public class CtrlGamePlay : MonoBehaviour
         Debug.Log("Velocity : "+CaculateVelocity(height, Target).InitVelocity);
         try
         {
+            
             Ball.Body.velocity = CaculateVelocity(height, Target).InitVelocity;
         }
         catch(System.Exception e)
         {
-           
+            Ball.Body.velocity = Vector3.zero;
         }
        
     }
@@ -412,6 +413,16 @@ public class CtrlGamePlay : MonoBehaviour
 
     #endregion
 
-
-
+    public Player GetPlayer()
+    {
+        return (Player)Player;
+    }
+    public AI GetCPU()
+    {
+        return (AI)AI;
+    }
+    public Ball GetBall()
+    {
+        return (Ball)Ball;
+    }
 }
