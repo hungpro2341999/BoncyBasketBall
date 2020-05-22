@@ -107,7 +107,7 @@ public class Player : Character
 
 
         Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
-        PosInit = CtrlGamePlay.Ins.WidthScreen / 2;
+        PosInit = (CtrlGamePlay.Ins.WidthScreen / 2)-0.3f;
     }
 
   

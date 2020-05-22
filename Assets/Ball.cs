@@ -23,21 +23,21 @@ public class Ball : Character
 
     public bool isHand;
 
-    public static string KeyBall ="";
-    public  Character LastHand;
+    public static string KeyBall = "";
+    public Character LastHand;
     public static float VelocityBall = 1.5f;
     public Text keyBall;
     public bool isPercitonWithBoard;
 
     public Vector3 PosPercitionHoop;
 
-    public event System.Action  PercitionBall;
+    public event System.Action PercitionBall;
 
 
     //
     private float Amount;
     private float PosInit;
-    public  int CountSperateDistance;
+    public int CountSperateDistance;
     public override void Start()
     {
         Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
@@ -48,16 +48,16 @@ public class Ball : Character
         CtrlGamePlay.Ins.eventRestGamePlay += Event_Reset;
 
         RestoreLayer_01 = new int[ColliderIngore_01.Length];
-        for(int i = 0; i < ColliderIngore_01.Length; i++)
+        for (int i = 0; i < ColliderIngore_01.Length; i++)
         {
             RestoreLayer_01[i] = ColliderIngore_01[i].gameObject.layer;
         }
     }
     // Start is called before the first frame update
-    
+
     public override void GetStatus()
     {
-     
+
         RaycastHit2D[] ray = Physics2D.RaycastAll(transform.position, Body.velocity.normalized);
 
         if (PercitionBall != null)
@@ -69,8 +69,8 @@ public class Ball : Character
         //   PercitionForProtectBall();
         LoadCurrPosionPlayer();
         PercitionForProtectBall();
-        if (KeyBall.ToString()!=null)
-        keyBall.text = "KeyBall : "+KeyBall.ToString();
+        if (KeyBall.ToString() != null)
+            keyBall.text = "KeyBall : " + KeyBall.ToString();
     }
     public void LoadCurrPosionPlayer()
     {
@@ -84,17 +84,17 @@ public class Ball : Character
     {
         TurnOffSimulate();
         PercitionBall = null;
-       
+
     }
     public void OnPercitionBall_0()
     {
         PercitionBall = null;
-       
-      PercitionBall += PredictionFall;
+
+        PercitionBall += PredictionFall;
     }
     public void OnPercitionBall_1()
     {
-       
+
         PercitionBall = null;
         PercitionBall += PercitionBall;
     }
@@ -178,6 +178,82 @@ public class Ball : Character
 
 
     }
+    public string KeyController_CPU_X_1()
+    {
+        string s = "";
+        string bitAI = "";
+        string bitPlayer = "";
+        string bitBoardCpu = "";
+        if (CtrlGamePlay.Ins.AI.isBall)
+        {
+            bitAI = "1";
+        }
+        else
+        {
+            bitAI = "0";
+        }
+
+        if (CtrlGamePlay.Ins.Player.isBall)
+        {
+            bitPlayer = "1";
+        }
+        else
+        {
+            bitPlayer = "0";
+        }
+
+        if (CtrlGamePlay.Ins.GetBall().isPercitonWithBoard)
+        {
+            bitBoardCpu = "1";
+        }
+        else
+        {
+            bitBoardCpu = "0";
+        }
+        s += bitAI + bitPlayer + bitBoardCpu;
+
+
+
+        KeyBall = s;
+        return s;
+
+    }
+
+
+    public string KeyController_CPU_X_0()
+        {
+        string s = "";
+        string bitAI = "";
+        string bitPlayer = "";
+        if (CtrlGamePlay.Ins.AI.isBall)
+        {
+            bitAI = "1";
+        }
+        else
+        {
+            bitAI = "0";
+        }
+
+        if (CtrlGamePlay.Ins.Player.isBall)
+        {
+            bitPlayer = "1";
+        }
+        else
+        {
+            bitPlayer = "0";
+        }
+
+        s += bitAI + bitPlayer;
+
+
+
+        KeyBall = s;
+        return s;
+
+
+    }
+
+
 
 
 

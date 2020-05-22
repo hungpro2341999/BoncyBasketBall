@@ -6,16 +6,9 @@ using UnityEngine.UI;
 using System.IO;
 using Spine;
 
-public enum RelizeBall { Right,Left,Up,Down};
-public enum IsSameDirectWithBall  { Yes, No };
-public enum IsSameDirectWithPlayer { Yes, No};
 
 
-public enum StatusWithPlayer { BlockByPlayer, NotBlock,None};
-public enum StatusHaveBall { Yes,No}
-
-
-
+public enum DirectWithPlayer { Right,Left,None};
 
 public class AI : Character
 {
@@ -32,7 +25,7 @@ public class AI : Character
 
     public float ForceHead;
     public float SpeedShoe;
-
+    public  DirectWithPlayer DirectCpu;
 
     #endregion
 
@@ -59,12 +52,7 @@ public class AI : Character
     [Header("STATUS")]
     // Status
 
-    public RelizeBall RelizeBall;
-    public IsSameDirectWithBall isSameWithBall;
-    public IsSameDirectWithPlayer isSameWithPlayer;
-    public StatusWithPlayer StatusWithPlayer;
-    public StatusHaveBall StatusHaveBall;
-    public LayerMask LayerPlayer;
+   
     public float DistanceToPlayer;
 
     public float PrecJump;
@@ -83,7 +71,7 @@ public class AI : Character
 
 
     public float Amount;
-    private float PosInit;
+    public float PosInit;
 
 
 
@@ -292,7 +280,7 @@ public class AI : Character
 
         MatrixPositonAi = new int[CountSperateDistance];
 
-        PosInit = CtrlGamePlay.Ins.WidthScreen / 2;
+        PosInit = (CtrlGamePlay.Ins.WidthScreen / 2)-0.3f;
         TargetX = transform.position.x;
 
         TargetHoop = GameObject.FindGameObjectWithTag("TargetCPU").transform.position;
@@ -312,6 +300,26 @@ public class AI : Character
     #region Core
     public override void CaculateStatus()
     {
+        Debug.Log("Distance Start : " + Distance_Player_CPU());
+        var a = CtrlGamePlay.Ins.AI;
+        var b = CtrlGamePlay.Ins.Player;
+        if((a.CurrPos - b.CurrPos )== 0)
+        {
+            DirectCpu = DirectWithPlayer.None;
+        }
+        else
+        {
+            if(Mathf.Abs((a.CurrPos - b.CurrPos))==1)
+            {
+                
+                DirectCpu = DirectWithPlayer.Left;
+
+            }
+            else
+            {
+                DirectCpu = DirectWithPlayer.Right;
+            }
+        }
         if (Input.GetKeyDown(KeyCode.L))
         {
 
@@ -386,6 +394,10 @@ public class AI : Character
                 }
 
             }
+            else
+            {
+               
+            }
 
 
             if (OnActionTrigger != null)
@@ -423,17 +435,17 @@ public class AI : Character
         {
             return;
         }
-        Debug.Log("Active");
+      //  Debug.Log("Active");
 
         var action = Directory_Action_Process_Key[KeyCurrBall].StartAction;
         if (action != null)
         {
-            Debug.Log("Deo Null");
+      //      Debug.Log("Deo Null");
             action.Invoke();
         }
         else
         {
-            Debug.Log("Null");
+        //    Debug.Log("Null");
         }
 
     }
@@ -2318,7 +2330,15 @@ public class AI : Character
         }
     }
 
-   
+
+    protected int Distance_Player_CPU()
+    {
+        var player = CtrlGamePlay.Ins.Player;
+        var cpu = CtrlGamePlay.Ins.AI;
+        return Mathf.Abs(player.CurrPos - cpu.CurrPos);
+    }
+
+
 
 
 

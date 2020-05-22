@@ -7,7 +7,7 @@ public class CheckWithPercition : Check
     // Start is called before the first frame update
     void Start()
     {
-        
+        character = CtrlGamePlay.Ins.AI;
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class CheckWithPercition : Check
         
         if (collision.gameObject.tag == "Percition")
         {
-          //  Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
+           Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
             if (character is AI)
             {
                 var AI = (AI)character;
