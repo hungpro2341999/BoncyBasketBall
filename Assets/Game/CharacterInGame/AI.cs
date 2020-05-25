@@ -300,7 +300,7 @@ public class AI : Character
     #region Core
     public override void CaculateStatus()
     {
-        Debug.Log("Distance Start : " + Distance_Player_CPU());
+   //     Debug.Log("Distance Start : " + Distance_Player_CPU());
         var a = CtrlGamePlay.Ins.AI;
         var b = CtrlGamePlay.Ins.Player;
         if((a.CurrPos - b.CurrPos )== 0)
@@ -309,7 +309,7 @@ public class AI : Character
         }
         else
         {
-            if(Mathf.Abs((a.CurrPos - b.CurrPos))==1)
+            if(Mathf.Sign((a.CurrPos - b.CurrPos))==1)
             {
                 
                 DirectCpu = DirectWithPlayer.Left;
@@ -455,7 +455,7 @@ public class AI : Character
     public void LoadCurrPosionPlayer()
     {
 
-        int point = (int)((PosInit - transform.position.x) / Amount);
+        int point = (Mathf.FloorToInt(((PosInit - transform.position.x) / Amount)));
 
         CurrPos = point;
 
@@ -728,8 +728,10 @@ public class AI : Character
     // Move
     #region Move
 
+    public virtual void OnTriggerMoveToHoop()
+    {
 
-
+    }
 
 
 
@@ -1321,7 +1323,7 @@ public class AI : Character
         ActionGame lc_OnJump = new ActionGame(OnJump, OnJumpStraight, Endjump, 0.75f);
         ActionGame lc_OnIdle = new ActionGame(null, OnMoveIde, EndAction, 0.5f);
         ActionGame lc_OnMoveRandom = new ActionGame(null, OnMoveRandom);
-        ActionGame lc_onMoveToHoop = new ActionGame(null, OnMoveToHoop);
+        ActionGame lc_onMoveToHoop = new ActionGame(OnTriggerMoveToHoop, OnMoveToHoop);
         ActionGame lc_OnJump_left = new ActionGame(OnTriggerJumpLeft, OnJumpLeft, Endjump, 1f);
         ActionGame lc_OnJump_right = new ActionGame(OnJump, OnJumpRight, Endjump, 1f);
         ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, null, 2, true);

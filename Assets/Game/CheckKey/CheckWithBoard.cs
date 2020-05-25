@@ -12,7 +12,7 @@ public class CheckWithBoard : Check
     {
        if(collision.gameObject.tag == "AI")
         {
-            Debug.Log(key+""+gameObject.name);
+         //   Debug.Log(key+""+gameObject.name);
             var a = (AI)character;
             a.SetKeyTrigger(key);
         }

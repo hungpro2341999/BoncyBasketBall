@@ -41,17 +41,59 @@ public class UI_Tourment_Rivial : MonoBehaviour
     }
     private void Update()
     {
+        if (!gameObject.activeInHierarchy)
+            return;
         StartProcess();
     }
-    public void SetRandomGraphics()
+    public void ApplyGraphics()
     {
-        Skin = new int[] { 1, 2, 4, 5, 4 };
+       
+
         TargetGraphic.HeadSprite = CtrlDataGame.Ins.Resource.Heads.Heads[Skin[0]].Img;
-        TargetGraphic.handSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skin[1]].Img;
-        TargetGraphic.ItemHandSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skin[2]].Img;
-        TargetGraphic.ItemLegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skin[3]].Img;
-        TargetGraphic.LegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skin[4]].Img;
+        if(CtrlDataGame.Ins.Resource.Hands.Heads[Skin[1]].type == TypeItem.FullItem)
+        {
+            TargetGraphic.handSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skin[1]].Img;
+            TargetGraphic.ItemHandSprite = CtrlDataGame.Ins.Resource.Sprite_Null;
+        }
+        else if(CtrlDataGame.Ins.Resource.Hands.Heads[Skin[1]].type == TypeItem.Default)
+        {
+            TargetGraphic.handSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skin[1]].Img;
+            TargetGraphic.ItemHandSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skin[2]].Img;
+        }
+        if (CtrlDataGame.Ins.Resource.Leg.Heads[Skin[3]].type == TypeItem.FullItem)
+        {
+            TargetGraphic.ItemLegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skin[3]].Img;
+            TargetGraphic.LegSprite = CtrlDataGame.Ins.Resource.Sprite_Null;
+
+        }
+        else
+        {
+            TargetGraphic.ItemLegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skin[4]].Img;
+            TargetGraphic.LegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skin[3]].Img;
+
+        }
+
+
+       
+      
         TargetGraphic.Apply();
+    }
+
+
+    public static int[] RandomSKin()
+    {
+       // Debug.Log("Hand : " + CtrlDataGame.Ins.TargetCharacter.HandAsset.Length);
+        int idHand = CtrlDataGame.Ins.TargetCharacter.HandAsset[Random.Range(0, CtrlDataGame.Ins.TargetCharacter.HandAsset.Length)].idItem;
+        int idItemHand = CtrlDataGame.Ins.TargetCharacter.ItemHandAsset[Random.Range(0, CtrlDataGame.Ins.TargetCharacter.ItemHandAsset.Length)].idItem;
+        int idLeg = CtrlDataGame.Ins.TargetCharacter.LegAsset[Random.Range(0, CtrlDataGame.Ins.TargetCharacter.LegAsset.Length)].idItem;
+        int idItemLeg = CtrlDataGame.Ins.TargetCharacter.LegAsset[Random.Range(0, CtrlDataGame.Ins.TargetCharacter.ItemLegAsset.Length)].idItem;
+        int[] Skin = new int[5];
+        Skin[0] = Random.Range(0, CtrlDataGame.Ins.Resource.Heads.Heads.Count);
+        Skin[1] = idHand;
+        Skin[2] = idItemHand;
+        Skin[3] = idLeg;
+        Skin[4] = idItemLeg;
+        return Skin;
     }
     public void StartProcess()
     {

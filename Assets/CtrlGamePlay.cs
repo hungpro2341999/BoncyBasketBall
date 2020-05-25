@@ -221,7 +221,7 @@ public class CtrlGamePlay : MonoBehaviour
         Ball.GetComponent<CircleCollider2D>().isTrigger = false;
         Ball.Body.isKinematic = false;
         Ball.Body.simulated = true;
-        Debug.Log("Velocity : "+CaculateVelocity(height, Target).InitVelocity);
+       // Debug.Log("Velocity : "+CaculateVelocity(height, Target).InitVelocity);
         try
         {
             

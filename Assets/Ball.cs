@@ -12,7 +12,7 @@ public class Ball : Character
     public PrecitionBall Percition;
     public GameObject[] Point;
     public GameObject[] Point_01;
-    public Vector3 PrecitionPosFall;
+    public Vector3 PrecitionBallGround;
     public PercitionGround PercitionGround;
 
     public GameObject[] ColliderIngore;
@@ -68,7 +68,8 @@ public class Ball : Character
 
         //   PercitionForProtectBall();
         LoadCurrPosionPlayer();
-        PercitionForProtectBall();
+        // PercitionForProtectBall();
+      //  PredictionFall();
         if (KeyBall.ToString() != null)
             keyBall.text = "KeyBall : " + KeyBall.ToString();
     }
@@ -108,40 +109,9 @@ public class Ball : Character
 
     public string ControllerBy()
     {
-        string s = "";
-        string bitAI = "";
-        string bitPlayer = "";
-        if (CtrlGamePlay.Ins.AI.isBall)
-        {
-            bitAI = "1";
-        }
-        else
-        {
-            bitAI = "0";
-        }
-
-        if (CtrlGamePlay.Ins.Player.isBall)
-        {
-            bitPlayer = "1";
-        }
-        else
-        {
-            bitPlayer = "0";
-        }
-
-        s += bitAI + bitPlayer;
-
-
-
-        KeyBall = s;
-        return s;
-
-
-
         //string s = "";
         //string bitAI = "";
         //string bitPlayer = "";
-        //string bitBoardCpu = "";
         //if (CtrlGamePlay.Ins.AI.isBall)
         //{
         //    bitAI = "1";
@@ -160,20 +130,51 @@ public class Ball : Character
         //    bitPlayer = "0";
         //}
 
-        //if (CtrlGamePlay.Ins.GetBall().isPercitonWithBoard)
-        //{
-        //    bitBoardCpu = "1";
-        //}
-        //else
-        //{
-        //    bitBoardCpu = "0";
-        //}
-        //s += bitAI + bitPlayer + bitBoardCpu;
+        //s += bitAI + bitPlayer;
 
 
 
         //KeyBall = s;
         //return s;
+
+
+
+        string s = "";
+        string bitAI = "";
+        string bitPlayer = "";
+        string bitBoardCpu = "";
+        if (CtrlGamePlay.Ins.AI.isBall)
+        {
+            bitAI = "1";
+        }
+        else
+        {
+            bitAI = "0";
+        }
+
+        if (CtrlGamePlay.Ins.Player.isBall)
+        {
+            bitPlayer = "1";
+        }
+        else
+        {
+            bitPlayer = "0";
+        }
+
+        if (CtrlGamePlay.Ins.GetBall().isPercitonWithBoard)
+        {
+            bitBoardCpu = "1";
+        }
+        else
+        {
+            bitBoardCpu = "0";
+        }
+        s += bitAI + bitPlayer + bitBoardCpu;
+
+
+
+        KeyBall = s;
+        return s;
 
 
 
@@ -385,8 +386,9 @@ public class Ball : Character
 
 
                 var AI = (AI)CtrlGamePlay.Ins.AI;
-                 posPercition = i - 2;
+                 posPercition = i ;
                 posPercition = Mathf.Clamp(posPercition, 0, Point.Length);
+                PrecitionBallGround = Point[i].transform.position;
                 break;
              }
 
@@ -398,6 +400,9 @@ public class Ball : Character
         {
             ColliderIngore[i].gameObject.layer = RestoreLayer[i];
         }
+
+
+
 
         
 

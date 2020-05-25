@@ -22,23 +22,30 @@ public class AI_02 : AI
 
     public override void OnMoveToPlayer()
     {
-        var player = CtrlGamePlay.Ins.Player;
-        var cpu = CtrlGamePlay.Ins.AI;
+        var a = CtrlGamePlay.Ins.GetPlayer();
+        var b = CtrlGamePlay.Ins.GetCPU();
 
-        if (Mathf.Abs(player.CurrPos - cpu.CurrPos) == 1)
+
+        if (Mathf.Abs(a.CurrPos - b.CurrPos) == 0)
         {
-
-            isMoveLeft = false;
-            isMoveRight = false;
-
-
-
+            if (Mathf.Abs(Mathf.Abs(a.CurrPos - b.CurrPos)) == 1)
+            {
+                isMoveLeft = false;
+                isMoveRight = true;
+            }
+            else
+            {
+                isMoveLeft = true;
+                isMoveRight = false;
+            }
         }
         else
         {
-
-
+            isMoveLeft = false;
+            isMoveRight = false;
         }
+
+      
 
     }
 
@@ -48,133 +55,148 @@ public class AI_02 : AI
         var player = CtrlGamePlay.Ins.GetPlayer();
         var cpu = CtrlGamePlay.Ins.GetCPU();
 
-        PushParmater(new float[] { 2, 0.5f, 0 });
+        PushParmater(new float[] {0.5f, 0});
         // 1:PosRandomWhenPlayerCome
         // 2:PosRandomWhenPlayerForward
-
-        if (player.CurrPos >= 6)
-        {
-            Paramter[0] = (float)Random.Range(2, (int)(player.CurrPos / 2));
-            Paramter[0] = Mathf.Clamp(Paramter[0], 0, 11);
-
-
-        }
 
         Debug.Log("Pos Random : " + Paramter[0]);
 
 
 
     }
+    public override void OnTriggerMoveToHoop()
+    {
+        isComplete = false;
+        Paramter = new List<float>();
+        Paramter.Add(Random.Range(7,8));  // RandomTargetMove
+
+    }
+
+    public override void OnMoveToHoop()
+    {
+
+        MoveToPos((int)Paramter[0]);  
+
+        if (!isComplete)
+        {
+            if (CurrPos >= Paramter[0])
+            {
+                StatusCurr = CharacterState.throw1;
+                isJumpGround = true;
+            }
+            isComplete = true;
+        }
+     
+    }
+
     public virtual void OnStartMoveBackTo()
     {
         var player = CtrlGamePlay.Ins.Player;
         var cpu = CtrlGamePlay.Ins.AI;
-        string s = "";
-
-        Debug.Log("Run");
-        if (DirectCpu == DirectWithPlayer.Right)
+        int distance = Mathf.Abs(player.CurrPos - cpu.CurrPos);
+        if (!isGround)
+            return;
+        if (player.CurrPos >= 5)
         {
-
-
-            if (player.CurrPos >= 6)
+            if (DirectCpu == DirectWithPlayer.Right)
             {
-                if(Distance_Player_CPU() <= 4)
-                {
-                
-                    MoveToPos(player.CurrPos, 0.1f);
-                }
-                else
-                {
-                    MoveToPos((int)Paramter[0], 0.3f);
-                }
               
+                    MoveToPos(player.CurrPos - 4);
+           
+            
+
 
             }
             else
             {
-                MoveToPos((int)Paramter[0],0.3f);
-                if (Paramter[2] >= 0)
-                {
-                    Paramter[2] -= Time.deltaTime;
 
-                }
-                else
-                {
-                    if (!player.isGround)
-                    {
 
-                        isJump = true;
-                        Paramter[2] = Paramter[1];
-                    }
+                MoveToPos(player.CurrPos - 4);
 
-                }
             }
+
         }
         else
         {
-            
-            MoveToPos(player.CurrPos,0.1f);
-            if(Distance_Player_CPU()>=0 && Distance_Player_CPU() <= 2)
+            if (DirectCpu == DirectWithPlayer.Right)
+            {
+
+
+                if (distance <= 2)
                 {
-                
-                    MoveToPos(player.CurrPos, 0.1f);
+                    MoveToPos(player.CurrPos + 1);
                 }
                 else
                 {
-                    MoveToPos((int)Paramter[0], 0.3f);
+                    if (Paramter[1]<=0)
+                    {
+                        if (!player.isGround)
+                        {
+                            isJump = true;
+                            Paramter[1]  = Paramter[0];
+                            
+                        }
+                    }
+                    else
+                    {
+                        Paramter[1] -= Time.deltaTime;
+                    }
+                    MoveToPos(player.CurrPos - 4);
                 }
               
 
-            if (Distance_Player_CPU() >= 0 && Distance_Player_CPU() <= 2)
+
+
+
+            }
+            else
             {
-                if (Paramter[2] >= 0)
-                {
-                    Paramter[2] -= Time.deltaTime;
 
-                }
-                else
-                {
-                    if (!player.isGround)
-                    {
 
-                        isJump = true;
-                        Paramter[2] = Paramter[1];
-                    }
+                MoveToPos(player.CurrPos - 4);
 
-                }
             }
         }
-        textDebug.text = s;
+
+
+      
+
+
 
     }
 
-    private void MoveToPos(int posTarger,float space)
+    private void MoveToPos(int posTarger)
     {
-        Debug.Log(CurrPos + "   " + posTarger + "  " + PosInit + posTarger * Amount);
-
-        if ((Mathf.Abs(transform.position.x - (PosInit + (posTarger * Amount))) >= space  && !isStop()))
+          posTarger = Mathf.Clamp(posTarger, 0, CountSperateDistance);
+        Debug.Log(CurrPos + "  " + posTarger);
+      if((Mathf.Abs(CurrPos - posTarger) != 0))
         {
-            if ((Mathf.Abs(transform.position.x - (PosInit + (posTarger * Amount))) == 1))
+           
+
+
+            if (Mathf.Sign(CurrPos - posTarger) == 1 )
+            {
+                Debug.Log("Right");
+                isMoveRight = true;
+                isMoveLeft =false ;
+            }
+            else
             {
                 Debug.Log("left");
                 isMoveRight = false;
                 isMoveLeft = true;
             }
-            else
-            {
-                Debug.Log("right");
-
-                isMoveRight = true;
-                isMoveLeft = false;
-            }
+           
         }
         else
         {
             Debug.Log("None");
-            isMoveRight = false;
             isMoveLeft = false;
+            isMoveRight = false;
         }
     }
+
+  
 
     //public override void OnMoveToBall()
     //{
@@ -202,7 +224,7 @@ public class AI_02 : AI
 
     public bool isStop()
     {
-        if (CurrPos == 0 || CurrPos == 12)
+        if (CurrPos == 0 || CurrPos == 11)
         {
             return true;
         }

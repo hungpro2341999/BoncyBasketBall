@@ -14,6 +14,8 @@ public class AI_01 : AI
     public Dictionary<string, ProcessKey> Dictory_Protect_Board = new Dictionary<string, ProcessKey>();
     public Dictionary<string, ActionGame[]> Directory_Protect_Board = new Dictionary<string, ActionGame[]>();
   
+
+
     public override void OnTriggerMoveProtectHoop()
     {
         Debug.Log("ONProtect");
