@@ -57,7 +57,7 @@ public class Ball : Character
 
     public override void GetStatus()
     {
-
+        LoadCurrPosionPlayer();
         RaycastHit2D[] ray = Physics2D.RaycastAll(transform.position, Body.velocity.normalized);
 
         if (PercitionBall != null)
@@ -67,8 +67,8 @@ public class Ball : Character
         //  PredictionFall();
 
         //   PercitionForProtectBall();
-        LoadCurrPosionPlayer();
-        // PercitionForProtectBall();
+        
+      //   PercitionForProtectBall();
       //  PredictionFall();
         if (KeyBall.ToString() != null)
             keyBall.text = "KeyBall : " + KeyBall.ToString();

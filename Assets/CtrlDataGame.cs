@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CtrlDataGame : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class CtrlDataGame : MonoBehaviour
     public static string Key_Leg = "Leg";
     public static string Key_Item_Leg = "Item_Leg";
     public const string KeyCoin = "Key_Coins";
+    public const string KeyRemoveAds = "Key_Remove_Ads";
     public DataGame Resource;
     public AssetSkin AssetSkin;
     [SerializeField]
@@ -27,6 +29,8 @@ public class CtrlDataGame : MonoBehaviour
     [Header("TargetCharacter")]
     public EquipButtonExample TargetCharacter;
 
+    public Text TextCoins;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -38,8 +42,9 @@ public class CtrlDataGame : MonoBehaviour
         {
             Ins = this;
         }
-
+        Init();
         CtrlGamePlay.Ins.eventResetGame += ApplySKinPlayer;
+       
     }
    
     public void Init()
@@ -67,7 +72,12 @@ public class CtrlDataGame : MonoBehaviour
         }
         if (!PlayerPrefs.HasKey(KeyCoin))
         {
-            PlayerPrefs.SetInt(KeyCoin, 99999999);
+            PlayerPrefs.SetInt(KeyCoin,1000);
+            PlayerPrefs.Save();
+        }
+        if (!PlayerPrefs.HasKey(KeyRemoveAds))
+        {
+            PlayerPrefs.SetInt(KeyRemoveAds, 0);
             PlayerPrefs.Save();
         }
 
@@ -78,7 +88,7 @@ public class CtrlDataGame : MonoBehaviour
     void Start()
     {
 
-      
+        RenderCoins();
     }
 
     // Update is called once per frame
@@ -296,7 +306,37 @@ public class CtrlDataGame : MonoBehaviour
         PlayerPrefs.SetInt(KeyCoin, coin);
         PlayerPrefs.Save();
     }
+    public void AddCoin(int coin)
+    {
+       int coins =  PlayerPrefs.GetInt(KeyCoin);
+        coins += coin;
+        SaveCoin(coins);
+        RenderCoins();
 
+    }
+    public void EarnCoin(int coin)
+    {
+        int coins = PlayerPrefs.GetInt(KeyCoin);
+        coins -= coin;
+        SaveCoin(coins);
+        RenderCoins();
+    }
+
+    public void RenderCoins()
+    {
+        Debug.Log("Coint Render : " + GetCoin().ToString());
+        TextCoins.text = GetCoin().ToString();
+    }
+    public void ActiveRemoveAds()
+    {
+        PlayerPrefs.SetInt(KeyRemoveAds, 1);
+        PlayerPrefs.Save();
+    }
+
+    public bool IsActiveAds()
+    {
+        return (PlayerPrefs.GetInt(KeyRemoveAds)==1)?true:false;
+    }
 
 
 }

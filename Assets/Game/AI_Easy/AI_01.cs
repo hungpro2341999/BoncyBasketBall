@@ -547,7 +547,7 @@ public class AI_01 : AI
     public string KeyCurrProtectBall()
     {
         string s = Directory_Key_Status[Key_Trigger_Jump_Protect_Ball].ToString();
-      
+        TextStatus.text = s;
         return s;
 
         

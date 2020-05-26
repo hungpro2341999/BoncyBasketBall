@@ -461,7 +461,7 @@ public class AI : Character
 
     }
 
-    public int PostionToPos(float x)
+    public virtual int PostionToPos(float x)
     {
         int point = (int)((PosInit - x) / Amount);
 
@@ -948,7 +948,7 @@ public class AI : Character
         }
 
     }
-    public void EndActionMoveBackHaveBall()
+    public virtual void EndActionMoveBackHaveBall()
     {
 
         changeStatus = true;

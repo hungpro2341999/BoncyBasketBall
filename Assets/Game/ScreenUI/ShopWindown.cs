@@ -5,14 +5,9 @@ using UnityEngine;
 public class ShopWindown : Screen
 {
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public override void EventOpen()
     {
-        
+        GameMananger.Ins.TransSetting.gameObject.SetActive(false);
     }
 }

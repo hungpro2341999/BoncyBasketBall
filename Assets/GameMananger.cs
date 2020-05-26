@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum TypeScreen { Home,Shop,Tourment,Mission,Vs}
+public enum TypeScreen { Home,Shop,Tourment,Mission,Vs,Loading,Pause,ResultWindown,SpinWindown,Gift,Play}
 public class GameMananger : MonoBehaviour
 {
 
     public List<Screen> Screens;
     public static GameMananger Ins;
 
-    public bool isGamePause = true;
+    public bool isGamePause = true; 
     public bool isGameOver = true;
 
     public delegate void eventStartGame();
     public event eventStartGame event_Start_Game;
-
+    [Header("UI")]
+    public Transform DemoCharacter;
+    public Transform TransSetting;
+    public Animator Anim_Setting;
+    public bool open = false;
+    public bool isTest = false;
     private void Awake()
     {
         if (Ins != null)
@@ -31,7 +36,11 @@ public class GameMananger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (isTest)
+        {
+            OpenScreen(TypeScreen.Loading);
+        }
+       
     }
 
     // Update is called once per frame
@@ -77,6 +86,7 @@ public class GameMananger : MonoBehaviour
             if(s.typeSceen == screen.typeSceen)
             {
                 s.Open();
+                
             }
             else
             {
@@ -102,6 +112,15 @@ public class GameMananger : MonoBehaviour
         }
     }
 
+    public void OpenSingle(Screen screen)
+    {
+        screen.Open();
+    }
+    public void CloseSingle(Screen screen)
+    {
+        screen.Close();
+    }
+
     public void CloseSingle(TypeScreen type)
     {
         foreach (Screen s in Screens)
@@ -113,6 +132,27 @@ public class GameMananger : MonoBehaviour
             }
         }
     }
+
+    public void ChangeSetting()
+    {
+        open = !open;
+        if (open)
+        {
+            Anim_Setting.SetBool("Open", true);
+        }
+        else
+        {
+            Anim_Setting.SetBool("Open",false);
+        }
+    }
+
+    public void CloseSetting()
+    {
+        open = false;
+        Anim_Setting.SetBool("Open", open);
+    }
+
+
     
 
 }

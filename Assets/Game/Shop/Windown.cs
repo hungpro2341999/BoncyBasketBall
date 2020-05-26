@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TypeShop { Shop_Hand,Shop_Leg,Shop_Head}
+public enum TypeShop { Shop_Hand,Shop_Leg,Shop_Head,Shop_Pack_Coin,Shop_Pack_Skins}
 
 public class Windown : MonoBehaviour
 {
