@@ -120,9 +120,7 @@ public class CtrlGamePlay : MonoBehaviour
             Ins = this;
         }
 
-        PosInitPlayer = GameObject.FindGameObjectWithTag("PosInitPlayer").transform.position;
-        PosInitCPU    = GameObject.FindGameObjectWithTag("PosInitCPU").transform.position;
-        PosInitBall   = GameObject.FindGameObjectWithTag("PosInitBall").transform.position;
+        
 
         eventRestGamePlay += ResetGamePlay;
         eventResetGame += RestGame;
@@ -132,6 +130,10 @@ public class CtrlGamePlay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        PosInitPlayer = GameObject.FindGameObjectWithTag("PosInitPlayer").transform.position;
+        PosInitCPU = GameObject.FindGameObjectWithTag("PosInitCPU").transform.position;
+        PosInitBall = GameObject.FindGameObjectWithTag("PosInitBall").transform.position;
         Application.targetFrameRate = 120;
         Physics2D.gravity = Vector3.up * graviry;
         var a = (Player)Player;

@@ -41,7 +41,7 @@ public class TourmentCtrl : MonoBehaviour
 
     public void Load()
     {
-       PlayerPrefs.DeleteKey(Key_Tourment);
+     //  PlayerPrefs.DeleteKey(Key_Tourment);
         if (!PlayerPrefs.HasKey(Key_Tourment))
         {
 
@@ -175,6 +175,7 @@ public class TourmentCtrl : MonoBehaviour
         {
             CurrTourmentPlayer = "V_3";
         }
+
 
         return CurrTourmentPlayer;
 
@@ -391,6 +392,7 @@ public class TourmentCtrl : MonoBehaviour
         a6.Skin = a[6].skin;
         a7.Skin = a[7].skin;
 
+       
         a0.ApplyGraphics();
         a1.ApplyGraphics();
         a2.ApplyGraphics();
@@ -400,6 +402,10 @@ public class TourmentCtrl : MonoBehaviour
         a6.ApplyGraphics();
         a7.ApplyGraphics();
 
+        // Player
+
+        
+      
 
 
     }
@@ -607,6 +613,20 @@ public class TourmentCtrl : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void Play()
+    {
+        VsScreen.isMatchRandom = false;
+     
+        VsScreen.SkinUse =  TourmentCtrl.Ins.GetTourmnet(TourmentCtrl.Ins.GetTourmnet(TourmentCtrl.Ins.TourCurrPlayer()).MatchRivial).Skin;
+        for(int i=0;i < VsScreen.SkinUse.Length; i++)
+        {
+            Debug.Log("IDDDD : " + VsScreen.SkinUse[i]);
+        }
+        GameMananger.Ins.OpenScreen(TypeScreen.Vs);
+      
+       
     }
 
 }

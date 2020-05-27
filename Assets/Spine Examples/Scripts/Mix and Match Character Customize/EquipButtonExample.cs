@@ -220,18 +220,36 @@ namespace Spine.Unity.Examples {
         }
         public void CpuCharacter()
         {
-            Head = HeadAsset[3];
-            Debug.Log("Asset  :" + Head.name);
-            Leg = LegAsset[2];
-            Hand = HandAsset[2];
-            ItemLeg = CtrlDataGame.Ins.AssetSkin.Null_Item_Leg;
-            ItemHand = CtrlDataGame.Ins.AssetSkin.Null_Item_Hand;
+            var skin = VsScreen.SkinUse;
+           
+
+            for(int i = 0; i < skin.Length; i++)
+            {
+                Debug.Log("ID : "+i +"   "+ skin[i]);
+            }
+
+            EquipHead(skin[0]);
+
+            EquipHand(skin[1]);
+            EquipLeg(skin[3]);
+            if (skin[3] != -1)
+            {
+                EquipItemHandNull();
+            }
+            if (skin[4] != -1)
+            {
+                EquipItemLegNull();
+            }
+
             equipSystem.Equip(Head);
-            equipSystem.Equip(ItemLeg);
-            equipSystem.Equip(ItemHand);
             equipSystem.Equip(Hand);
+            equipSystem.Equip(ItemHand);
             equipSystem.Equip(Leg);
-          
+            equipSystem.Equip(ItemLeg);
+
+
+
+
         }
        
 

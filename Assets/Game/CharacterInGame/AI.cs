@@ -332,7 +332,7 @@ public class AI : Character
         {
             if (hits.collider.gameObject.layer == 16)
             {
-                Debug.Log("Coll");
+               // Debug.Log("Coll");
                 Directory_StatusCpu[Key_Trigger_Front] = 1;
             }
             else

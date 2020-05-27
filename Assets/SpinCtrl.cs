@@ -12,7 +12,7 @@ public class SpinCtrl : MonoBehaviour
     public Transform SpinRoll;
     public Transform Spin;
 
-    public bool isRolling = false;
+    public static bool isRolling = false;
     public Vector2 RollCoin50;
     public Vector2 RollCoin200;
     public Vector2 RollCoin500;
@@ -20,7 +20,12 @@ public class SpinCtrl : MonoBehaviour
     public Vector2 RollSpin;
     public Vector2 RollItem;
 
-    
+    public Vector2 ApplyRoll;
+    public float timeDecresion = 0.02f;
+    public bool isStartRolling = false;
+    public int i = 0;
+    public float speedLoop;
+    public List<Transform> LoopLight;
 
     // Start is called before the first frame update
     void Start()
@@ -36,13 +41,47 @@ public class SpinCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FrictionSpin < 0)
-            return;
-        Vector3 pos = Spin.rotation.eulerAngles;
-        FrictionSpin -= Time.deltaTime * 0.1f;
-        pos.z += Time.deltaTime * Speed*FrictionSpin;
-        Spin.transform.eulerAngles = pos;
+       
+       
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                Spin.eulerAngles = Vector3.zero;
+            }
+            if (FrictionSpin <= 0)
+            {
+                FrictionSpin = -1;
+                isRolling = false;
+
+            }
+            else
+            {
+                isRolling = true;
+                Vector3 pos = Spin.rotation.eulerAngles;
+                FrictionSpin -= timeDecresion * 0.1f;
+                pos.z += timeDecresion * Speed * FrictionSpin;
+                Spin.transform.eulerAngles = pos;
+            }
+
+        if (speedLoop < 0)
+        {
+            speedLoop = 0.5f;
+            for(int i = 0; i < LoopLight.Count; i++)
+            {
+                bool active = LoopLight[i].gameObject.activeSelf;
+                LoopLight[i].gameObject.SetActive(!active);
+            }
+        }
+        else
+        {
+            speedLoop -= Time.deltaTime;
+        }
+         
+       
+
+       
+      
     }
+    
 
     public int GetRandom()
     {
@@ -51,7 +90,7 @@ public class SpinCtrl : MonoBehaviour
         int x2 = PercentageSpin[2];
         int x3 = PercentageSpin[3];
         int x4 = PercentageSpin[4];
-
+       
         int r = Random.Range(0, 101);
         if(r>=0 && r <= 50)
         {
@@ -71,13 +110,71 @@ public class SpinCtrl : MonoBehaviour
         }
         else if(r>94 && r <= 99)
         {
+            
             return 4;
         }
         else
         {
+         
             return 5;
         }
+
+       
         return 0;
+    }
+
+    public void StartRolling()
+    {
+        if (isRolling)
+            return;
+        Spin.eulerAngles = Vector3.zero;
+        int item = GetRandom();
+        Debug.Log("Item : " +item);
+        switch (item)
+        {
+            case 0:
+                ApplyRoll = RollCoin50;
+                break;
+            case 1:
+                ApplyRoll = RollCoin200;
+                break;
+            case 2:
+                ApplyRoll = RollCoin500;
+                break;
+            case 3:
+                ApplyRoll = RollCoin1000;
+                break;
+            case 4:
+                ApplyRoll = RollSpin;
+                break;
+            case 5:
+                ApplyRoll = RollItem;
+                break;
+
+
+        }
+
+
+
+        FrictionSpin = ApplyRoll.x;
+       
+
+    }
+
+    public void ResetSpin()
+    {
+
+          
+            
+         
+       
+      
+    }
+
+     public void Started()
+    {
+        Debug.Log("Start");
+        StartRolling();
     }
 
    

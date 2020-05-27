@@ -11,7 +11,7 @@ public class UI_Tourment_Rivial : MonoBehaviour
     public string KeyMatch;
     public string KeyNextRound;
     public string KeyRoundCurr;
-
+    public string MatchRivial;
     public List<Image> LineProcess;
     public bool isNext = true;
     public MixAndMatchGraphic TargetGraphic;
@@ -79,7 +79,30 @@ public class UI_Tourment_Rivial : MonoBehaviour
         TargetGraphic.Apply();
     }
 
+    public void ApplyPlayer()
+    {
+        TargetGraphic.HeadSprite = CtrlDataGame.Ins.Resource.Heads.Heads[Skin[0]].Img;
+        TargetGraphic.handSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skin[1]].Img;
+        if (Skin[2] != -1)
+        {
+            TargetGraphic.ItemHandSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skin[2]].Img;
+        }
+        else
+        {
+            TargetGraphic.ItemHandSprite = CtrlDataGame.Ins.Resource.Sprite_Null;
+        }
+        TargetGraphic.LegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skin[3]].Img;
+        if (Skin[4] != -1)
+        {
+            TargetGraphic.ItemLegSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skin[4]].Img;
+        }
+        else
+        {
+            TargetGraphic.ItemHandSprite = CtrlDataGame.Ins.Resource.Sprite_Null;
+        }
 
+            TargetGraphic.Apply();
+    }
     public static int[] RandomSKin()
     {
        // Debug.Log("Hand : " + CtrlDataGame.Ins.TargetCharacter.HandAsset.Length);
@@ -144,7 +167,7 @@ public class UI_Tourment_Rivial : MonoBehaviour
         Next_Round.TargetGraphic.LegSprite = TargetGraphic.LegSprite;
         Next_Round.TargetGraphic.ItemLegSprite = TargetGraphic.ItemLegSprite;
         Next_Round.runProcess = true;
-
+        Next_Round.Skin = Skin;
         Next_Round.TargetGraphic.Apply();
     }
 

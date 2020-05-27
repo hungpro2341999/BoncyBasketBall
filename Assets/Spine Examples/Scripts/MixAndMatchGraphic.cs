@@ -91,13 +91,11 @@ namespace Spine.Unity.Examples {
 		}
 		void Start()
 		{
-		StartCoroutine(StartSkin());
-		
-		}
-		IEnumerator StartSkin () {
-			yield return new WaitForSeconds(0.5f); // Delay for 1 second. For testing.
 			Apply();
+
+
 		}
+		
 
 		[ContextMenu("Apply")]
 		public void Apply () {

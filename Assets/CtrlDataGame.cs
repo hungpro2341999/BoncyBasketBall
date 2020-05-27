@@ -24,6 +24,7 @@ public class CtrlDataGame : MonoBehaviour
 
 
     public static CtrlDataGame Ins;
+    public bool ApplySkinPlayer = false;
 
 
     [Header("TargetCharacter")]
@@ -94,13 +95,17 @@ public class CtrlDataGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
+        if (ApplySkinPlayer)
         {
             ApplySKinPlayer();
             ApplySkinCpu();
+            //   ApplySkinCpu();
+            ApplySkinPlayer = false;
         }
 
-       
+      
+
+
     }
 
     public void SetHand(int id)
@@ -217,12 +222,15 @@ public class CtrlDataGame : MonoBehaviour
         TargetCharacter.EquipItemLeg(id);
     }
 
-   
+   public void ApplyPlayer()
+    {
+        ApplySkinPlayer= true;
+    }
 
     public void ApplySKinPlayer()
     {
 
-        CtrlDataGame.Ins.TargetCharacter.equipSystem.target = SkinPlayer;
+       
         ApplySkin();
     }
     
@@ -295,6 +303,7 @@ public class CtrlDataGame : MonoBehaviour
     }
     public void ApplyCPU()
     {
+       
         TargetCharacter.CpuCharacter();
     }
     public int GetCoin()

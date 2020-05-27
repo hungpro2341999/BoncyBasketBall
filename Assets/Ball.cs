@@ -109,40 +109,9 @@ public class Ball : Character
 
     public string ControllerBy()
     {
-        //string s = "";
-        //string bitAI = "";
-        //string bitPlayer = "";
-        //if (CtrlGamePlay.Ins.AI.isBall)
-        //{
-        //    bitAI = "1";
-        //}
-        //else
-        //{
-        //    bitAI = "0";
-        //}
-
-        //if (CtrlGamePlay.Ins.Player.isBall)
-        //{
-        //    bitPlayer = "1";
-        //}
-        //else
-        //{
-        //    bitPlayer = "0";
-        //}
-
-        //s += bitAI + bitPlayer;
-
-
-
-        //KeyBall = s;
-        //return s;
-
-
-
         string s = "";
         string bitAI = "";
         string bitPlayer = "";
-        string bitBoardCpu = "";
         if (CtrlGamePlay.Ins.AI.isBall)
         {
             bitAI = "1";
@@ -161,20 +130,51 @@ public class Ball : Character
             bitPlayer = "0";
         }
 
-        if (CtrlGamePlay.Ins.GetBall().isPercitonWithBoard)
-        {
-            bitBoardCpu = "1";
-        }
-        else
-        {
-            bitBoardCpu = "0";
-        }
-        s += bitAI + bitPlayer + bitBoardCpu;
+        s += bitAI + bitPlayer;
 
 
 
         KeyBall = s;
         return s;
+
+
+
+        //string s = "";
+        //string bitAI = "";
+        //string bitPlayer = "";
+        //string bitBoardCpu = "";
+        //if (CtrlGamePlay.Ins.AI.isBall)
+        //{
+        //    bitAI = "1";
+        //}
+        //else
+        //{
+        //    bitAI = "0";
+        //}
+
+        //if (CtrlGamePlay.Ins.Player.isBall)
+        //{
+        //    bitPlayer = "1";
+        //}
+        //else
+        //{
+        //    bitPlayer = "0";
+        //}
+
+        //if (CtrlGamePlay.Ins.GetBall().isPercitonWithBoard)
+        //{
+        //    bitBoardCpu = "1";
+        //}
+        //else
+        //{
+        //    bitBoardCpu = "0";
+        //}
+        //s += bitAI + bitPlayer + bitBoardCpu;
+
+
+
+        //KeyBall = s;
+        //return s;
 
 
 
@@ -296,36 +296,7 @@ public class Ball : Character
        
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        
-        if (collision.gameObject.layer == 11)
-        {
-           
-                    string tag = collision.gameObject.tag;
-                    if (tag == "Bottom")
-                    {
-
-                    }
-
-                    if (tag == "Up")
-                    {
-
-                    }
-
-                    if (tag == "Left")
-                    {
-                        GetComponent<Rigidbody>().AddForce(new Vector3(5, 0, 0), ForceMode.Force);
-                    }
-
-                    if (tag == "Rightt")
-                    {
-                        GetComponent<Rigidbody>().AddForce(new Vector3(-5, 0, 0), ForceMode.Force);
-                    }
-        }
-               
-            
-    }
+    
     private void OnTriggerExit(Collider collision)
     {
         if (collision.gameObject.layer == 13)

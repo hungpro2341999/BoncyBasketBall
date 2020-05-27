@@ -89,6 +89,8 @@ public class AI_02 : AI
      
     }
 
+    
+
     public virtual void OnStartMoveBackTo()
     {
         var player = CtrlGamePlay.Ins.Player;
@@ -168,7 +170,7 @@ public class AI_02 : AI
     private void MoveToPos(int posTarger)
     {
           posTarger = Mathf.Clamp(posTarger, 0, CountSperateDistance);
-        Debug.Log(CurrPos + "  " + posTarger);
+      //  Debug.Log(CurrPos + "  " + posTarger);
       if((Mathf.Abs(CurrPos - posTarger) != 0))
         {
            
@@ -176,13 +178,13 @@ public class AI_02 : AI
 
             if (Mathf.Sign(CurrPos - posTarger) == 1 )
             {
-                Debug.Log("Right");
+           //     Debug.Log("Right");
                 isMoveRight = true;
                 isMoveLeft =false ;
             }
             else
             {
-                Debug.Log("left");
+           //     Debug.Log("left");
                 isMoveRight = false;
                 isMoveLeft = true;
             }
@@ -190,7 +192,7 @@ public class AI_02 : AI
         }
         else
         {
-            Debug.Log("None");
+         //   Debug.Log("None");
             isMoveLeft = false;
             isMoveRight = false;
         }

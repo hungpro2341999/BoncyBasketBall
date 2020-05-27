@@ -18,6 +18,7 @@ public class GameMananger : MonoBehaviour
     [Header("UI")]
     public Transform DemoCharacter;
     public Transform TransSetting;
+    public Transform TrasUIGenrate;
     public Animator Anim_Setting;
     public bool open = false;
     public bool isTest = false;
