@@ -13,6 +13,17 @@ public class GamePlayWindown : Screen
         GameMananger.Ins.TransSetting.gameObject.SetActive(false);
         GameMananger.Ins.DemoCharacter.gameObject.SetActive(false);
         CtrlDataGame.Ins.ApplyPlayer();
+        //if (CtrlGamePlay.firstPlay)
+        //{
+            CtrlGamePlay.Ins.FirstCommit();
+            CtrlGamePlay.firstPlay = false;
+        //}
+        GameMananger.Ins.isGameOver = false;
+        GameMananger.Ins.isGamePause = false;
+        CtrlGamePlay.Ins.isWattingStart = true;
+        CtrlGamePlay.Ins.timeWattingMatch = 5;
+        CtrlGamePlay.Ins.StartWatting();
+
     }
 
    

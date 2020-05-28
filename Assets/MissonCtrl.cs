@@ -35,6 +35,16 @@ public class MissonCtrl : MonoBehaviour
 
     }
 
+    public void Init()
+    {
+        if (PlayerPrefs.HasKey(Key_Misson))
+        {
+            
+
+
+        }
+    }
+
 
 }
 [System.Serializable]

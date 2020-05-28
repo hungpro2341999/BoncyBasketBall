@@ -19,6 +19,7 @@ public class CtrlGamePlay : MonoBehaviour
 
     [Header("StatusGame")]
     public bool isPlaying = false;
+    public bool WaitForEndMatch = false;
 
     public Character Player;
     public Character AI;
@@ -26,8 +27,8 @@ public class CtrlGamePlay : MonoBehaviour
 
     public float WidthScreen;
     public float HeightScreen;
+    public float speedBackScreen;
 
-   
 
     //
 
@@ -59,6 +60,8 @@ public class CtrlGamePlay : MonoBehaviour
     public Score_Game objScore;
     
     
+    
+    
 
 
     [Header("Render")]
@@ -66,6 +69,7 @@ public class CtrlGamePlay : MonoBehaviour
     public Text TextTime;
     public Text TextPlayer;
     public Text TextCPU;
+    public Text TextStatus;
    
 
 
@@ -74,6 +78,10 @@ public class CtrlGamePlay : MonoBehaviour
     public float timeResetGamePlay;
     public float timeGamePlay;
     public float timeWaitForPerSecond;
+    public float timeWaiForEndMatch;
+    public float timeWattingMatch;
+    public float timeOut;
+    
 
 
     [Header("SCore")]
@@ -93,6 +101,16 @@ public class CtrlGamePlay : MonoBehaviour
     #region Private Static Variable
 
     public static bool isGlobal = false;
+    public static bool firstPlay = false;
+    public  bool isWattingStart = false;
+
+    [Header("StatusGame")]
+
+    public string[] StatusForWatting;
+    public string[] TimeOut;
+    
+  
+    
     
 
     #endregion
@@ -101,12 +119,20 @@ public class CtrlGamePlay : MonoBehaviour
     #region Private Variable
 
     private float m_timeGame;
+    public int delayTime;
+    public float timePopPupText;
+    private int delay_Time;
+
 
     #endregion
     [Header("Transform")]
-
+    public Image BlackScreen;
     public Transform TransGamePlay;
     public Transform TransScore;
+    public Transform RightBox;
+    public Transform LeftBox;
+    public Transform UpBox;
+
 
 
     private void Awake()
@@ -127,31 +153,78 @@ public class CtrlGamePlay : MonoBehaviour
 
 
     }
+
     // Start is called before the first frame update
     void Start()
     {
 
+       
+        
+
+
+        // Time.timeScale = 0.4f;
+
+
+    }
+
+    public void FirstCommit()
+    {
+        WidthScreen = (Camera.main.ScreenToWorldPoint(new Vector3(UnityEngine.Screen.width, UnityEngine.Screen.height, 0)).x) * 2;
+        HeightScreen = (Camera.main.ScreenToWorldPoint(new Vector3(UnityEngine.Screen.width, UnityEngine.Screen.height, 0)).y) * 2;
+        //  WidthScreen = Camera.main.ScreenToWorldPoint()
+
+        //  WidthScreen = (float)Camera.main.pixelWidth/100;
         PosInitPlayer = GameObject.FindGameObjectWithTag("PosInitPlayer").transform.position;
         PosInitCPU = GameObject.FindGameObjectWithTag("PosInitCPU").transform.position;
         PosInitBall = GameObject.FindGameObjectWithTag("PosInitBall").transform.position;
         Application.targetFrameRate = 120;
         Physics2D.gravity = Vector3.up * graviry;
+
+
+        /// Resize Screen
+
         var a = (Player)Player;
         a.isInputMove = true;
         //    eventResetGame();
+        Vector2 pos = Board[0].transform.position;
+        pos.x = WidthScreen / 2;
+        Board[0].transform.position = pos;
 
-       // Time.timeScale = 0.4f;
-     
+        Vector2 pos1 = Board[1].transform.position;
+        pos1.x = -WidthScreen / 2;
+        Board[1].transform.position = pos1;
+
+        Vector2 pos2 = RightBox.transform.position;
+
+        pos2.x = WidthScreen / 2;
+        RightBox.transform.position = pos2;
+
+        Vector2 pos3 = LeftBox.transform.position;
+
+        pos3.x = -WidthScreen / 2;
+        LeftBox.transform.position = pos3;
+
 
     }
 
 
-    
 
     // Update is called once per frame
     void Update()
     {
         Application.targetFrameRate = 120;
+
+        if (timePopPupText > 0)
+        {
+            PopPupStatus();
+            timePopPupText -= Time.deltaTime;
+            if (timePopPupText < 0)
+            {
+                EndPopPup();
+            }
+        }
+
+
         if (Input.GetKeyDown(KeyCode.W))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -159,31 +232,111 @@ public class CtrlGamePlay : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            StartCoroutine(IE_WaitForGameStart());
+            StartCoroutine(Rest_Game_Play());
         }
-           
 
 
-        if (m_timeGame >= 0)
+        if (GameMananger.Ins.isGameOver || GameMananger.Ins.isGamePause)
+
+            return;
+
+        if (isWattingStart == true)
         {
-            TextTime.text = ((int)m_timeGame).ToString();
-            m_timeGame -= Time.deltaTime;
+            if (timeWattingMatch >= 0)
+            {
+
+                timeWattingMatch -= Time.deltaTime;
+                return;
+            }
+            else
+            {
+
+                ActiveRigidBody(true);
+                isWattingStart = false;
+                isPlaying = true;
+                m_timeGame = timeGamePlay;
+            }
+            return;
         }
-        else
+          
+
+      
+
+
+
+        if (isPlaying)
         {
-            isPlaying = false;
-            
+            if (m_timeGame >= 0)
+            {
+                TextTime.text = ((int)m_timeGame).ToString();
+                m_timeGame -= Time.deltaTime;
+
+            }
+            else
+            {
+                WaitForEndMatch = true;
+                timeWaiForEndMatch = 2;
+                ActivePopPupText(1, 20);
+              
+                isPlaying = false;
+
+            }
+
         }
-     
+        if (WaitForEndMatch)
+        {
+            if (timeWaiForEndMatch <= 0)
+            {
+                if(ScoreAI == ScorePlayer)
+                {
+                    ActivePopPupText(timeOut, 50);
+
+                    TextStatus.text = TimeOut[Random.Range(0, TimeOut.Length)];
+
+                    m_timeGame = timeOut;
+                    ResetRound();
+
+                    WaitForEndMatch = false;
+                }
+                else
+                {
+                   
+                    GameMananger.Ins.OpenSingle(TypeScreen.ResultWindown);
+                    WaitForEndMatch = false;
+                }
+
+               
+            }
+            else
+            {
+                TextStatus.text = "OUT OFF TIME !!! ";
+                timeWaiForEndMatch -= Time.deltaTime;
+              
+            }
+
+        }
+        
+
     }
    
 
   
-    public void ThrowBall()
+    public void StartWatting()
     {
-       
-       
-     
+        ScorePlayer = 0;
+        ScorePlayer = 0;
+        TextTime.text = timeGamePlay.ToString();
+
+        RenderScore();
+        StartCoroutine(IE_WaitForGameStart());
+        Player.transform.position = PosInitPlayer;
+        AI.transform.position = PosInitCPU;
+        Ball.transform.position = PosInitBall;
+        eventRestGamePlay();
+        ActiveRigidBody(false);
+        WaitForEndMatch = false;
+        
+      
     }
 
     public void CpuThrowBall()
@@ -285,32 +438,63 @@ public class CtrlGamePlay : MonoBehaviour
     }
 
     #region  EventGame
-    public void GlobalCPU()
+    public void GlobalCPU(int Score)
     {
-        ScorePlayer++;
+        ScorePlayer += Score;
         RenderScore();
 
        
-
-        StartCoroutine(Rest_Game_Play(timeResetGamePlay));
     }
 
-    public void GlobalPlayer()
+
+
+    public void GlobalPlayer(int Score)
     {
-        ScoreAI++;
+        ScoreAI+=Score;
        
         RenderScore();
 
-        StartCoroutine(Rest_Game_Play(timeResetGamePlay));
+
+      
+    }
+
+    public void ResetRound()
+    {
+        StartCoroutine(Rest_Game_Play());
     }
 
 
-    IEnumerator Rest_Game_Play(float time)
+    IEnumerator Rest_Game_Play()
     {
-        
-        yield return new WaitForSeconds(time);
+        isPlaying = false;
+        yield return new WaitForSeconds(2);
+        var color = BlackScreen.color;
+        Debug.Log("Color : " + color.a);
+        while(color.a <= 1)
+        {
+            color.a += Time.deltaTime * speedBackScreen;
+            Debug.Log("Color Black : " + color.a);
+            BlackScreen.color = color;
+            yield return new WaitForSeconds(0);
+        }
         eventRestGamePlay();
+        while (color.a >= 0)
+        {
+            color.a -= Time.deltaTime * speedBackScreen;
+
+            BlackScreen.color = color;
+            yield return new WaitForSeconds(0);
+        }
+        isPlaying = true;
+
+
+
+
+
+
+
     }
+  
 
     public void RestGame()
     {
@@ -323,7 +507,7 @@ public class CtrlGamePlay : MonoBehaviour
         Player.transform.position = PosInitPlayer;
         AI.transform.position = PosInitCPU;
         Ball.transform.position = PosInitBall;
-        RenderScore();
+       
     }
     
 
@@ -338,7 +522,7 @@ public class CtrlGamePlay : MonoBehaviour
         Player.transform.position = PosInitPlayer;
         AI.transform.position = PosInitCPU;
         Ball.transform.position = PosInitBall;
-        RenderScore();
+      
     }
 
 
@@ -367,18 +551,34 @@ public class CtrlGamePlay : MonoBehaviour
 
     IEnumerator IE_WaitForGameStart()
     {
-        for (int i = 0; i < WaitForStart.Length; i++)
-        {
-            WaitForStart[i].gameObject.SetActive(false);
-        }
-        yield return new WaitForSeconds(0);
+        //for (int i = 0; i < WaitForStart.Length; i++)
+        //{
+        //    WaitForStart[i].gameObject.SetActive(false);
+        //}
+        //yield return new WaitForSeconds(0);
 
-        for (int i = 0; i < WaitForStart.Length; i++)
-        {
+        //for (int i = 0; i < WaitForStart.Length; i++)
+        //{
 
-            yield return new WaitForSeconds(timeWaitForPerSecond);
-            WaitForStart[i].gameObject.SetActive(true);
-        }
+        //    yield return new WaitForSeconds(timeWaitForPerSecond);
+        //    WaitForStart[i].gameObject.SetActive(true);
+        //}
+        TextStatus.text = "";
+        yield return new WaitForSeconds(2);
+    
+        TextStatus.text = StatusForWatting[0];
+        ActivePopPupText(2,25);
+        yield return new WaitForSeconds(2);
+        TextStatus.text = "";
+        yield return new WaitForSeconds(1);
+        ActivePopPupText(1,40);
+        TextStatus.text = StatusForWatting[1];
+        yield return new WaitForSeconds(2);
+        TextStatus.text = "";
+
+
+
+
     }
     
 
@@ -410,8 +610,8 @@ public class CtrlGamePlay : MonoBehaviour
 
     }
 
- 
-
+   
+   
 
     #endregion
 
@@ -427,4 +627,37 @@ public class CtrlGamePlay : MonoBehaviour
     {
         return (Ball)Ball;
     }
+
+    public void ActiveRigidBody(bool active) 
+    {
+        Player.Body.simulated = active;
+        AI.Body.simulated = active;
+        Ball.Body.simulated = active;
+    }
+
+    public void PopPupStatus()
+    {
+        delayTime++;
+        if (delayTime % delay_Time == 0)
+        {
+
+            bool active = TextStatus.gameObject.activeSelf;
+            TextStatus.gameObject.SetActive(!active);
+        }
+      
+       
+    }
+
+    public void EndPopPup()
+    {
+        TextStatus.gameObject.SetActive(true);
+    }
+    public void ActivePopPupText(float time,int delay_Time)
+    {
+        timePopPupText = time;
+        this.delay_Time = delay_Time;
+    }
+
+    
+  
 }

@@ -29,8 +29,8 @@ public class TourmentWindown : Screen
             }
         }
 
-        
 
+        GameMananger.Ins.TrasUIGenrate.gameObject.SetActive(false);
         GameMananger.Ins.TransSetting.gameObject.SetActive(false);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
 using Spine;
+using Spine.Unity.Examples;
 
 public enum Ground { Ground_1, Ground_2 };
 public enum CharacterState
@@ -33,6 +34,7 @@ public abstract class Character : MonoBehaviour
 
     public Spine.AnimationState AnimStatus;
     public SkeletonAnimation AnimationHandle;
+    
 
     public Ground GroundCurr;
     public LayerMask LayerGround;
@@ -86,6 +88,12 @@ public abstract class Character : MonoBehaviour
     // Update is called once per frame
     public virtual void FixedUpdate()
     {
+        if (GameMananger.Ins.isGameOver || GameMananger.Ins.isGamePause)
+            return;
+        if (CtrlGamePlay.Ins.isWattingStart)
+
+            return;
+
         GetStatus();
         InputPlayer();
         CaculateStatus();
@@ -280,13 +288,13 @@ public abstract class Character : MonoBehaviour
     }
     public  TypeScore GetTypeScore()
     {
-        if (CurrPos >= 7)
+        if (CurrPos >= 6)
         {
-            return TypeScore.Point_2;
+            return TypeScore.Point_3;
         }
         else
         {
-            return TypeScore.Point_3;
+            return TypeScore.Point_2;
         }
     }
 }

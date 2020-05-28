@@ -13,12 +13,17 @@ public class SceenLoading : Screen
 
     public override void OnEnableScreen()
     {
+
         time = 0;
         Img_Loading.fillAmount = 0;
 
     }
     public override void EventOpen()
     {
+        GameMananger.Ins.isGamePause = true;
+        GameMananger.Ins.isGameOver = true;
+        GameMananger.Ins.TrasUIGenrate.gameObject.SetActive(false);
+        GameMananger.Ins.TransSetting.gameObject.SetActive(false);
         GameMananger.Ins.DemoCharacter.gameObject.SetActive(false);
     }
     private void Update()

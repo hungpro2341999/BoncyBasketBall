@@ -24,7 +24,23 @@ public class PauseWindown : Screen
     {
         ApplyMusic();
         ApplySound();
+        GameMananger.Ins.isGamePause = true;
+       
+
     }
+
+    public void ResumeGame() 
+    {
+        GameMananger.Ins.isGamePause = false;
+        GameMananger.Ins.CloseSingle(this);
+       
+    }
+
+    public override void EventClose()
+    {
+        Time.timeScale = 1;
+    }
+
 
     public void ChangeMusic()
     {

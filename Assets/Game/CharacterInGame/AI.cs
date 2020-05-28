@@ -330,7 +330,7 @@ public class AI : Character
         // 
         if (hits.collider != null)
         {
-            if (hits.collider.gameObject.layer == 16)
+            if (hits.collider.gameObject.layer == 13)
             {
                // Debug.Log("Coll");
                 Directory_StatusCpu[Key_Trigger_Front] = 1;
@@ -417,6 +417,12 @@ public class AI : Character
 
 
     }
+
+    public bool isInAction()
+    {
+        return OnAction != null;
+    }
+
 
 
     public virtual void ActiveActionKey()

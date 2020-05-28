@@ -347,7 +347,9 @@ public class Player : Character
 
             }
 
-        
+        Body.velocity = new Vector2(Velocity.x, Body.velocity.y);
+
+
     }
 
     public bool isActiveAction()
@@ -404,7 +406,7 @@ public class Player : Character
     }
     public bool isInAction()
     {
-        return OnAction == null;
+        return OnAction != null;
     }
     public void Swing()
     {
@@ -479,7 +481,7 @@ public class Player : Character
     private void LateUpdate()
     {
            
-           Body.velocity = new Vector2 (Velocity.x,Body.velocity.y);
+          
 
        
 

@@ -17,6 +17,8 @@ public class TourmentCtrl : MonoBehaviour
     public bool isCompleteMatch = false;
     public string CurrTourmentPlayer = "";
     public bool isFinalMatch = false;
+    public int RewardForFinallyMatch;
+    public Transform Rewrard;
   
 
     private void Awake()
@@ -41,7 +43,7 @@ public class TourmentCtrl : MonoBehaviour
 
     public void Load()
     {
-     //  PlayerPrefs.DeleteKey(Key_Tourment);
+        PlayerPrefs.DeleteKey(Key_Tourment);
         if (!PlayerPrefs.HasKey(Key_Tourment))
         {
 
@@ -50,54 +52,7 @@ public class TourmentCtrl : MonoBehaviour
             LoadNewTour();
 
             
-            PlayerPrefs.SetInt(Key_Tourment, 0);
-            // A
-            Match match1 = new Match("V_1", "V_1_0", 0, 0);
-            Match match2 = new Match("V_1_3", "V_1_4", 0, 0);
-
-
-            BoardMatch boardmatch = new BoardMatch();
-            boardmatch.Matchs.Add(match1);
-            boardmatch.Matchs.Add(match2);
-
-            Match match3 = new Match("V_2_1", "V_2_0", 0, 0);
-
-            BoardMatch boardmatch1 = new BoardMatch();
-
-            boardmatch1.Matchs.Add(match3);
-
-            MatchGlobal global = new MatchGlobal();
-            global.Matchs.Add(boardmatch);
-            global.Matchs.Add(boardmatch1);
-
-            string json = JsonUtility.ToJson(global);
-
-            PlayerPrefs.SetString(Key_Tourment_A, json);
-            PlayerPrefs.Save();
-
-            ////////////////////////////////////
-
-            Match match4 = new Match("B_V_1_0", "B_V_1_1", 0, 0);
-            Match match5 = new Match("B_V_1_2", "B_V_1_3", 0, 0);
-            BoardMatch boardmatch3 = new BoardMatch();
-            boardmatch3.Matchs.Add(match4);
-            boardmatch3.Matchs.Add(match5);
-
-
-            Match match6 = new Match("B_V_2_0", "B_V_2_1", 0, 0);
-            BoardMatch boardmatch4 = new BoardMatch();
-            boardmatch4.Matchs.Add(match6);
-
-            MatchGlobal global_1 = new MatchGlobal();
-            global_1.Matchs.Add(boardmatch3);
-            global_1.Matchs.Add(boardmatch4);
-
-            string json1 = JsonUtility.ToJson(global_1);
-            PlayerPrefs.SetString(Key_Tourment_B, json1);
-            PlayerPrefs.Save();
-
-         
-
+          
 
         }
 
@@ -135,7 +90,7 @@ public class TourmentCtrl : MonoBehaviour
             List_Rivial.Add(rivial2);
             List_Rivial.Add(rivial3);
             CurrTourmentPlayer = "V_1";
-
+            Rewrard.gameObject.SetActive(false);
         }
         else if (LoadMatch_1())
         {
@@ -146,12 +101,14 @@ public class TourmentCtrl : MonoBehaviour
             List_Rivial.Add(rivial1);
 
             CurrTourmentPlayer = "V_2_0";
+            Rewrard.gameObject.SetActive(false);
         }
         else
         {
             isFinalMatch = true;
             Rivial rivial = new Rivial("V_3", "B_V_3");
             CurrTourmentPlayer = "V_3";
+            Rewrard.gameObject.SetActive(true);
         }
 
 
@@ -188,12 +145,10 @@ public class TourmentCtrl : MonoBehaviour
    
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.A))
-        //{
-        //    Debug.Log("Save");
-          
-        //    LoadTour();
-        //}   
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            LoadTour();
+        }
     }
 
 
@@ -227,6 +182,7 @@ public class TourmentCtrl : MonoBehaviour
 
         if (LoadMatch_0())
         {
+            Rewrard.gameObject.SetActive(false);
             isFinalMatch = false;
             Rivial rivial = new Rivial("V_1", "V_1_0");
             Rivial rivial1 = new Rivial("V_1_3", "V_1_4");
@@ -241,6 +197,7 @@ public class TourmentCtrl : MonoBehaviour
         }
         else if (LoadMatch_1())
         {
+            Rewrard.gameObject.SetActive(false);
             isFinalMatch = false;
             Rivial rivial = new Rivial("V_2_0", "V_2_1");
             Rivial rivial1 = new Rivial("B_V_2_0", "B_V_2_1");
@@ -251,6 +208,7 @@ public class TourmentCtrl : MonoBehaviour
         }
         else
         {
+            Rewrard.gameObject.SetActive(true);
             isFinalMatch = true;
             Rivial rivial = new Rivial("V_3", "B_V_3");
             CurrTourmentPlayer = "V_3";
@@ -263,7 +221,7 @@ public class TourmentCtrl : MonoBehaviour
     public void LoadTour()
     {
 
-
+        bool isResetTour = false;
 
         CompleteMatch();
         SaveMatchGlobal();
@@ -282,10 +240,12 @@ public class TourmentCtrl : MonoBehaviour
             List_Rivial.Add(rivial2);
             List_Rivial.Add(rivial3);
             CurrTourmentPlayer = "V_1";
+            Rewrard.gameObject.SetActive(false);
 
         }
         else if (LoadMatch_1())
         {
+            Rewrard.gameObject.SetActive(false);
             isFinalMatch = false;
             Rivial rivial = new Rivial("V_2_0", "V_2_1");
             Rivial rivial1 = new Rivial("B_V_2_0", "B_V_2_1");
@@ -293,23 +253,60 @@ public class TourmentCtrl : MonoBehaviour
             List_Rivial.Add(rivial1);
 
             CurrTourmentPlayer = "V_2_0";
-        }
-        else
+        } 
+        else if(LoadFinalMatch())
         {
+            Rewrard.gameObject.SetActive(true);
             isFinalMatch = true;
             Rivial rivial = new Rivial("V_3", "B_V_3");
             CurrTourmentPlayer = "V_3";
         }
+        else
+        {
 
-        LoadMatch(LoadMatchFromFile(Key_Tourment_A));
-        LoadMatch(LoadMatchFromFile(Key_Tourment_B));
+            isResetTour = true;
+
+        }
+        if (isResetTour)
+        {
+           
+            LoadNewTour();
+            LoadSkin();
+            for (int i = 0; i < List_Tourment.Count; i++)
+            {
+                List_Tourment[i].ResetNewTour();
+            }
+            LoadMatch(LoadMatchFromFile(Key_Tourment_A));
+            LoadMatch(LoadMatchFromFile(Key_Tourment_B));
+            isFinalMatch = false;
+            List_Rivial = new List<Rivial>();
+            Rivial rivial = new Rivial("V_1", "V_1_0");
+            Rivial rivial1 = new Rivial("V_1_3", "V_1_4");
+            Rivial rivial2 = new Rivial("B_V_1_0", "B_V_1_1");
+            Rivial rivial3 = new Rivial("B_V_1_2", "B_V_1_3");
+            List_Rivial.Add(rivial);
+            List_Rivial.Add(rivial1);
+            List_Rivial.Add(rivial2);
+            List_Rivial.Add(rivial3);
+            CurrTourmentPlayer = "V_1";
+            SaveMatchGlobal();
+            Rewrard.gameObject.SetActive(false);
+
+        }
+        else
+        {
+            LoadMatch(LoadMatchFromFile(Key_Tourment_A));
+            LoadMatch(LoadMatchFromFile(Key_Tourment_B));
+        }
+
+      
 
 
 
 
     }
 
-  
+    
    
     public void SetProcess()
     {
@@ -412,6 +409,8 @@ public class TourmentCtrl : MonoBehaviour
 
      public void LoadNewTour()
     {
+     
+
         int[] SKin1 = UI_Tourment_Rivial.RandomSKin();
         int[] SKin2 = UI_Tourment_Rivial.RandomSKin();
         int[] SKin3 = UI_Tourment_Rivial.RandomSKin();
@@ -448,7 +447,54 @@ public class TourmentCtrl : MonoBehaviour
         PlayerPrefs.SetString(Key_Skins, json);
         PlayerPrefs.Save();
 
-    
+
+        PlayerPrefs.SetInt(Key_Tourment, 0);
+        // A
+        Match match1 = new Match("V_1", "V_1_0", 0, 0);
+        Match match2 = new Match("V_1_3", "V_1_4", 0, 0);
+
+
+        BoardMatch boardmatch = new BoardMatch();
+        boardmatch.Matchs.Add(match1);
+        boardmatch.Matchs.Add(match2);
+
+        Match match3 = new Match("V_2_1", "V_2_0", 0, 0);
+
+        BoardMatch boardmatch1 = new BoardMatch();
+
+        boardmatch1.Matchs.Add(match3);
+
+        MatchGlobal global = new MatchGlobal();
+        global.Matchs.Add(boardmatch);
+        global.Matchs.Add(boardmatch1);
+
+        string json2 = JsonUtility.ToJson(global);
+
+        PlayerPrefs.SetString(Key_Tourment_A, json2);
+        PlayerPrefs.Save();
+
+        ////////////////////////////////////
+
+        Match match4 = new Match("B_V_1_0", "B_V_1_1", 0, 0);
+        Match match5 = new Match("B_V_1_2", "B_V_1_3", 0, 0);
+        BoardMatch boardmatch3 = new BoardMatch();
+        boardmatch3.Matchs.Add(match4);
+        boardmatch3.Matchs.Add(match5);
+
+
+        Match match6 = new Match("B_V_2_0", "B_V_2_1", 0, 0);
+        BoardMatch boardmatch4 = new BoardMatch();
+        boardmatch4.Matchs.Add(match6);
+
+        MatchGlobal global_1 = new MatchGlobal();
+        global_1.Matchs.Add(boardmatch3);
+        global_1.Matchs.Add(boardmatch4);
+
+        string json1 = JsonUtility.ToJson(global_1);
+        PlayerPrefs.SetString(Key_Tourment_B, json1);
+        PlayerPrefs.Save();
+
+     
 
 
 
@@ -509,6 +555,14 @@ public class TourmentCtrl : MonoBehaviour
         return false;
     }
 
+    public bool LoadFinalMatch()
+    {
+        if (!GetTourmnet("V_3").isNext && !GetTourmnet("B_V_3").isNext)
+        {
+            return true;
+        }
+        return false;
+    }
    
 
   
@@ -578,11 +632,11 @@ public class TourmentCtrl : MonoBehaviour
     {
         for(int i = 0; i < List_Rivial.Count; i++)
         {
-
+             
             Debug.Log("Match L "+List_Rivial[i].P1 + "  " + List_Rivial[i].P2);
 
-            if (!isMatchPlayer(List_Rivial[i]))
-            {
+         //   if (!isMatchPlayer(List_Rivial[i]))
+///{
                 if (Random.Range(0, 2) == 0)
                 {
                     GetTourmnet(List_Rivial[i].P1).isNext = true;
@@ -594,21 +648,25 @@ public class TourmentCtrl : MonoBehaviour
 
 
 
-            }
+        //    }
 
 
 
 
         }
+       
+
+
 
     }
 
 
-    
+
 
     public bool isMatchPlayer(Rivial rivial)
     {
-        if (rivial.P1 == CurrTourmentPlayer || rivial.P2 == CurrTourmentPlayer)
+        var rivial2 = GetTourmnet(CurrTourmentPlayer).MatchRivial;
+        if (rivial.P1 == CurrTourmentPlayer || rivial.P2 == CurrTourmentPlayer || rivial.P1 == rivial2 || rivial.P2 == rivial2)
         {
             return true;
         }
@@ -627,6 +685,13 @@ public class TourmentCtrl : MonoBehaviour
         GameMananger.Ins.OpenScreen(TypeScreen.Vs);
       
        
+    }
+    public void SetMatchPlayer()
+    {
+      
+            GetTourmnet(TourCurrPlayer()).isNext = true;
+            TourmentCtrl.Ins.GetTourmnet(GetTourmnet(TourCurrPlayer()).MatchRivial).isNext = false;
+      
     }
 
 }

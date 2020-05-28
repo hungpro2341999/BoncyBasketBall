@@ -21,6 +21,7 @@ public class VsScreen : Screen
     public static bool isMatchRandom;
     public static int[] P1_Skin;
     public static int[] P2_Skin;
+    public bool stop = false;
 
     // Start is called before the first frame update
     void Start()
@@ -61,11 +62,14 @@ public class VsScreen : Screen
             if (time < 0)
             {
                 time = timedelay;
-
-                if (isMatchRandom)
+                if (timeRandom > 2)
                 {
-                    RandomSprite();
+                    if (isMatchRandom)
+                    {
+                        RandomSprite();
+                    }
                 }
+               
 
                
                
@@ -177,6 +181,8 @@ public class VsScreen : Screen
     }
     public override void EventOpen()
     {
+        stop = false;
+        GameMananger.Ins.TrasUIGenrate.gameObject.SetActive(false);
         GameMananger.Ins.TransSetting.gameObject.SetActive(false);
         ApplyPlayer();
         if (!isMatchRandom)
@@ -251,4 +257,5 @@ public class VsScreen : Screen
     {
         SkinUse = Skins;
     }
+    
 }

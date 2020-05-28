@@ -8,6 +8,7 @@ public class ScreenHome : Screen
     {
         GameMananger.Ins.TransSetting.gameObject.SetActive(true);
         GameMananger.Ins.DemoCharacter.gameObject.SetActive(true);
+        GameMananger.Ins.TrasUIGenrate.gameObject.SetActive(true);
     }
 
     public void Play()

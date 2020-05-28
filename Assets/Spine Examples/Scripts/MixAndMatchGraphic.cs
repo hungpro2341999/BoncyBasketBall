@@ -214,6 +214,34 @@ namespace Spine.Unity.Examples {
 			this.LegSprite = Img;
 		}
 
+		public void ApplySkin(int[] Skins)
+		{
+			HeadSprite = CtrlDataGame.Ins.Resource.Heads.Heads[Skins[0]].Img;
+			handSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skins[1]].Img;
+			if (Skins[2] != -1)
+			{
+				ItemHandSprite = CtrlDataGame.Ins.Resource.Hands.Heads[Skins[2]].Img;
+			}
+			else
+			{
+				ItemHandSprite = CtrlDataGame.Ins.Resource.Sprite_Null;
+			}
+			LegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skins[3]].Img;
+
+			if (Skins[4] != -1)
+			{
+				ItemLegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skins[4]].Img;
+
+			}
+			else
+			{
+				ItemLegSprite = CtrlDataGame.Ins.Resource.Sprite_Null;
+
+			}
+			Apply();
+
+		}
+
 	}
 
 

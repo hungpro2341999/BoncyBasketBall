@@ -15,8 +15,8 @@ public class UI_Tourment_Rivial : MonoBehaviour
     public List<Image> LineProcess;
     public bool isNext = true;
     public MixAndMatchGraphic TargetGraphic;
-    
-    
+
+    public bool IsHead = false;
 
     public float time;
 
@@ -105,8 +105,9 @@ public class UI_Tourment_Rivial : MonoBehaviour
     }
     public static int[] RandomSKin()
     {
-       // Debug.Log("Hand : " + CtrlDataGame.Ins.TargetCharacter.HandAsset.Length);
+     
         int idHand = CtrlDataGame.Ins.TargetCharacter.HandAsset[Random.Range(0, CtrlDataGame.Ins.TargetCharacter.HandAsset.Length)].idItem;
+       
         int idItemHand = CtrlDataGame.Ins.TargetCharacter.ItemHandAsset[Random.Range(0, CtrlDataGame.Ins.TargetCharacter.ItemHandAsset.Length)].idItem;
         int idLeg = CtrlDataGame.Ins.TargetCharacter.LegAsset[Random.Range(0, CtrlDataGame.Ins.TargetCharacter.LegAsset.Length)].idItem;
         int idItemLeg = CtrlDataGame.Ins.TargetCharacter.LegAsset[Random.Range(0, CtrlDataGame.Ins.TargetCharacter.ItemLegAsset.Length)].idItem;
@@ -179,5 +180,30 @@ public class UI_Tourment_Rivial : MonoBehaviour
         TargetGraphic.ItemLegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skin[leg]].Img;
         TargetGraphic.LegSprite = CtrlDataGame.Ins.Resource.Leg.Heads[Skin[itemleg]].Img;
         TargetGraphic.Apply();
+    }
+
+    public void ResetNewTour()
+    {
+        if (IsHead)
+        {
+           
+            TransSkin.gameObject.SetActive(true);
+            ApplyGraphics();
+            runProcess = true;
+        }
+        else
+        {
+            TransSkin.gameObject.SetActive(false);
+            runProcess = false;
+        }
+
+        for(int i = 0; i < LineProcess.Count; i++)
+        {
+            LineProcess[i].fillAmount = 0;
+        }
+        isNext = false;
+        done = false;
+        i = 0;
+
     }
 }
