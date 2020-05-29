@@ -53,7 +53,7 @@ using UnityEngine.EventSystems;
     }
     public virtual void Click()
     {
-
+        AudioCtrl.Ins.Play("EquipItem");
         // ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
         ShopCtrl.Ins.TargetGraphic.Attachment_Head(Img.sprite);
         ShopCtrl.Ins.CurrSelectHead = this;
@@ -84,7 +84,7 @@ using UnityEngine.EventSystems;
 
     public virtual void Use()
     {
-
+      
         ImgSelect2.gameObject.SetActive(true);
     }
 
@@ -171,10 +171,12 @@ using UnityEngine.EventSystems;
 
     public virtual void Buy()
     {
+
         if (isBuy)
         {
             if (CtrlDataGame.Ins.GetCoin() >= cost)
             {
+                AudioCtrl.Ins.Play("LockBuyItem");
                 int coin = CtrlDataGame.Ins.GetCoin() - cost;
                 CtrlDataGame.Ins.SaveCoin(coin);
                 isBuy = false;
@@ -183,6 +185,11 @@ using UnityEngine.EventSystems;
                 ShopCtrl.Ins.SaveShopHead();
                 ShopCtrl.Ins.SelectItemHead(idItem);
                 CtrlDataGame.Ins.SetHead(this.idItem);
+                MissonCtrl.Ins.UpdateMission(4);
+            }
+            else
+            {
+                AudioCtrl.Ins.Play("Lock");
             }
         }
         

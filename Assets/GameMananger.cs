@@ -152,6 +152,32 @@ public class GameMananger : MonoBehaviour
         open = false;
         Anim_Setting.SetBool("Open", open);
     }
+    public void ShowFullAds()
+    {
+        if (!CtrlDataGame.Ins.IsActiveAds())
+        {
+            ManagerAds.Ins.ShowInterstitial();
+        }
+    }
+
+    public void Rate()
+    {
+        ManagerAds.Ins.RateApp();
+    }
+
+    public void RewardVideo(System.Action action)
+    {
+        if (ManagerAds.Ins.CanShowAds())
+        {
+
+            ManagerAds.Ins.ShowRewardedVideo((done) =>
+            {
+                action();
+            });
+
+
+        }
+    }
 
 
     

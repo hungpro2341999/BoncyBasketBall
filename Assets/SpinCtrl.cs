@@ -161,6 +161,12 @@ public class SpinCtrl : MonoBehaviour
 
     }
 
+    public void RollSpinByAds()
+    {
+        GameMananger.Ins.RewardVideo(StartRolling);
+    }
+
+
     public void ResetSpin()
     {
 

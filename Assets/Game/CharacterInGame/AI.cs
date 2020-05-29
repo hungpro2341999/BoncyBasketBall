@@ -1296,6 +1296,14 @@ public class AI : Character
 
     }
 
+    public virtual void OnEndSlampDunk()
+    {
+        isAction = false;
+        Body.simulated = true;
+        Body.constraints = RigidbodyConstraints2D.None;
+        Body.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
     public virtual void OnTriggerSlampDunk()
     {
         isAction = true;
@@ -1332,7 +1340,7 @@ public class AI : Character
         ActionGame lc_onMoveToHoop = new ActionGame(OnTriggerMoveToHoop, OnMoveToHoop);
         ActionGame lc_OnJump_left = new ActionGame(OnTriggerJumpLeft, OnJumpLeft, Endjump, 1f);
         ActionGame lc_OnJump_right = new ActionGame(OnJump, OnJumpRight, Endjump, 1f);
-        ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, null, 2, true);
+        ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, OnEndSlampDunk, 2, true);
         ActionGame lc_OnStun = new ActionGame(OnTriggerStun, OnStun, OnEndTriggerStun, 0);
 
         ActionGame lc_OnAttack = new ActionGame(OnStartActionAttack, OnActtionTriggerAttack, null);
@@ -1447,12 +1455,12 @@ public class AI : Character
     //    Directory_OnActionGame.Add(Key_Move_To_Hoop, lc_onMoveToHoop);
     //    Directory_OnActionGame.Add(Key_Stun, lc_OnStun);
     //    Directory_OnActionGame.Add(Key_Move_To_Player, lc_OnActionMoveToPlayer);
-        
-      
+
+
 
 
     //    //  Action
-      
+
     //    Directory_OnActionGame.Add(Key_Action_Move_To_Ball, lc_OnActionMoveToBall);
     //    Directory_OnActionGame.Add(Key_Jump_Straight, lc_OnJump);
     //    Directory_OnActionGame.Add(Key_Jump_Left, lc_OnJump_left);
@@ -1480,7 +1488,7 @@ public class AI : Character
     //    Directory_StatusCpu.Add(Key_Trigger_Jump, 0);
     //    Directory_StatusCpu.Add(Key_Trigger_ThrowBall, 0);
     //    Directory_StatusCpu.Add(Key_Trigger_Slamp_Dunk, 0);
-      
+
 
     //    // Load Text Cpu
 
@@ -1497,7 +1505,17 @@ public class AI : Character
     //}
 
 
-   
+    public override TypeScore GetTypeScore()
+    {
+        if (CurrPos <= 6)
+        {
+            return TypeScore.Point_3;
+        }
+        else
+        {
+            return TypeScore.Point_2;
+        }
+    }
 
     public virtual void OnTriggerStatusMoveCatchBall()
     {
@@ -2450,7 +2468,7 @@ public class ActionGame
     }
 
 
-
+    
 
 
    

@@ -25,7 +25,10 @@ public class SettingCtrl : MonoBehaviour
         }
         Init();
     }
-
+    private void Start()
+    {
+        ApplySetting();
+    }
     public void Init()
     {
         if (!PlayerPrefs.HasKey(Key_Sound))
@@ -42,7 +45,7 @@ public class SettingCtrl : MonoBehaviour
             PlayerPrefs.Save();
         }
 
-        ApplySetting();
+        
 
 
     }
@@ -51,6 +54,7 @@ public class SettingCtrl : MonoBehaviour
     {
         if (isSound())
         {
+           
             ButtonSound[0].gameObject.SetActive(true);
             ButtonSound[1].gameObject.SetActive(false);
         }
@@ -62,11 +66,13 @@ public class SettingCtrl : MonoBehaviour
 
         if (isMusic())
         {
+            AudioCtrl.Ins.Play("BG");
             ButtonMusic[0].gameObject.SetActive(true);
             ButtonMusic[1].gameObject.SetActive(false);
         }
         else
         {
+            AudioCtrl.Ins.Mute("BG");
             ButtonMusic[0].gameObject.SetActive(false);
             ButtonMusic[1].gameObject.SetActive(true);
         }

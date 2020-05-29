@@ -14,7 +14,9 @@ public enum TypeScore {Point_2,Point_3,Clean_Shoot,JumpBall}
 
 public class CtrlGamePlay : MonoBehaviour
 {
-   
+
+    public static int CountPlayQuickMatch = 0; 
+
     public static CtrlGamePlay Ins;
 
     [Header("StatusGame")]
@@ -244,7 +246,7 @@ public class CtrlGamePlay : MonoBehaviour
         {
             if (timeWattingMatch >= 0)
             {
-
+             
                 timeWattingMatch -= Time.deltaTime;
                 return;
             }
@@ -277,7 +279,7 @@ public class CtrlGamePlay : MonoBehaviour
                 WaitForEndMatch = true;
                 timeWaiForEndMatch = 2;
                 ActivePopPupText(1, 20);
-              
+                AudioCtrl.Ins.Play("OverTime");
                 isPlaying = false;
 
             }
@@ -341,6 +343,7 @@ public class CtrlGamePlay : MonoBehaviour
 
     public void CpuThrowBall()
     {
+        AudioCtrl.Ins.Play("Shoot");
         var CPU = (AI)AI;
 
         CPU.type = CPU.GetTypeScore();
@@ -354,6 +357,7 @@ public class CtrlGamePlay : MonoBehaviour
     }
     public void PlayerThrowBall()
     {
+        AudioCtrl.Ins.Play("Shoot");
         var player = (Player)Player;
         player.type = player.GetTypeScore();
         int currPos = (int)Mathf.Abs((CtrlGamePlay.Ins.WidthScreen / 2 - player.transform.position.x) / player.Amount);
@@ -440,7 +444,7 @@ public class CtrlGamePlay : MonoBehaviour
     #region  EventGame
     public void GlobalCPU(int Score)
     {
-        ScorePlayer += Score;
+        ScoreAI += Score;
         RenderScore();
 
        
@@ -450,7 +454,7 @@ public class CtrlGamePlay : MonoBehaviour
 
     public void GlobalPlayer(int Score)
     {
-        ScoreAI+=Score;
+        ScorePlayer+=Score;
        
         RenderScore();
 
@@ -466,6 +470,7 @@ public class CtrlGamePlay : MonoBehaviour
 
     IEnumerator Rest_Game_Play()
     {
+
         isPlaying = false;
         yield return new WaitForSeconds(2);
         var color = BlackScreen.color;
@@ -565,13 +570,14 @@ public class CtrlGamePlay : MonoBehaviour
         //}
         TextStatus.text = "";
         yield return new WaitForSeconds(2);
-    
+        AudioCtrl.Ins.Play("Ready");
         TextStatus.text = StatusForWatting[0];
         ActivePopPupText(2,25);
         yield return new WaitForSeconds(2);
         TextStatus.text = "";
         yield return new WaitForSeconds(1);
         ActivePopPupText(1,40);
+        AudioCtrl.Ins.Play("Voice_Jump");
         TextStatus.text = StatusForWatting[1];
         yield return new WaitForSeconds(2);
         TextStatus.text = "";

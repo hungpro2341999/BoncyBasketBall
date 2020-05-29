@@ -286,7 +286,7 @@ public abstract class Character : MonoBehaviour
     {
 
     }
-    public  TypeScore GetTypeScore()
+    public virtual TypeScore GetTypeScore()
     {
         if (CurrPos >= 6)
         {

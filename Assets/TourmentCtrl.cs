@@ -688,10 +688,23 @@ public class TourmentCtrl : MonoBehaviour
     }
     public void SetMatchPlayer()
     {
-      
+
+        if (!TourmentCtrl.Ins.isFinalMatchTour())
+        {
             GetTourmnet(TourCurrPlayer()).isNext = true;
             TourmentCtrl.Ins.GetTourmnet(GetTourmnet(TourCurrPlayer()).MatchRivial).isNext = false;
+        }
+           
       
+    }
+
+    public bool isFinalMatchTour()
+    {
+        if (List_Rivial.Count == 2)
+        {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -180,7 +180,7 @@ public class Player : Character
                 {
                     if (!isActiveHand)
                     {
-                       
+                        AudioCtrl.Ins.Play("swing");
                         isActiveHand = true;
                         StatusCurr = CharacterState.swing;
                     }
@@ -205,6 +205,8 @@ public class Player : Character
                     {
                         if (isBall)
                         {
+                            AudioCtrl.Ins.Play("jump");
+                          
                             if (isActiveAction())
                             {
                                 var a = GetActionActive();

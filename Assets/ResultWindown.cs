@@ -14,15 +14,19 @@ public class ResultWindown : Screen
     public Text t_Reward;
     public Image Win;
     public Image Lose;
-
+    public int reward;
+    public Button X2_Coins;
 
     public override void EventOpen()
     {
-
+        
+        X2_Coins.interactable = true;
         GameMananger.Ins.isGameOver = true;
+      
         t_Match.text = CtrlGamePlay.Ins.ScoreAI + "-" + CtrlGamePlay.Ins.ScorePlayer;
         if(CtrlGamePlay.Ins.ScoreAI > CtrlGamePlay.Ins.ScorePlayer)
         {
+            AudioCtrl.Ins.Play("win");
             VisibleVictory[0].enabled = true;
             VisibleVictory[1].enabled = false;
             Win.enabled = true;
@@ -30,15 +34,33 @@ public class ResultWindown : Screen
 
             if (VsScreen.isMatchRandom)
             {
+                reward = 100;
                 t_Reward.text = "100";
                 CtrlDataGame.Ins.AddCoin(100);
+
+                if(CtrlGamePlay.Ins.ScoreAI == 0)
+                {
+                    MissonCtrl.Ins.UpdateMission(3);
+                }
                 
             }
             else
             {
-                
-                t_Reward.text = "500";
-                CtrlDataGame.Ins.AddCoin(500);
+                AudioCtrl.Ins.Play("win");
+                if (TourmentCtrl.Ins.isFinalMatchTour())
+                {
+                    reward = 500;
+                    MissonCtrl.Ins.UpdateMission(2);
+                    t_Reward.text = "500";
+                    CtrlDataGame.Ins.AddCoin(500);
+                }
+                else
+                {
+                    reward = 0;
+                    t_Reward.text = "0";
+                }
+             
+               
                 TourmentCtrl.Ins.SetMatchPlayer();
                 TourmentCtrl.Ins.CompleteMatch();
 
@@ -46,18 +68,30 @@ public class ResultWindown : Screen
         }
         else
         {
-           
-            t_Reward.text = "0";
+            AudioCtrl.Ins.Play("lose");
+            MissonCtrl.Ins.UpdateMission(7);
+
+            reward = 0;
+                t_Reward.text = "0";
             VisibleVictory[0].enabled = false;
             VisibleVictory[1].enabled = true;
             Win.enabled = false;
             Lose.enabled = true;
 
-            t_Reward.text = "500";
-            CtrlDataGame.Ins.AddCoin(500);
-            TourmentCtrl.Ins.SetMatchPlayer();
-            TourmentCtrl.Ins.CompleteMatch();
+            //t_Reward.text = "500";
+            //CtrlDataGame.Ins.AddCoin(500);
+            //TourmentCtrl.Ins.SetMatchPlayer();
+            //TourmentCtrl.Ins.CompleteMatch();
 
+        }
+
+        if (VsScreen.isMatchRandom)
+        {
+            MissonCtrl.Ins.UpdateMission(0);
+        }
+        else
+        {
+            MissonCtrl.Ins.UpdateMission(1);
         }
         
 
@@ -87,6 +121,20 @@ public class ResultWindown : Screen
       
 
     }
+    private void OnEnable()
+    {
+        MissonCtrl.Ins.UpdateMission(0);
+     
+    }
 
+    public void X2_Coins_Ads()
+    {
+        GameMananger.Ins.RewardVideo(X2_Coin);
+    }
+    public void X2_Coin()
+    {
+        CtrlDataGame.Ins.AddCoin(reward);
+        X2_Coins.interactable = false;
+    }
 
 }

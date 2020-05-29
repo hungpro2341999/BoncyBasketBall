@@ -19,6 +19,7 @@ public class CheckWithBall : Check
                 }
                
             }
+            AudioCtrl.Ins.Play("Catch");
              
 
         }

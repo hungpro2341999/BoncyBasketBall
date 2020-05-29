@@ -607,7 +607,8 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    7: USE_ADMOB;USE_UNITY_ADS;USE_FIREBASE
   platformArchitecture: {}
   scriptingBackend:
     Android: 0

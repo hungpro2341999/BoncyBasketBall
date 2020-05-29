@@ -90,11 +90,17 @@ public class CheckInBall : MonoBehaviour
 
                 if ((Global[Key_Baset_1] + Global[Key_Baset_2]) == 2)
                 {
+                    
 
+                    if (!CtrlGamePlay.Ins.isPlaying)
+                        return;
+
+                 
                     CtrlGamePlay.Ins.ResetRound();
                     var ball = (Ball)CtrlGamePlay.Ins.Ball;
                     var player = (Player)CtrlGamePlay.Ins.Player;
                     var cpu = (AI)CtrlGamePlay.Ins.AI;
+                    AudioCtrl.Ins.Play("Goal");
                     switch (BoardOf)
                     {
                         case BoardGame.Player:
@@ -108,6 +114,12 @@ public class CheckInBall : MonoBehaviour
                                         cpu.type = TypeScore.JumpBall;
                                         score = 2;
                                         CtrlGamePlay.Ins.GlobalPlayer(score);
+                                        AudioCtrl.Ins.Play("SlampDunk");
+                                    }
+                                    else
+                                    {
+                                        AudioCtrl.Ins.Play("2Point");
+                                        score = 2;
                                     }
                                 }
                                 else
@@ -118,6 +130,13 @@ public class CheckInBall : MonoBehaviour
                                         score = 3;
                                         CtrlGamePlay.Ins.GlobalPlayer(score);
                                     }
+                                    else
+                                    {
+                                       
+                                        score = 3;
+                                    }
+
+                                    AudioCtrl.Ins.Play("3Point");
                                 }
                                 CtrlGamePlay.Ins.SetScore(cpu.type);
 
@@ -131,6 +150,13 @@ public class CheckInBall : MonoBehaviour
                                         player.type = TypeScore.JumpBall;
                                         score = 2;
                                         CtrlGamePlay.Ins.GlobalPlayer(score);
+                                        AudioCtrl.Ins.Play("SlampDunk");
+                                    }
+                                    else
+                                    {
+                                        AudioCtrl.Ins.Play("2Point");
+                                        
+                                        score = 2;
                                     }
                                 }
                                 else
@@ -141,6 +167,12 @@ public class CheckInBall : MonoBehaviour
                                         score = 3;
                                         CtrlGamePlay.Ins.GlobalPlayer(score);
                                     }
+                                    else
+                                    {
+                                       
+                                        score = 3;
+                                    }
+                                    AudioCtrl.Ins.Play("3Point");
                                 }
                                 CtrlGamePlay.Ins.SetScore(player.type);
 
@@ -158,9 +190,15 @@ public class CheckInBall : MonoBehaviour
                                 {
                                     if (player.isInAction())
                                     {
+                                        AudioCtrl.Ins.Play("SlampDunk");
                                         player.type = TypeScore.JumpBall;
                                         score1 = 2;
-                                        CtrlGamePlay.Ins.GlobalCPU(score1);
+
+                                    }
+                                    else
+                                    {
+                                        AudioCtrl.Ins.Play("2Point");
+                                        score1 = 2;
                                     }
                                 }
                                 else
@@ -169,10 +207,16 @@ public class CheckInBall : MonoBehaviour
                                     {
                                         player.type = TypeScore.Clean_Shoot;
                                         score1 = 3;
-                                        CtrlGamePlay.Ins.GlobalCPU(score1);
+                                        AudioCtrl.Ins.Play("3Point");
+
+                                    }
+                                    else
+                                    {
+                                        AudioCtrl.Ins.Play("3Point");
+                                        score1 = 3;
                                     }
                                 }
-
+                                CtrlGamePlay.Ins.GlobalCPU(score1);
                                 CtrlGamePlay.Ins.SetScore(player.type);
 
                             }
@@ -185,17 +229,29 @@ public class CheckInBall : MonoBehaviour
                                         cpu.type = TypeScore.JumpBall;
                                         score1 = 2;
                                         CtrlGamePlay.Ins.GlobalCPU(score1);
+                                        AudioCtrl.Ins.Play("SlampDunk");
+                                    }
+                                    else
+                                    {
+                                        AudioCtrl.Ins.Play("2Point");
+                                        score1 = 2;
                                     }
                                 }
                                 else
                                 {
+                                    AudioCtrl.Ins.Play("3Point");
                                     if (Global[Key_Coll_2] == 0)
                                     {
                                         cpu.type = TypeScore.Clean_Shoot;
                                         score1 = 3;
-                                        CtrlGamePlay.Ins.GlobalCPU(score1);
+
+                                    }
+                                    else
+                                    {
+                                        score1 = 3;
                                     }
                                 }
+                                CtrlGamePlay.Ins.GlobalCPU(score1);
                                 CtrlGamePlay.Ins.SetScore(cpu.type);
 
                             }

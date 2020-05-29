@@ -9,6 +9,7 @@ public class GamePlayWindown : Screen
 
     public override void EventOpen()
     {
+        
         GameMananger.Ins.TrasUIGenrate.gameObject.SetActive(false);
         GameMananger.Ins.TransSetting.gameObject.SetActive(false);
         GameMananger.Ins.DemoCharacter.gameObject.SetActive(false);
@@ -23,8 +24,14 @@ public class GamePlayWindown : Screen
         CtrlGamePlay.Ins.isWattingStart = true;
         CtrlGamePlay.Ins.timeWattingMatch = 5;
         CtrlGamePlay.Ins.StartWatting();
-
+        AudioCtrl.Ins.Pause("BG");
+        AudioCtrl.Ins.Play("eff");
+    }
+    public override void EventClose()
+    {
+        AudioCtrl.Ins.ContinuePlay("BG");
     }
 
-   
+
+
 }
