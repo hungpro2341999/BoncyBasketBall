@@ -11,7 +11,7 @@ public class AI_01 : AI
 
     public const string Key_Trigger_Jump_Protect_Ball = "Key_Trigger_Protect_Ball";
     private int PosPrecition;
-    public Dictionary<string, ProcessKey> Dictory_Protect_Board = new Dictionary<string, ProcessKey>();
+   
     public Dictionary<string, ActionGame[]> Directory_Protect_Board = new Dictionary<string, ActionGame[]>();
   
 
@@ -69,55 +69,42 @@ public class AI_01 : AI
         BoxAttack.gameObject.SetActive(false);
         BoxCatchBall.gameObject.SetActive(true);
         NullOnActionTrigger();
+        OnMoveToBall();
     }
-
-        public void ProcessStatusProtectBall()
-    {
-        
-            string key = KeyCurr();
-            KeyActionCurr = key;
-            if (changeStatus)
-            {
-                Dictory_Protect_Board[KeyCurrBall].TriggerAction();
-               
-                KeyActionCurr = "";
-                changeStatus = false;
-            }
-
-
-            if (KeyActionCurr != KeyActionPrevious)
-            {
-                OnActionWithKey(key);
-            }
-
-            KeyActionPrevious = KeyActionCurr;
-
 
        
-    }
 
     public void ProcessKey_Protect_Board()
     {
         
         string key = KeyCurrProtectBall();
+      
         KeyActionCurr = key;
 
         if (changeStatus)
         {
-            Dictory_Protect_Board[KeyCurrBall].TriggerAction();
-            OnAtionWithKey_Status_Have_Ball(key);
+            var a = CtrlGamePlay.Ins.GetBall();
+            KeyCurrBall = a.ControllerBy();
+            Debug.Log(KeyCurrBall + "  Key Trigger");
+            if (Directory_Action_Process_Key[KeyCurrBall].TriggerAction != null)
+            {
+                Directory_Action_Process_Key[KeyCurrBall].TriggerAction();
+            }
+
+            OnActionWithKeyProtectBall(key, Directory_Protect_Board);
             KeyActionCurr = "";
             changeStatus = false;
         }
         if (KeyActionCurr != KeyActionPrevious)
         {
-            OnActionWithKey(key, Directory_Protect_Board);
+            OnActionWithKeyProtectBall(key, Directory_Protect_Board);
       //      OnAtionWithKey_Status_Have_Ball(key);
         }
         KeyActionPrevious = KeyActionCurr;
+        TextStatus.text = key;
     }
 
-    public void OnActionWithKey(string key,Dictionary<string,ActionGame[]> ActionGames)
+    public void OnActionWithKeyProtectBall(string key,Dictionary<string,ActionGame[]> ActionGames)
     {
         Debug.Log("Protect Move");
         int r = Random.Range(0, ActionGames[key].Length);
@@ -459,8 +446,7 @@ public class AI_01 : AI
     public override void Init()
     {
 
-        ProcessKey ProcessProtectBoard = new ProcessKey(ProcessKey_Protect_Board, OnMoveProtectHoop);
-        ListProcessKey.Add(ProcessProtectBoard);
+        
         ActionGame lc_OnActionMoveToPlayer = new ActionGame(OnTriggerMoveToPlayer, OnMoveToPlayer);
         ActionGame lc_OnActionMove = new ActionGame(null, OnMoveToBall);
         ActionGame lc_OnJump = new ActionGame(OnJump, OnJumpStraight, Endjump, 0.75f);
@@ -469,7 +455,7 @@ public class AI_01 : AI
         ActionGame lc_onMoveToHoop = new ActionGame(null, OnMoveToHoop);
         ActionGame lc_OnJump_left = new ActionGame(OnTriggerJumpLeft, OnJumpLeft, Endjump, 1f);
         ActionGame lc_OnJump_right = new ActionGame(OnJump, OnJumpRight, Endjump, 1f);
-        ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, null, 2, true);
+        ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, OnEndSlampDunk, 2, true);
         ActionGame lc_OnStun = new ActionGame(OnTriggerStun, OnStun, OnEndTriggerStun, 0);
 
         ActionGame lc_OnAttack = new ActionGame(OnStartActionAttack, OnActtionTriggerAttack, null);
@@ -483,7 +469,7 @@ public class AI_01 : AI
 
         ActionGame lc_OnActionJumpThrowBall = new ActionGame(OnJumpThrowBall, OnStartThrowBall, EndAction, 1);
 
-        ActionGame lc_OnActionMoveProtectBall = new ActionGame(OnTriggerMoveProtectHoop, OnMoveProtectHoop, OnEndProtectToHoop, 4);
+        ActionGame lc_OnActionMoveProtectBall = new ActionGame(OnTriggerMoveProtectHoop, OnMoveProtectHoop, OnEndProtectToHoop, 2);
 
         // Update To Directory
 
@@ -529,16 +515,20 @@ public class AI_01 : AI
         Directory_StatusCpu.Add(Key_Trigger_Jump, 0);
         Directory_StatusCpu.Add(Key_Trigger_ThrowBall, 0);
         Directory_StatusCpu.Add(Key_Trigger_Slamp_Dunk, 0);
+        Directory_StatusCpu.Add(Key_Trigger_Jump_Protect_Ball, 0);
 
         // Load Text Cpu
 
+        ProcessKey ProcessProtectBoard = new ProcessKey(OnTriggerStatusMoveProtectBall, ProcessKey_Protect_Board);
+      
         ProcessKey KeyMoveToBall = new ProcessKey(OnTriggerStatusMoveCatchBall, ProcessStatus);
         ProcessKey KeyProcessStatusHaveBall = new ProcessKey(OnTriggerCpuHaveBall, ProcessStatusCPUHaveBall);
         ProcessKey KeyProcessStatusPlayerHave = new ProcessKey(OnTriggerPlayerHaveBall, ProcessStatusPlayerHaveBall);
+        ListProcessKey.Add(ProcessProtectBoard);
         ListProcessKey.Add(KeyMoveToBall);
         ListProcessKey.Add(KeyProcessStatusHaveBall);
         ListProcessKey.Add(KeyProcessStatusPlayerHave);
-
+       
         ReadFileCPU();
 
 
@@ -546,7 +536,8 @@ public class AI_01 : AI
     }
     public string KeyCurrProtectBall()
     {
-        string s = Directory_Key_Status[Key_Trigger_Jump_Protect_Ball].ToString();
+        //string s = Directory_StatusCpu[Key_Trigger_Jump_Protect_Ball].ToString();
+        string s = ((CtrlGamePlay.Ins.GetBall().IsCollWithActionJump()) ? 1 : 0).ToString();
         TextStatus.text = s;
         return s;
 

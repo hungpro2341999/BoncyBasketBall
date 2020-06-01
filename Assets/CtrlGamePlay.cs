@@ -348,11 +348,15 @@ public class CtrlGamePlay : MonoBehaviour
 
         CPU.type = CPU.GetTypeScore();
         int currPos = (int)Mathf.Abs((CtrlGamePlay.Ins.WidthScreen / 2 - CPU.transform.position.x) / CPU.Amount);
-        float PercentageX =  CPU.TargetHoop.x + Random.Range(-CPU.PercentageThrowBall,CPU.PercentageThrowBall)*CPU.PercentageDistance *Mathf.Clamp((currPos), 1, 12) * 0.5f;
-        float PercentageY = CPU.TargetHoop.y + Random.Range(0, CPU.PercentageThrowBall) * CPU.PercentageDistance * Mathf.Clamp((currPos), 1, 12) * 0.2f;
-        float yJump = Mathf.Abs(transform.position.y - Ball.transform.position.y);
-        yJump += Random.Range(2, 4);
-        yJump = Mathf.Clamp(yJump, 0.5f, 5);
+        float PercentageX =  CPU.TargetHoop.x - Random.Range(0,CPU.PercentageThrowBall)*CPU.PercentageDistance *Mathf.Clamp((currPos), 1, 12) * 0.05f;
+        float PercentageY = CPU.TargetHoop.y + Random.Range(0, CPU.PercentageThrowBall) * CPU.PercentageDistance * Mathf.Clamp((currPos), 1, 12) * 0.05f;
+        float yJump = Mathf.Abs(CPU.TargetHoop.y - Ball.transform.position.y);
+        yJump += Random.Range(0.5f, 1f);
+        if (yJump < PercentageY)
+        {
+            yJump = PercentageY + 0.5f;
+        }
+     
         Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
     }
     public void PlayerThrowBall()
@@ -361,11 +365,11 @@ public class CtrlGamePlay : MonoBehaviour
         var player = (Player)Player;
         player.type = player.GetTypeScore();
         int currPos = (int)Mathf.Abs((CtrlGamePlay.Ins.WidthScreen / 2 - player.transform.position.x) / player.Amount);
-        float PercentageX = player.TargetHoop.x + Random.Range(-player.PercentageThrowBall, player.PercentageThrowBall) * Mathf.Clamp((currPos), 1, 12) * 0.5f;
-        float PercentageY = player.TargetHoop.y + ((Random.Range(0, player.PercentageThrowBall) * player.PercentageDistance * Mathf.Clamp((currPos), 1, 12)*0.2f));
-        float yJump = Mathf.Abs(transform.position.y - Ball.transform.position.y);
-        yJump += Random.Range(2, 4);
-        yJump = Mathf.Clamp(yJump,0.5f, 5);
+        float PercentageX = player.TargetHoop.x - Random.Range(0, player.PercentageThrowBall) * Mathf.Clamp((currPos), 1, 12) * 0.05f;
+        float PercentageY = player.TargetHoop.y + ((Random.Range(0, player.PercentageThrowBall) * player.PercentageDistance * Mathf.Clamp((currPos), 1, 12)* 0.05f));
+        float yJump = Mathf.Abs(player.TargetHoop.y - Ball.transform.position.y);
+        yJump += Random.Range(0.5f, 1);
+       
         Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
     }
     public void Launch(float height,Vector3 Target)

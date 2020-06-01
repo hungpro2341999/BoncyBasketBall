@@ -1,0 +1,77 @@
+
+// 1.MoveToCatchBall
+// 2.CpuHaveBall
+// 3.PlayerHaveBall
+// 4.CpuProtectBall
+
+//  Status   =  CPuHaveBall + PlayerHaveBall +BallToBoardCPU
+0. 000 = 1 
+1. 010 = 3
+2. 100 = 2
+3. 001 = 0
+4. 011 = 0
+5. 101 = 2
+
+
+--Staus--
+// I > FIND BALL
+
+// 1.TriggerJump
+// 2.TriggerFrontWithPlayer
+// 3.TriggerbackWithPlayer
+
+
+// Status = 1+2+3
+//
+
+
+
+//
+0. 000 = MoveToBall 
+1. 001 = OnJumpRight || OnActionMoveToBall 
+2. 010 = OnJumpleft || OnActionMoveToBall
+3. 011 = MoveToBall
+4. 100 = OnActionJump 
+5. 101 = OnActionJump 
+6. 110 = OnActionJump || OnActionMoveToBall
+7. 111 = OnActionJump
+--Staus--
+
+
+// II > HAVE BALL 
+
+// 1.TriggerFrontWithPlayer
+// 2.TriggerBackWithPlayer
+// 2.Trigger_Throw_Ball
+
+// Status = 1+2+3
+
+0. 000 = MoveToHoop || OnActionMoveBackHaveBall
+1. 001 = OnThrownOnGround ||  JumpThrowBall
+2. 010 = MoveToHoop
+3. 011 = OnThrownOnGround ||  JumpThrowBall
+4. 100 = OnJumpleft || MoveToHoop
+5. 101 = OnActionMoveBackHaveBall
+6. 110 = MoveToHoop
+7. 111 = OnThrownOnGround ||  JumpThrowBall
+
+--Staus--
+
+// III> PLAYER HAVE BALL
+
+//1.Trigger_Front_With_Player
+//2.Trigger_Back_With_Player
+0. 01 = OnJumpRight
+1. 10 = OnMoveToPlayer 
+2. 00 = OnMoveToPlayer 
+3. 11 = OnMoveToPlayer
+
+--Staus--
+
+// IV> Protect Ball
+//1. TriggerJumpProtect
+
+0. 0 = OnActionMoveProtectBall
+1. 1 = Key_Catch_And_Throw
+
+

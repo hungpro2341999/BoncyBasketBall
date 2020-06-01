@@ -320,31 +320,28 @@ public class AI : Character
                 DirectCpu = DirectWithPlayer.Right;
             }
         }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
+     
 
-            OnAttack();
-        }
+        //RaycastHit2D hits = Physics2D.Raycast(Vector3.left * 0.2f + transform.position - Vector3.up * 0.3f, Vector2.left, 1.2f);
+        //// 
+        //if (hits.collider != null)
+        //{
+        //    Debug.Log("Coll : "+hits.collider.name);
+        //    if (hits.collider.gameObject.layer == 13)
+        //    {
+              
+        //        Directory_StatusCpu[Key_Trigger_Front] = 1;
+        //    }
+        //    else
+        //    {
+        //        Directory_StatusCpu[Key_Trigger_Front] = 0;
+        //    }
 
-        RaycastHit2D hits = Physics2D.Raycast(Vector3.left * 0.5f + transform.position - Vector3.up * 0.5f, Vector2.left, 1.2f);
-        // 
-        if (hits.collider != null)
-        {
-            if (hits.collider.gameObject.layer == 13)
-            {
-               // Debug.Log("Coll");
-                Directory_StatusCpu[Key_Trigger_Front] = 1;
-            }
-            else
-            {
-                Directory_StatusCpu[Key_Trigger_Front] = 0;
-            }
-
-        }
-        else
-        {
-            Directory_StatusCpu[Key_Trigger_Front] = 0;
-        }
+        //}
+        //else
+        //{
+        //    Directory_StatusCpu[Key_Trigger_Front] = 0;
+        //}
 
 
 
@@ -1048,7 +1045,7 @@ public class AI : Character
     {
         // Debug.Log("Jump");
         hasPullBall = false;
-      if(isGround)
+       if(isGround)
         isJump = true;
     }
 
@@ -1545,6 +1542,7 @@ public class AI : Character
 
         string key = Directory_StatusCpu[Key_Trigger_Jump].ToString() + Directory_StatusCpu[Key_Trigger_Front].ToString()
                + Directory_StatusCpu[Key_Trigger_Back].ToString();
+        Debug.Log("None Ball ");
         TextStatus.text = key;
 
         return key;
@@ -2286,26 +2284,7 @@ public class AI : Character
 
 
     #endregion
-    //void RemoveListener(string name, System.Action action)
-    //{
-    //    if (registry.ContainsKey(name) == false)
-    //    {
-    //        return;
-    //    }
-
-    //    registry[name].listeners -= action;
-    //}
-
-    //void AddListener(string name, System.Action action)
-    //{
-    //    if (registry.ContainsKey(name) == false)
-    //    {
-    //        registry[name] = new RegistryItem();
-    //    }
-
-    //    registry[name].listeners += action;
-    //}
-
+  
 
     public override void OnEvent(TrackEntry trackEntry, Spine.Event e)
     {

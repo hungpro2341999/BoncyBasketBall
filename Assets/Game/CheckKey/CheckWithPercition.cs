@@ -18,13 +18,15 @@ public class CheckWithPercition : Check
 
     public override void CheckKey(Collider2D collision)
     {
-        
+      
         if (collision.gameObject.tag == "Percition")
         {
            Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
             if (character is AI)
             {
+                Debug.Log("Set Trigger");
                 var AI = (AI)character;
+              
                 AI.SetKeyTrigger(key);
 
             }
@@ -38,6 +40,7 @@ public class CheckWithPercition : Check
         {
             if (character is AI)
             {
+                Debug.Log("Out Trigger");
                 var AI = (AI)character;
                 AI.SetRestoreTrigger(key);
 

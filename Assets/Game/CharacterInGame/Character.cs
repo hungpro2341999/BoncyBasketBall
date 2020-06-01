@@ -84,7 +84,7 @@ public abstract class Character : MonoBehaviour
         }
         
     }
-   
+    
     // Update is called once per frame
     public virtual void FixedUpdate()
     {

@@ -48,28 +48,31 @@ public class Ball : Character
         CtrlGamePlay.Ins.eventRestGamePlay += Event_Reset;
 
         RestoreLayer_01 = new int[ColliderIngore_01.Length];
-        for (int i = 0; i < ColliderIngore_01.Length; i++)
-        {
-            RestoreLayer_01[i] = ColliderIngore_01[i].gameObject.layer;
-        }
+       
     }
     // Start is called before the first frame update
-
+    private void Update()
+    {
+        PredictionFall();
+    }
     public override void GetStatus()
     {
         LoadCurrPosionPlayer();
-        RaycastHit2D[] ray = Physics2D.RaycastAll(transform.position, Body.velocity.normalized);
+      
 
-        if (PercitionBall != null)
-        {
-            PercitionBall();
-        }
-        //  PredictionFall();
+        //if (PercitionBall != null)
+        //{
+        //   // PercitionBall();
+        //}
+         //   PredictionFall();
 
-        //   PercitionForProtectBall();
-        
-      //   PercitionForProtectBall();
+        ////   PercitionForProtectBall();
+
+        ////   PercitionForProtectBall();
+        ////  PredictionFall();
+
       //  PredictionFall();
+
         if (KeyBall.ToString() != null)
             keyBall.text = "KeyBall : " + KeyBall.ToString();
     }
@@ -161,7 +164,7 @@ public class Ball : Character
             bitPlayer = "0";
         }
 
-        if (CtrlGamePlay.Ins.GetBall().isPercitonWithBoard)
+        if (CtrlGamePlay.Ins.GetBall().CurrPos<=2)
         {
             bitBoardCpu = "1";
         }
@@ -323,7 +326,6 @@ public class Ball : Character
     }
 
     
-
     public void PredictionFall()
     {
         
@@ -341,31 +343,36 @@ public class Ball : Character
           RaycastHit2D hits;
           TurnOffSimulate();
           gameObject.layer = 2;
+        int a = 0;
             for(int i=0;i<20;i++)
             {
                 x1 = InitX + vec.x * (Time.fixedDeltaTime * i*1.8f);
-                y1 = InitY + vec.y * (Time.fixedDeltaTime * i * 1.8f) - (0.5f * -Physics.gravity.y * Time.fixedDeltaTime * Time.fixedDeltaTime * i * i * 1.8f * 1.8f);
+                y1 = InitY + vec.y * (Time.fixedDeltaTime * i* 1.8f) - (0.5f * -Physics.gravity.y * Time.fixedDeltaTime * Time.fixedDeltaTime * i * i * 1.8f* 1.8f);
                 Point[i].SetActive(true);
                 Point[i].transform.position = new Vector2(x1, y1);
-            hits = Physics2D.CircleCast(new Vector2(x1,y1), 0.1f,Vector2.zero);
-            
+            hits = Physics2D.CircleCast(new Vector2(x1,y1), 0.3f,Vector2.zero);
+
            
                if (hits.collider!=null)
-             {
+              {
                
                 
 
 
                 var AI = (AI)CtrlGamePlay.Ins.AI;
-                 posPercition = i ;
+                posPercition = i;
                 posPercition = Mathf.Clamp(posPercition, 0, Point.Length);
                 PrecitionBallGround = Point[i].transform.position;
+
                 break;
-             }
+              }
 
             }
-
-        gameObject.layer = 16;
+        //for (int i = a; i < 20; i++)
+        //{
+        //    Point[i].SetActive(false);
+        //}
+            gameObject.layer = 16;
 
         for (int i = 0; i < ColliderIngore.Length; i++)
         {
@@ -383,71 +390,7 @@ public class Ball : Character
 
     public void PercitionForProtectBall()
     {
-        gameObject.layer = 2;
-        for (int i = 0; i < ColliderIngore.Length; i++)
-        {
-            ColliderIngore[i].gameObject.layer = 2;
-        }
-
-        for (int i = 0; i < ColliderIngore_01.Length; i++)
-        {
-            ColliderIngore_01[i].gameObject.layer = 25;
-        }
-
-        Vector2 vec = Body.velocity;
-        float x1 = transform.position.x;
-        float y1 = transform.position.y;
-        float InitX = transform.position.x;
-        float InitY = transform.position.y;
-        Vector2 InitPoint = new Vector2(InitX, InitY);
-        RaycastHit2D hits;
-        TurnOffSimulate_01();
-       
-        for (int i = 0; i < 20; i++)
-        {
-            x1 = InitX + vec.x * (Time.fixedDeltaTime * i * 3f);
-            y1 = InitY + vec.y * (Time.fixedDeltaTime * i * 3f) - (0.5f * -Physics.gravity.y * Time.fixedDeltaTime * Time.fixedDeltaTime * i * i * 3 * 3);
-            Point_01[i].SetActive(true);
-            Point_01[i].transform.position = new Vector2(x1, y1);
-            hits = Physics2D.CircleCast(new Vector2(x1, y1), 0.1f, Vector2.zero);
-
-            if (i > 2)
-            {
-                if (Vector3.Distance(Point_01[i - 1].transform.position, Point_01[1].transform.position) < 0.2f)
-                {
-                    break;
-                }
-            }
-            if (hits.collider != null)
-            {
-
-                if (hits.collider.gameObject.layer == 25)
-                {
-                    PosPercitionHoop = Point_01[i].transform.position;
-                    isPercitonWithBoard = true;
-                }
-                else
-                {
-                    isPercitonWithBoard = false;
-                }
-                break;
-              
-               
-            }
-
-        }
-
-      
-
-        for (int i = 0; i < ColliderIngore.Length; i++)
-        {
-            ColliderIngore[i].gameObject.layer = RestoreLayer[i];
-        }
-        for (int i = 0; i < ColliderIngore_01.Length; i++)
-        {
-            ColliderIngore_01[i].gameObject.layer = RestoreLayer_01[i];
-        }
-        gameObject.layer = 16;
+     
 
     }
 
@@ -456,7 +399,19 @@ public class Ball : Character
         for (int i = 0; i < Point.Length; i++)
         {
             Point[i].gameObject.SetActive(false);
+            Point[i].gameObject.GetComponent<CheckPoint>().Coll = false;
         }
+    }
+    public bool IsCollWithActionJump()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            if (Point[i].GetComponent<CheckPoint>().Coll)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     public void TurnOffSimulate_01()
     {
