@@ -33,6 +33,9 @@ public class Ball : Character
 
     public event System.Action PercitionBall;
 
+    public delegate string GetStatusBall();
+    public GetStatusBall event_getStatus;
+
 
     //
     private float Amount;
@@ -55,6 +58,8 @@ public class Ball : Character
     {
         PredictionFall();
     }
+
+  
     public override void GetStatus()
     {
         LoadCurrPosionPlayer();
@@ -112,36 +117,59 @@ public class Ball : Character
 
     public string ControllerBy()
     {
-        //string s = "";
-        //string bitAI = "";
-        //string bitPlayer = "";
-        //if (CtrlGamePlay.Ins.AI.isBall)
-        //{
-        //    bitAI = "1";
-        //}
-        //else
-        //{
-        //    bitAI = "0";
-        //}
+        return event_getStatus();
 
-        //if (CtrlGamePlay.Ins.Player.isBall)
-        //{
-        //    bitPlayer = "1";
-        //}
-        //else
-        //{
-        //    bitPlayer = "0";
-        //}
+    }
 
-        //s += bitAI + bitPlayer;
+    public void NullKeyBall()
+    {
+        event_getStatus = null;
+    }
+
+    public void AddKeyBall_1()
+    {
+        event_getStatus = null;
+        event_getStatus += SelectKey;
+    }
+    public void AddKeyBall_2()
+    {
+        event_getStatus = null;
+        event_getStatus += SelectKey2;
+    }
+
+    public string SelectKey()
+    {
+        string s = "";
+        string bitAI = "";
+        string bitPlayer = "";
+        if (CtrlGamePlay.Ins.AI.isBall)
+        {
+            bitAI = "1";
+        }
+        else
+        {
+            bitAI = "0";
+        }
+
+        if (CtrlGamePlay.Ins.Player.isBall)
+        {
+            bitPlayer = "1";
+        }
+        else
+        {
+            bitPlayer = "0";
+        }
+
+        s += bitAI + bitPlayer;
 
 
 
-        //KeyBall = s;
-        //return s;
+        KeyBall = s;
+        return s;
+    }
 
-
-
+    public string SelectKey2()
+    {
         string s = "";
         string bitAI = "";
         string bitPlayer = "";
@@ -164,7 +192,7 @@ public class Ball : Character
             bitPlayer = "0";
         }
 
-        if (CtrlGamePlay.Ins.GetBall().CurrPos<=2)
+        if (CtrlGamePlay.Ins.GetBall().CurrPos <= 2)
         {
             bitBoardCpu = "1";
         }
@@ -179,9 +207,8 @@ public class Ball : Character
         KeyBall = s;
         return s;
 
-
-
     }
+
     public string KeyController_CPU_X_1()
     {
         string s = "";
@@ -344,10 +371,10 @@ public class Ball : Character
           TurnOffSimulate();
           gameObject.layer = 2;
         int a = 0;
-            for(int i=0;i<20;i++)
+            for(int i=0;i<15;i++)
             {
-                x1 = InitX + vec.x * (Time.fixedDeltaTime * i*1.8f);
-                y1 = InitY + vec.y * (Time.fixedDeltaTime * i* 1.8f) - (0.5f * -Physics.gravity.y * Time.fixedDeltaTime * Time.fixedDeltaTime * i * i * 1.8f* 1.8f);
+                x1 = InitX + vec.x * (Time.fixedDeltaTime * i*1.2f);
+                y1 = InitY + vec.y * (Time.fixedDeltaTime * i* 1.2f) - (0.5f * -Physics.gravity.y * Time.fixedDeltaTime * Time.fixedDeltaTime * i * i * 1.2f* 1.2f);
                 Point[i].SetActive(true);
                 Point[i].transform.position = new Vector2(x1, y1);
             hits = Physics2D.CircleCast(new Vector2(x1,y1), 0.3f,Vector2.zero);
@@ -404,7 +431,7 @@ public class Ball : Character
     }
     public bool IsCollWithActionJump()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 15; i++)
         {
             if (Point[i].GetComponent<CheckPoint>().Coll)
             {
@@ -413,13 +440,7 @@ public class Ball : Character
         }
         return false;
     }
-    public void TurnOffSimulate_01()
-    {
-        for (int i = 0; i < Point_01.Length; i++)
-        {
-            Point_01[i].gameObject.SetActive(false);
-        }
-    }
+  
     private void OnTriggerEnter2D(Collider2D collision)
     {
        

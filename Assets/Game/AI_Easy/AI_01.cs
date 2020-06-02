@@ -13,8 +13,14 @@ public class AI_01 : AI
     private int PosPrecition;
    
     public Dictionary<string, ActionGame[]> Directory_Protect_Board = new Dictionary<string, ActionGame[]>();
-  
 
+
+    public override void Start()
+    {
+       
+        base.Start();
+        CtrlGamePlay.Ins.GetBall().AddKeyBall_1();
+    }
 
     public override void OnTriggerMoveProtectHoop()
     {
@@ -30,6 +36,7 @@ public class AI_01 : AI
     {
         var a = (Ball)CtrlGamePlay.Ins.Ball;
         KeyCurrBall = a.ControllerBy();
+        Debug.Log(KeyCurrBall + "Key Ball ");
         if (KeyCurrBallPervious != KeyCurrBall)
         {
 
@@ -42,8 +49,9 @@ public class AI_01 : AI
         {
             return;
         }
-        Debug.Log("Active");
+        Debug.Log("Active : "+ KeyCurrBall);
         var action = Directory_Action_Process_Key[KeyCurrBall].StartAction;
+
         if (action != null)
         {
             Debug.Log("Deo Null");
@@ -61,7 +69,7 @@ public class AI_01 : AI
     }
 
     // add Process Key:
-    public void OnTriggerStatusMoveProtectBall()
+    public virtual void OnTriggerStatusMoveProtectBall()
     {
        
         var ball = (Ball)CtrlGamePlay.Ins.Ball;
@@ -278,7 +286,7 @@ public class AI_01 : AI
 
         for (int i = 0; i < sss.Length; i++)
         {
-            //Debug.Log("String : "+sss[i]);
+            Debug.Log("String : "+sss[i]);
         }
 
         string s = sss[1];
@@ -346,7 +354,7 @@ public class AI_01 : AI
                 {
                     continue;
                 }
-
+                Debug.Log("Line : " + line);
                 FormatString_Status_Player_Have_Ball(line);
                  Debug.Log(line);
 
@@ -433,14 +441,14 @@ public class AI_01 : AI
 
         for (int i = 0; i < ArrayValue.Length; i++)
         {
-            //    Debug.Log(ArrayValue[i]);
+                Debug.Log(ArrayValue[i]);
             ArrayAction[i] = Directory_OnActionGame[ArrayValue[i]];
         }
 
 
         Directory_Protect_Board .Add(key, ArrayAction);
 
-        //  Debug.Log("Key : "+key + " " + ss);
+         Debug.Log("Key : "+key + " " + ss);
 
     }
     public override void Init()
@@ -536,8 +544,8 @@ public class AI_01 : AI
     }
     public string KeyCurrProtectBall()
     {
-        //string s = Directory_StatusCpu[Key_Trigger_Jump_Protect_Ball].ToString();
-        string s = ((CtrlGamePlay.Ins.GetBall().IsCollWithActionJump()) ? 1 : 0).ToString();
+        string s = Directory_StatusCpu[Key_Trigger_Jump].ToString();
+    
         TextStatus.text = s;
         return s;
 

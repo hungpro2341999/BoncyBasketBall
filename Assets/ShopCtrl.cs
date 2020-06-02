@@ -76,7 +76,7 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
         public void LoadShop()
         {
 
-        //  PlayerPrefs.DeleteKey(Key_First_Shop);
+          PlayerPrefs.DeleteKey(Key_First_Shop);
 
 
         // LoadHead
@@ -235,8 +235,18 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
 
     }
 
+    public void LoadSkinCurr()
+    {
+        TargetGraphic.Attachment_Head(CtrlDataGame.Ins.GetHead());
+        TargetGraphic.Attachment_Hand(CtrlDataGame.Ins.GetHand());
+        TargetGraphic.Attachment_Item_Hand(CtrlDataGame.Ins.GetItemHand());
+        TargetGraphic.Attachment_Leg(CtrlDataGame.Ins.GetLeg());
+        TargetGraphic.Attachment_Item_Leg(CtrlDataGame.Ins.GetItemLeg());
 
-   
+        TargetGraphic.Apply();
+
+    }
+
 
 
     public void Init()

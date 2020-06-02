@@ -17,51 +17,51 @@ MonoBehaviour:
     - type: 0
       id: 0
       Img: {fileID: 21300000, guid: 0863e1ac1e9541e44b925614122e22bb, type: 3}
-      cost: 0
+      cost: 1450
     - type: 0
       id: 1
       Img: {fileID: 21300000, guid: 25c7b3f65fde3104295ad98929e6c9e3, type: 3}
-      cost: 0
+      cost: 1700
     - type: 0
       id: 2
       Img: {fileID: 21300000, guid: ea192ed5c76a84548af64165140f9ef7, type: 3}
-      cost: 0
+      cost: 950
     - type: 0
       id: 3
       Img: {fileID: 21300000, guid: cc11e220f6af77040b7224a2952615fe, type: 3}
-      cost: 1300
+      cost: 950
     - type: 0
       id: 4
       Img: {fileID: 21300000, guid: 440503537dd2f3547b43885f119e9226, type: 3}
-      cost: 1150
+      cost: 2200
     - type: 0
       id: 5
       Img: {fileID: 21300000, guid: bed931d3018a0cf47892bcc75298185f, type: 3}
-      cost: 1100
+      cost: 2500
     - type: 0
       id: 6
       Img: {fileID: 21300000, guid: 26c802220aab9fb43b0c61bcfc3e1abf, type: 3}
-      cost: 800
+      cost: 600
     - type: 0
       id: 7
       Img: {fileID: 21300000, guid: 80ceeab6fe16e4a40b5c4fa7cc14ebf2, type: 3}
-      cost: 700
+      cost: 2900
     - type: 0
       id: 8
       Img: {fileID: 21300000, guid: 384ba60738350d54e97504fc1b7abae0, type: 3}
-      cost: 800
+      cost: 450
     - type: 0
       id: 9
       Img: {fileID: 21300000, guid: af2584a3ed225204dadff6d4c017bd3a, type: 3}
-      cost: 700
+      cost: 100
     - type: 0
       id: 10
       Img: {fileID: 21300000, guid: ca3fca01543420d45aa4efba89b4756a, type: 3}
-      cost: 1000
+      cost: 2100
     - type: 0
       id: 11
       Img: {fileID: 21300000, guid: ee651b0bc1cef5c43800fc5a79e2aa85, type: 3}
-      cost: 1550
+      cost: 1100
     - type: 0
       id: 12
       Img: {fileID: 21300000, guid: 7cf8b6cd716e68d46b40f579ed857f33, type: 3}
@@ -69,109 +69,109 @@ MonoBehaviour:
     - type: 0
       id: 13
       Img: {fileID: 21300000, guid: 4df5f267a4e99894ba8b4288a52b65cb, type: 3}
-      cost: 1000
+      cost: 2300
     - type: 0
       id: 14
       Img: {fileID: 21300000, guid: 00def8729ec294b44b3872d98d11b1a9, type: 3}
-      cost: 650
+      cost: 700
     - type: 0
       id: 15
       Img: {fileID: 21300000, guid: b8fb1d7982b3ed9439556da5f0387c0f, type: 3}
-      cost: 550
+      cost: 1650
     - type: 0
       id: 16
       Img: {fileID: 21300000, guid: 15b586a04b37f1143ad02238fc1f78be, type: 3}
-      cost: 100
+      cost: 2800
     - type: 0
       id: 17
       Img: {fileID: 21300000, guid: 62004e7868e213345ac4995de37ec59d, type: 3}
-      cost: 0
+      cost: 1950
     - type: 0
       id: 18
       Img: {fileID: 21300000, guid: 8af7a9c102a52b746be34ef2f4483cea, type: 3}
-      cost: 1400
+      cost: 350
     - type: 0
       id: 19
       Img: {fileID: 21300000, guid: 5882048ef8fc932488932d47549f79b1, type: 3}
-      cost: 0
+      cost: 3000
     - type: 0
       id: 20
       Img: {fileID: 21300000, guid: 0abc336f00e13b249b9ea6a45ba4d17b, type: 3}
-      cost: 125
+      cost: 300
     - type: 0
       id: 21
       Img: {fileID: 21300000, guid: 62f160cfdaf5e1248a7effaccb265b98, type: 3}
-      cost: 1450
+      cost: 2050
     - type: 0
       id: 22
       Img: {fileID: 21300000, guid: e7e58a5dbcb0cc74ab9a0db28c569bbd, type: 3}
-      cost: 0
+      cost: 1550
     - type: 0
       id: 23
       Img: {fileID: 21300000, guid: 33b091a6aaf17ee44951a245bf6aa715, type: 3}
-      cost: 0
+      cost: 800
     - type: 0
       id: 24
       Img: {fileID: 21300000, guid: ff432c7ddb07e6d4888908daf2f17fb1, type: 3}
-      cost: 0
+      cost: 2300
     - type: 0
       id: 25
       Img: {fileID: 21300000, guid: 4aed25c49152fdd42be82e7cdc7f6e4f, type: 3}
-      cost: 0
+      cost: 3200
     - type: 0
       id: 26
       Img: {fileID: 21300000, guid: 36db5cb91cc86d44aa6d219f0483a5cc, type: 3}
-      cost: 0
+      cost: 200
     - type: 0
       id: 27
       Img: {fileID: 21300000, guid: 5ad78c318e42d2a4b8e3b5f76be4dddf, type: 3}
-      cost: 0
+      cost: 1050
     - type: 0
       id: 28
       Img: {fileID: 21300000, guid: ef66087156c8bab49bb8986194d5ce07, type: 3}
-      cost: 0
+      cost: 2150
     - type: 0
       id: 29
       Img: {fileID: 21300000, guid: 136f3ff8e702efa419d895f73d40c725, type: 3}
-      cost: 0
+      cost: 1800
     - type: 0
       id: 30
       Img: {fileID: 21300000, guid: 6eacb76860ce6bd4faa0fce366e00ef6, type: 3}
-      cost: 0
+      cost: 1300
     - type: 0
       id: 31
       Img: {fileID: 21300000, guid: f746a9c89f1c6ef4f8219b41561c3ac4, type: 3}
-      cost: 0
+      cost: 1350
     - type: 0
       id: 32
       Img: {fileID: 21300000, guid: 48c35ef165cc2b44bab02d9104dfc044, type: 3}
-      cost: 0
+      cost: 2200
     - type: 0
       id: 33
       Img: {fileID: 21300000, guid: 6315e1bddd817ac41ac1f69bde04ca17, type: 3}
-      cost: 0
+      cost: 3100
     - type: 0
       id: 34
       Img: {fileID: 21300000, guid: 7d368e5ab6b04c746947eb3f6e9c18dc, type: 3}
-      cost: 0
+      cost: 1200
     - type: 0
       id: 35
       Img: {fileID: 21300000, guid: 4c273efb4681e7649ad7fdb698856a10, type: 3}
-      cost: 0
+      cost: 2700
   Hands:
     Heads:
     - type: 0
       id: 0
       Img: {fileID: 21300000, guid: c234e09d42995864085d243cc9cc6775, type: 3}
-      cost: 0
+      cost: 1300
     - type: 0
       id: 1
       Img: {fileID: 21300000, guid: 0f36cffd43108d240ba52d15918bfb8e, type: 3}
-      cost: 0
+      cost: 1150
     - type: 0
       id: 2
       Img: {fileID: 21300000, guid: 362768a344e259548b39033ed2a8710b, type: 3}
-      cost: 1300
+      cost: 1100
     - type: 2
       id: 3
       Img: {fileID: 21300000, guid: edf7ea846ae91474491694da4767a30a, type: 3}
@@ -187,47 +187,47 @@ MonoBehaviour:
     - type: 2
       id: 6
       Img: {fileID: 21300000, guid: fcd3e9aa9f56113489db8cc996f37ff9, type: 3}
-      cost: 700
+      cost: 800
     - type: 2
       id: 7
       Img: {fileID: 21300000, guid: f3a6eaec8ce85224c978b3d8f1398d70, type: 3}
-      cost: 1550
+      cost: 700
     - type: 2
       id: 8
       Img: {fileID: 21300000, guid: 2573f0c9cac263249ac0037553658c11, type: 3}
-      cost: 800
+      cost: 1550
     - type: 2
       id: 9
       Img: {fileID: 21300000, guid: 1b8ed52ea2bbe8a4d9d0b41411f71771, type: 3}
-      cost: 700
+      cost: 800
     - type: 2
       id: 10
       Img: {fileID: 21300000, guid: 7d7e67c77b43ab64ca9df14d385d2bf1, type: 3}
-      cost: 1000
+      cost: 700
     - type: 2
       id: 11
       Img: {fileID: 21300000, guid: d013e569d54cc074d84ca68d9dfbd57b, type: 3}
-      cost: 1550
+      cost: 1000
     - type: 2
       id: 12
       Img: {fileID: 21300000, guid: 2fbc198989805d840993de7fc8a01aed, type: 3}
-      cost: 1450
+      cost: 1550
     - type: 2
       id: 13
       Img: {fileID: 21300000, guid: 864809d18f7713546b3348121852dd95, type: 3}
-      cost: 1000
+      cost: 1450
     - type: 2
       id: 14
       Img: {fileID: 21300000, guid: 4499867ef8a3f0849a4ec9c866350341, type: 3}
-      cost: 650
+      cost: 1000
     - type: 2
       id: 15
       Img: {fileID: 21300000, guid: 164a116ac6497bb4a8f2350ae25fce21, type: 3}
-      cost: 550
+      cost: 650
     - type: 1
       id: 16
       Img: {fileID: 21300000, guid: 9c910b25f9719874aa9a1e333b19842b, type: 3}
-      cost: 0
+      cost: 550
     - type: 1
       id: 17
       Img: {fileID: 21300000, guid: 4e18021d453b7a444a0f05f28574ee9f, type: 3}
@@ -247,55 +247,55 @@ MonoBehaviour:
     - type: 1
       id: 21
       Img: {fileID: 21300000, guid: afeb980652f3697488b5cc1236658aa9, type: 3}
-      cost: 625
+      cost: 1450
     - type: 1
       id: 22
       Img: {fileID: 21300000, guid: dafa3f0441bb84c46adc964d59be8895, type: 3}
-      cost: 575
+      cost: 125
     - type: 1
       id: 23
       Img: {fileID: 21300000, guid: 22d6c848d2f2194499c206c8031284ef, type: 3}
-      cost: 0
+      cost: 1750
     - type: 1
       id: 24
       Img: {fileID: 21300000, guid: 33a3af8d2dbbf254f9d13edf21e41c4f, type: 3}
-      cost: 0
+      cost: 1700
     - type: 1
       id: 25
       Img: {fileID: 21300000, guid: 5aef48bf67a24ce4eb4e7aa621bddaae, type: 3}
-      cost: 0
+      cost: 950
     - type: 1
       id: 26
       Img: {fileID: 21300000, guid: 815eece562c9455409973536f25349b7, type: 3}
-      cost: 0
+      cost: 850
     - type: 1
       id: 27
       Img: {fileID: 21300000, guid: 865aaa1bceaf8154a8cae60964e80492, type: 3}
-      cost: 0
+      cost: 1250
     - type: 1
       id: 28
       Img: {fileID: 21300000, guid: ea922fce705ab09439baae05b131c0f7, type: 3}
-      cost: 0
+      cost: 450
     - type: 1
       id: 29
       Img: {fileID: 21300000, guid: a773d778596a97c428294ce3ddb36119, type: 3}
-      cost: 0
+      cost: 1100
     - type: 1
       id: 30
       Img: {fileID: 21300000, guid: d9f197a6c58235443ba7a64dc6c069fb, type: 3}
-      cost: 0
+      cost: 450
     - type: 1
       id: 31
       Img: {fileID: 21300000, guid: 4af9600b0fc1ce44fa410aed0131b971, type: 3}
-      cost: 0
+      cost: 350
     - type: 1
       id: 32
       Img: {fileID: 21300000, guid: fd4ae804922582f40ae0e1d653c38215, type: 3}
-      cost: 0
+      cost: 300
     - type: 1
       id: 33
       Img: {fileID: 21300000, guid: a5928c35eb347594f9bb003c1cb47a09, type: 3}
-      cost: 0
+      cost: 250
   Leg:
     Heads:
     - type: 0
@@ -313,59 +313,59 @@ MonoBehaviour:
     - type: 2
       id: 3
       Img: {fileID: 21300000, guid: 7dbbb185ae26667498368fd78f9168ad, type: 3}
-      cost: 0
+      cost: 1600
     - type: 2
       id: 4
       Img: {fileID: 21300000, guid: d875615f1b10f484bbad84e4a61eb71e, type: 3}
-      cost: 0
+      cost: 1350
     - type: 2
       id: 5
       Img: {fileID: 21300000, guid: 6edb25b16730bdc4d86959f7a4b9ece9, type: 3}
-      cost: 0
+      cost: 1300
     - type: 2
       id: 6
       Img: {fileID: 21300000, guid: 94490c3bed3e887439950cf747aad8c1, type: 3}
-      cost: 0
+      cost: 1250
     - type: 2
       id: 7
       Img: {fileID: 21300000, guid: cb37f558236334d47b828de482792141, type: 3}
-      cost: 0
+      cost: 1000
     - type: 2
       id: 8
       Img: {fileID: 21300000, guid: 5d4f2001859398d48a9d77502c1af4e1, type: 3}
-      cost: 0
+      cost: 1700
     - type: 2
       id: 9
       Img: {fileID: 21300000, guid: 1cf36deff35261b4cabbccdad71c8bf3, type: 3}
-      cost: 0
+      cost: 1650
     - type: 2
       id: 10
       Img: {fileID: 21300000, guid: 8183b31bb0e696146b0b24b793135fd9, type: 3}
-      cost: 0
+      cost: 975
     - type: 2
       id: 11
       Img: {fileID: 21300000, guid: 2c169355c69ea1e4cbc353e4412911c0, type: 3}
-      cost: 0
+      cost: 750
     - type: 2
       id: 12
       Img: {fileID: 21300000, guid: cfb04c52689af6543a6b6f75a9c19e7d, type: 3}
-      cost: 0
+      cost: 900
     - type: 2
       id: 13
       Img: {fileID: 21300000, guid: acab59decf594c943b6bf16afc6f1f4a, type: 3}
-      cost: 0
+      cost: 1200
     - type: 2
       id: 14
       Img: {fileID: 21300000, guid: f6685b6172bc696498bc59a76455d766, type: 3}
-      cost: 0
+      cost: 1450
     - type: 2
       id: 15
       Img: {fileID: 21300000, guid: 3816ae666fa8e1e498e61218b325636f, type: 3}
-      cost: 0
+      cost: 1750
     - type: 1
       id: 16
       Img: {fileID: 21300000, guid: 500dca03b16bc084ca961111396968cb, type: 3}
-      cost: 0
+      cost: 1550
     - type: 1
       id: 17
       Img: {fileID: 21300000, guid: e6dd2bee0ac9bb04798c62228ebe0f5f, type: 3}
@@ -373,25 +373,25 @@ MonoBehaviour:
     - type: 1
       id: 18
       Img: {fileID: 21300000, guid: 2e4647e8329e8cf4a97e4cd15b30e3ef, type: 3}
-      cost: 0
+      cost: 1050
     - type: 1
       id: 19
       Img: {fileID: 21300000, guid: f6bba20b7b6cc224c902fced95092866, type: 3}
-      cost: 0
+      cost: 1150
     - type: 1
       id: 20
       Img: {fileID: 21300000, guid: bba6f2d86d9bef64b91570087ecbdc1e, type: 3}
-      cost: 0
+      cost: 850
     - type: 1
       id: 21
       Img: {fileID: 21300000, guid: cbd73efcf59287d47aa764e2e8f34bec, type: 3}
-      cost: 0
+      cost: 1050
     - type: 1
       id: 22
       Img: {fileID: 21300000, guid: 6703d06c9cf30464086623a649ae1805, type: 3}
-      cost: 0
+      cost: 1450
     - type: 1
       id: 23
       Img: {fileID: 21300000, guid: 55d10b5f4fdc3d34bac5b646ac6d698f, type: 3}
-      cost: 0
+      cost: 800
   Sprite_Null: {fileID: 21300000, guid: 955a442ae303a774d8979a73b595b453, type: 3}

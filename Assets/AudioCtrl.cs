@@ -52,15 +52,19 @@ public class AudioCtrl : MonoBehaviour
 
     public void Play(string name)
     {
-        foreach(var sound in Sounds)
+        if (SettingCtrl.Ins.isSound())
         {
-            if(sound.clip.name == name)
+            foreach (var sound in Sounds)
             {
-                sound.mute = false;
-                sound.Play();
+                if (sound.clip.name == name)
+                {
+                    sound.mute = false;
+                    sound.Play();
+                }
+
             }
-           
         }
+       
     }
     public void Mute(string name)
     {

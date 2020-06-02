@@ -35,6 +35,7 @@ using UnityEngine.EventSystems;
 
     public virtual void LoadItem(Sprite sprite,int cost,int id,TypeItem type)
     {
+        this.cost = cost;
 
         this.TextCost.text = cost.ToString();
         this.idItem = id;
@@ -177,8 +178,8 @@ using UnityEngine.EventSystems;
             if (CtrlDataGame.Ins.GetCoin() >= cost)
             {
                 AudioCtrl.Ins.Play("LockBuyItem");
-                int coin = CtrlDataGame.Ins.GetCoin() - cost;
-                CtrlDataGame.Ins.SaveCoin(coin);
+              
+                CtrlDataGame.Ins.EarnCoin(cost);
                 isBuy = false;
                 isUsing = true;
                 LoadStatusItem();

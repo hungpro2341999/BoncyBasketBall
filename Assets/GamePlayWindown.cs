@@ -5,7 +5,7 @@ using UnityEngine;
 public class GamePlayWindown : Screen
 {
     // Start is called before the first frame update
-
+    public Transform GamePlay;
 
     public override void EventOpen()
     {
@@ -26,12 +26,15 @@ public class GamePlayWindown : Screen
         CtrlGamePlay.Ins.StartWatting();
         AudioCtrl.Ins.Pause("BG");
         AudioCtrl.Ins.Play("eff");
+     
     }
     public override void EventClose()
     {
         AudioCtrl.Ins.ContinuePlay("BG");
     }
 
+    
+    
 
 
 }

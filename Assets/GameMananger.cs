@@ -39,7 +39,7 @@ public class GameMananger : MonoBehaviour
     {
         if (isTest)
         {
-            OpenScreen(TypeScreen.Loading);
+           OpenScreen(TypeScreen.Loading);
         }
        
     }

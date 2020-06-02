@@ -11,7 +11,12 @@ public class AI_02 : AI
     public Text textDebug;
     protected float space = 3;
 
-
+    public override void Start()
+    {
+       
+        base.Start();
+        CtrlGamePlay.Ins.GetBall().AddKeyBall_1();
+    }
     public override void OnTriggerMoveToPlayer()
     {
         Paramter = new List<float>();

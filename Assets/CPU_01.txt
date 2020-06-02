@@ -70,8 +70,7 @@
 
 // IV> Protect Ball
 //1. TriggerJumpProtect
-
-0. 0 = OnActionJump
-1. 1 = OnActionMoveProtectBall
+0. 0 = OnActionMoveProtectBall
+1. 1 = OnActionJump
 
 

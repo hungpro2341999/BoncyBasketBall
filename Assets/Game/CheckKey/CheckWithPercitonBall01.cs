@@ -12,7 +12,7 @@ public class CheckWithPercitonBall01 : Check
             Debug.Log("COll : " + collision.gameObject.name + "  ");
             if (character is AI)
             {
-                collision.GetComponent<CheckPoint>().Coll = true;
+               // collision.GetComponent<CheckPoint>().Coll = true;
                 var AI = (AI)character;
                 AI.SetKeyTrigger(key);
 
@@ -27,7 +27,7 @@ public class CheckWithPercitonBall01 : Check
         {
             if (character is AI)
             {
-                collision.GetComponent<CheckPoint>().Coll = false;
+          //      collision.GetComponent<CheckPoint>().Coll = false;
                 var AI = (AI)character;
                 AI.SetRestoreTrigger(key);
 

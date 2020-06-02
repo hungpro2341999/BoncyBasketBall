@@ -6,7 +6,7 @@ public class CheckSlampDunkCPU : Check
 {
     private void Start()
     {
-        character = CtrlGamePlay.Ins.AI;
+       
     }
     public string KeyAciton;
     public override void CheckKey(Collider2D collision)
@@ -28,6 +28,10 @@ public class CheckSlampDunkCPU : Check
             
 
         }
+    }
+    private void Update()
+    {
+        character = CtrlGamePlay.Ins.AI;
     }
 
 }

@@ -25,6 +25,7 @@ TagManager:
   - PosInitBall
   - TargetHoop
   - Percition01
+  - Status
   layers:
   - Default
   - TransparentFX

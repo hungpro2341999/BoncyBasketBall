@@ -110,16 +110,19 @@ public class ResultWindown : Screen
     {
         if (!VsScreen.isMatchRandom)
         {
+          
             GameMananger.Ins.OpenScreen(TypeScreen.Tourment);
+           
           
         }
         else
         {
+            CtrlGamePlay.Ins.SelectAI();
             GameMananger.Ins.OpenScreen(TypeScreen.Vs);
             VsScreen.isMatchRandom = true;
         }
       
-
+        
     }
     private void OnEnable()
     {

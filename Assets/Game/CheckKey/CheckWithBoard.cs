@@ -6,7 +6,7 @@ public class CheckWithBoard : Check
 {
     private void Start()
     {
-        character = CtrlGamePlay.Ins.AI;
+        CtrlGamePlay.Ins.eventResetGame += ChangeTarget;
     }
     public override void CheckKey(Collider2D collision)
     {
@@ -24,5 +24,14 @@ public class CheckWithBoard : Check
             var a = (AI)character;
             a.SetRestoreTrigger(key);
         }
+    }
+    public void ChangeTarget()
+    {
+        
+    }
+    private void Update()
+    {
+       
+        character = CtrlGamePlay.Ins.AI;
     }
 }

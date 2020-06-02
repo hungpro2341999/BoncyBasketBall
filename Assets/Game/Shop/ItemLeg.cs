@@ -39,8 +39,7 @@ public class ItemLeg : ItemHand
             if (CtrlDataGame.Ins.GetCoin() >= cost)
             {
                 AudioCtrl.Ins.Play("LockBuyItem");
-                int coin = CtrlDataGame.Ins.GetCoin() - cost;
-                CtrlDataGame.Ins.SaveCoin(coin);
+                CtrlDataGame.Ins.EarnCoin(cost);
                 isBuy = false;
                 isUsing = true;
                 LoadStatusItem();

@@ -6,8 +6,10 @@ public class AI_04 : AI_01
 {
     public override void Start()
     {
+       
         delayTimeMove = 0.5f;
         base.Start();
+        CtrlGamePlay.Ins.GetBall().AddKeyBall_2();
     }
 
     private void MoveToPos(int posTarger)

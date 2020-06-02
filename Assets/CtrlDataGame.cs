@@ -325,7 +325,7 @@ public class CtrlDataGame : MonoBehaviour
     }
     public void EarnCoin(int coin)
     {
-        int coins = PlayerPrefs.GetInt(KeyCoin);
+        int coins = GetCoin();
         coins -= coin;
         SaveCoin(coins);
         RenderCoins();

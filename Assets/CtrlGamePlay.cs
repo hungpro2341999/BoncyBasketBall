@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Spine.Unity.Examples;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,7 +27,7 @@ public class CtrlGamePlay : MonoBehaviour
     public Character Player;
     public Character AI;
     public Character Ball;
-
+    public Character PerviousAI;
     public float WidthScreen;
     public float HeightScreen;
     public float speedBackScreen;
@@ -36,6 +37,9 @@ public class CtrlGamePlay : MonoBehaviour
 
     public float h = 3;
     public float graviry = -9.8f;
+
+    
+
 
     //  Delegate
 
@@ -60,7 +64,7 @@ public class CtrlGamePlay : MonoBehaviour
     [Header("Perb")]
 
     public Score_Game objScore;
-    
+    public AI[] AI_CPU;
     
     
     
@@ -385,15 +389,12 @@ public class CtrlGamePlay : MonoBehaviour
         Ball.Body.isKinematic = false;
         Ball.Body.simulated = true;
        // Debug.Log("Velocity : "+CaculateVelocity(height, Target).InitVelocity);
-        try
-        {
-            
-            Ball.Body.velocity = CaculateVelocity(height, Target).InitVelocity;
-        }
-        catch(System.Exception e)
-        {
-            Ball.Body.velocity = Vector3.zero;
-        }
+
+      
+        Vector3 vec = CaculateVelocity(height, Target).InitVelocity;
+        Debug.Log(vec.ToString());
+        Ball.Body.velocity = vec;
+     
        
     }
 
@@ -482,7 +483,7 @@ public class CtrlGamePlay : MonoBehaviour
         while(color.a <= 1)
         {
             color.a += Time.deltaTime * speedBackScreen;
-            Debug.Log("Color Black : " + color.a);
+           // Debug.Log("Color Black : " + color.a);
             BlackScreen.color = color;
             yield return new WaitForSeconds(0);
         }
@@ -668,6 +669,21 @@ public class CtrlGamePlay : MonoBehaviour
         this.delay_Time = delay_Time;
     }
 
+    public void SelectAI()
+    {
+        if (AI != null)
+        {
+            AI = (AI)AI;
+            AI.Destroy();
+        }
+     
+        int r = Random.Range(0, AI_CPU.Length);
+        var a =  Instantiate(AI_CPU[r], TransGamePlay);
+        AI = (Character)a;
+        AI.gameObject.SetActive(true);
+        CtrlDataGame.Ins.SkinCPU = a.AnimationHandle.GetComponent<EquipsVisualsComponentExample>();
+        
     
+    }
   
 }

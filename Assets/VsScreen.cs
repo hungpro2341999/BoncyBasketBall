@@ -39,6 +39,7 @@ public class VsScreen : Screen
     {
         if (isMatchRandom)
         {
+            
             timeRandom = 5;
         }
         else
@@ -179,8 +180,10 @@ public class VsScreen : Screen
 
             P2.Apply();
     }
+   
     public override void EventOpen()
     {
+      
         stop = false;
         GameMananger.Ins.TrasUIGenrate.gameObject.SetActive(false);
         GameMananger.Ins.TransSetting.gameObject.SetActive(false);

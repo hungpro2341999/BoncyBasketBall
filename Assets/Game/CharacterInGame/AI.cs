@@ -265,6 +265,8 @@ public class AI : Character
     public override void Start()
     {
         base.Start();
+        CtrlGamePlay.Ins.GetBall().AddKeyBall_1();
+       
         AnimStatus.Complete += OnComplete;
         AnimStatus.Start += OnStartAnim;
         AnimStatus.Interrupt += OnInterrupt;
@@ -1543,6 +1545,10 @@ public class AI : Character
         string key = Directory_StatusCpu[Key_Trigger_Jump].ToString() + Directory_StatusCpu[Key_Trigger_Front].ToString()
                + Directory_StatusCpu[Key_Trigger_Back].ToString();
         Debug.Log("None Ball ");
+        if (TextStatus == null)
+        {
+            TextStatus = GameObject.FindGameObjectWithTag("Status").GetComponent<Text>();
+        }
         TextStatus.text = key;
 
         return key;
@@ -2350,6 +2356,10 @@ public class AI : Character
     #region EVENT
     public void Event_Reset()
     {
+        if (Body == null)
+        {
+            Body = GetComponent<Rigidbody2D>();
+        }
         changeStatus = true;
         ChangeStatus = true;
         KeyActionCurr = "";
@@ -2389,6 +2399,14 @@ public class AI : Character
     public void NullAction()
     {
         OnAction = null;
+    }
+    public override void Destroy()
+    {
+        CtrlGamePlay.Ins.eventRestGamePlay -= Event_Reset;
+        CtrlGamePlay.Ins.eventResetGame -= Event_Reset;
+        CtrlGamePlay.Ins.GetBall().NullKeyBall();
+        base.Destroy();
+
     }
 }
 public class ProcessKey

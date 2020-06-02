@@ -11,4 +11,8 @@ public class ShopWindown : Screen
         GameMananger.Ins.TransSetting.gameObject.SetActive(false);
         GameMananger.Ins.TrasUIGenrate.gameObject.SetActive(true);
     }
+    public override void EventClose()
+    {
+        ShopCtrl.Ins.LoadSkinCurr();
+    }
 }

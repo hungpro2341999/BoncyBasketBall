@@ -13,6 +13,7 @@ public class ScreenHome : Screen
 
     public void Play()
     {
+        CtrlGamePlay.Ins.SelectAI();
         VsScreen.isMatchRandom = true;
         GameMananger.Ins.OpenScreen(TypeScreen.Vs);
     }

@@ -6,34 +6,49 @@ public class AI_05 : AI_01
 {
 
     [Header("AI_05")]
-    public string Key_Action_Catch_And_Throw = "Key_Catch_And_Throw";
+    public const string Key_Action_Catch_And_Throw = "Key_Catch_And_Throw";
     public Transform BoxCatchAndThrow;
+    public Transform BoxProtectBall;
 
-    public override void OnTriggerMoveProtectHoop()
+    public override void Start()
     {
-
-                   
+      
+        base.Start();
+        CtrlGamePlay.Ins.GetBall().AddKeyBall_2();
     }
-    
+    public override void OnTriggerStatusMoveProtectBall()
+    {
+        BoxProtectBall.gameObject.SetActive(true);
+        base.OnTriggerStatusMoveProtectBall();
+    }
 
+
+    public override void OnTriggerCpuHaveBall()
+    {
+        BoxProtectBall.gameObject.SetActive(false);
+        base.OnTriggerCpuHaveBall();
+    }
+
+    public override void OnTriggerPlayerHaveBall()
+    {
+        BoxProtectBall.gameObject.SetActive(false);
+        base.OnTriggerPlayerHaveBall();
+    }
+
+    public override void OnTriggerStatusMoveCatchBall()
+    {
+        BoxProtectBall.gameObject.SetActive(false);
+        base.OnTriggerStatusMoveCatchBall();
+    }
 
     public override void OnMoveProtectHoop()
     {
-        if (Mathf.Abs(CurrPos - CtrlGamePlay.Ins.AI.CurrPos) <= 2)
-        {
-            if (isBall)
-            {
-                isJump = true;
-                isPullBall = true;
-            }
-        }
-        else
-        {
-            var pos = CtrlGamePlay.Ins.GetBall().posPercition;
-            MoveToPos(pos);
-        }
+        var ball = CtrlGamePlay.Ins.GetBall();
 
-        if(Mathf.Abs(CurrPos - CtrlGamePlay.Ins.Ball.CurrPos) <= 2)
+        MoveToPos(ball.CurrPos);
+
+
+        if(Mathf.Abs(CurrPos - CtrlGamePlay.Ins.Ball.CurrPos) == 0)
         {
             OnEndProtectToHoop();
         }
@@ -43,8 +58,9 @@ public class AI_05 : AI_01
     }
     public override void OnEndProtectToHoop()
     {
-
+        NullAction();
         changeStatus = true;
+        isPullBall = false;
     }
    
 
@@ -75,7 +91,7 @@ public class AI_05 : AI_01
         base.Init();
     }
 
-    private void MoveToPos(int posTarger)
+    protected void MoveToPos(int posTarger)
     {
         posTarger = Mathf.Clamp(posTarger, 0, CountSperateDistance);
         //  Debug.Log(CurrPos + "  " + posTarger);

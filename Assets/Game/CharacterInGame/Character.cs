@@ -297,4 +297,8 @@ public abstract class Character : MonoBehaviour
             return TypeScore.Point_2;
         }
     }
+    public virtual void Destroy()
+    {
+        Destroy(gameObject);
+    }
 }
