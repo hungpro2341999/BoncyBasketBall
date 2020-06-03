@@ -14,7 +14,7 @@ public class Pack : MonoBehaviour
     public Image FirstBuy;
     public bool isFirstBuy;
     public bool Canbuy;
-    public IAPButton iapBtn;
+   
 
     public virtual void LoadPack(bool IsFirstBuy,bool Canbuy)
     {

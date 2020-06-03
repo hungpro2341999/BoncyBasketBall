@@ -73,10 +73,8 @@ public class AI_04 : AI_01
 
     public override void OnMoveProtectHoop()
     {
-        var ball = CtrlGamePlay.Ins.GetBall();
-        int posHoop = PostionToPos(ball.PosPercitionHoop.x);;
-        Debug.Log("PosHoop : ");
-        MoveToPos(posHoop);
+      
+        MoveToPos(CtrlGamePlay.Ins.GetBall().CurrPos);
     }
     public override void OnTriggerMoveProtectHoop()
     {

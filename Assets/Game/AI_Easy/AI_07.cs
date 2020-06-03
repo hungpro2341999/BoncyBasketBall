@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AI_07 :AI_06
 {
+    public const string Key_Action_Jump_Direct = "Jump_Direct";
+
     // Start is called before the first frame update
     public override void Start()
     {
@@ -46,9 +48,9 @@ public class AI_07 :AI_06
   
     //  Block Ball Player Have Ball
 
-    private System.Action OnAction_01;
-    private float timeOnAction_01;
-    private float timeDelay;
+    protected System.Action OnAction_01;
+    protected float timeOnAction_01;
+    protected float timeDelay;
     public void OnTriggerBlockPlayerThrow()
     {
         OnAction_01 = null;
@@ -66,7 +68,7 @@ public class AI_07 :AI_06
         timeDelay = 0;
     }
 
-    public void OnStartTriggerStealBall()
+    public virtual void OnStartTriggerStealBall()
     {
         var player = CtrlGamePlay.Ins.GetPlayer();
         if (timeOnAction_01 > 0)
@@ -78,6 +80,7 @@ public class AI_07 :AI_06
         }
         else
         {
+            OnAction_01 = null;
             if (GetDistancePlayerAndCPU() <= 3)
             {
                 if (DirectCpu == DirectWithPlayer.Right)
@@ -315,7 +318,7 @@ public class AI_07 :AI_06
             else
             {
                 
-                MoveToPos(12);
+                MoveToPos(11);
             }
 
            
@@ -368,6 +371,8 @@ public class AI_07 :AI_06
         ActionGame lc_OnActionMoveProtectBall = new ActionGame(OnTriggerMoveProtectHoop, OnMoveProtectHoop, OnEndProtectToHoop, 2);
 
         ActionGame lc_OnCatchAndThrowBall = new ActionGame(OnTriggerCatchAndThrow, OnStartCatchAndThrow, null, 1);
+
+        ActionGame lc_OnJumpDirect = new ActionGame(OnActionJumpFollowDirect, OnTriggerActionJumpFollowDirect,OnEndActionJumpFollowDirect, 0.7f);
         // Update To Directory
 
 
@@ -379,12 +384,12 @@ public class AI_07 :AI_06
         Directory_OnActionGame.Add(Key_Move_To_Hoop, lc_onMoveToHoop);
         Directory_OnActionGame.Add(Key_Stun, lc_OnStun);
         Directory_OnActionGame.Add(Key_Move_To_Player, lc_OnActionMoveToPlayer);
-
+        Directory_OnActionGame.Add(Key_Action_Jump_Direct, lc_OnJumpDirect);
 
 
 
         //  Action
-        
+
         Directory_OnActionGame.Add(Key_Action_Move_To_Ball, lc_OnActionMoveToBall);
         Directory_OnActionGame.Add(Key_Jump_Straight, lc_OnJump);
         Directory_OnActionGame.Add(Key_Jump_Left, lc_OnJump_left);
@@ -431,7 +436,25 @@ public class AI_07 :AI_06
         ReadFileCPU();
     }
 
+    public void OnActionJumpFollowDirect()
+    {
+        isJump = true;
+    }
+    public void OnTriggerActionJumpFollowDirect()
+    {
+        MoveToPos(CtrlGamePlay.Ins.Ball.CurrPos);
+        if (isBall)
+        {
+            OnEndActionJumpFollowDirect();
+        }
+    }
 
+    public void OnEndActionJumpFollowDirect()
+    {
+        changeStatus = true;
+        ChangeStatus = true;
+        NullAction();
+    }
 
 
     //

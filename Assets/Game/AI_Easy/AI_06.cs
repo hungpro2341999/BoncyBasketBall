@@ -9,41 +9,48 @@ public class AI_06 : AI_05
     private int PosThrowCurr;
     private int PosThrowPrevious;
 
+    //public override void Start()
+    //{
+
+    //    //StatusCurr = CharacterState.idle;
+    //    //Body = GetComponent<Rigidbody2D>();
+
+    //    //if (AnimationHandle != null)
+    //    //{
+    //    //    AnimStatus = AnimationHandle.AnimationState;
+    //    //}
+    //    //AnimStatus.Complete += OnComplete;
+    //    //AnimStatus.Start += OnStartAnim;
+    //    //AnimStatus.Interrupt += OnInterrupt;
+    //    //AnimStatus.Dispose += OnDispose;
+    //    //AnimStatus.Event += OnEvent;
+
+
+    //    //CtrlGamePlay.Ins.eventRestGamePlay += Reset;
+
+    //    //Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
+
+    //    //MatrixPositonAi = new int[CountSperateDistance];
+
+    //    //PosInit = (CtrlGamePlay.Ins.WidthScreen / 2) - 0.3f;
+    //    //TargetX = transform.position.x;
+
+    //    //TargetHoop = GameObject.FindGameObjectWithTag("TargetCPU").transform.position;
+    //    //xTargetHoop = GameObject.FindGameObjectWithTag("TargetHoop").transform.position.x;
+    //    //yTargetHoop = GameObject.FindGameObjectWithTag("TargetHoop").transform.position.x;
+
+    //    //CtrlGamePlay.Ins.eventRestGamePlay += Event_Reset;
+    //    //CtrlGamePlay.Ins.eventResetGame += Event_Reset;
+
+    //    //Init();
+    //    base.Start();
+    //    Debug.Log("ADD KEy _2");
+    //    CtrlGamePlay.Ins.GetBall().AddKeyBall_2();
+    //}
     public override void Start()
     {
-
-        StatusCurr = CharacterState.idle;
-        Body = GetComponent<Rigidbody2D>();
-       
-        if (AnimationHandle != null)
-        {
-            AnimStatus = AnimationHandle.AnimationState;
-        }
-        AnimStatus.Complete += OnComplete;
-        AnimStatus.Start += OnStartAnim;
-        AnimStatus.Interrupt += OnInterrupt;
-        AnimStatus.Dispose += OnDispose;
-        AnimStatus.Event += OnEvent;
-
-
-        CtrlGamePlay.Ins.eventRestGamePlay += Reset;
-       
-        Amount = CtrlGamePlay.Ins.WidthScreen / CountSperateDistance;
-
-        MatrixPositonAi = new int[CountSperateDistance];
-
-        PosInit = (CtrlGamePlay.Ins.WidthScreen / 2) - 0.3f;
-        TargetX = transform.position.x;
-
-        TargetHoop = GameObject.FindGameObjectWithTag("TargetCPU").transform.position;
-        xTargetHoop = GameObject.FindGameObjectWithTag("TargetHoop").transform.position.x;
-        yTargetHoop = GameObject.FindGameObjectWithTag("TargetHoop").transform.position.x;
-       
-        CtrlGamePlay.Ins.eventRestGamePlay += Event_Reset;
-        CtrlGamePlay.Ins.eventResetGame += Event_Reset;
-        
-        Init();
-
+        Debug.Log("ADD KEy _2");
+        base.Start();
         CtrlGamePlay.Ins.GetBall().AddKeyBall_2();
     }
 
@@ -160,6 +167,7 @@ public class AI_06 : AI_05
 
         ActionGame lc_OnActionMoveProtectBall = new ActionGame(OnTriggerMoveProtectHoop, OnMoveProtectHoop, OnEndProtectToHoop, 2);
 
+        ActionGame lc_OnCatchAndThrowBall = new ActionGame(OnTriggerCatchAndThrow, OnStartCatchAndThrow, null, 1);
         // Update To Directory
 
 
@@ -185,7 +193,7 @@ public class AI_06 : AI_05
         Directory_OnActionGame.Add(Key_Action_Move_Back_Have_Ball, lc_OnMoveBackHaveBall);
         Directory_OnActionGame.Add(Key_Action_Jump_Throw_Ball, lc_OnActionJumpThrowBall);
         Directory_OnActionGame.Add(Key_Action_Protect_Ball, lc_OnActionMoveProtectBall);
-
+        Directory_OnActionGame.Add(Key_Action_Catch_And_Throw, lc_OnCatchAndThrowBall);
         // Action EFF
 
         Directory_OnActionGame.Add(Key_Slamp_Dunk, lc_OnSlampDunk);
@@ -221,6 +229,9 @@ public class AI_06 : AI_05
         ReadFileCPU();
 
     }
+
+   
+
 
 
     // OnTrickPlayer

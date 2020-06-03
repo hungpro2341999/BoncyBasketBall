@@ -1544,7 +1544,7 @@ public class AI : Character
 
         string key = Directory_StatusCpu[Key_Trigger_Jump].ToString() + Directory_StatusCpu[Key_Trigger_Front].ToString()
                + Directory_StatusCpu[Key_Trigger_Back].ToString();
-        Debug.Log("None Ball ");
+     //   Debug.Log("None Ball ");
         if (TextStatus == null)
         {
             TextStatus = GameObject.FindGameObjectWithTag("Status").GetComponent<Text>();
@@ -1926,7 +1926,7 @@ public class AI : Character
     public void OnActionWithKey(string key)
     {
        
-        Debug.Log(key);
+  //      Debug.Log(key);
 
         int r = Random.Range(0, Directory_Key_Status[key].Length);
         ActionGame a = Directory_Key_Status[key][r];
@@ -2384,6 +2384,11 @@ public class AI : Character
        
     }
     #endregion
+
+    public bool isNullEffAction()
+    {
+        return OnActionEFF == null;
+    }
 
     private void OnDrawGizmos()
     {

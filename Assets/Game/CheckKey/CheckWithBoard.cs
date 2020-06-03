@@ -31,7 +31,7 @@ public class CheckWithBoard : Check
     }
     private void Update()
     {
-       
+        
         character = CtrlGamePlay.Ins.AI;
     }
 }

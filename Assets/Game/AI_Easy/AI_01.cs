@@ -19,7 +19,7 @@ public class AI_01 : AI
     {
        
         base.Start();
-        CtrlGamePlay.Ins.GetBall().AddKeyBall_1();
+        CtrlGamePlay.Ins.GetBall().AddKeyBall_2();
     }
 
     public override void OnTriggerMoveProtectHoop()
@@ -36,7 +36,7 @@ public class AI_01 : AI
     {
         var a = (Ball)CtrlGamePlay.Ins.Ball;
         KeyCurrBall = a.ControllerBy();
-        Debug.Log(KeyCurrBall + "Key Ball ");
+      //  Debug.Log(KeyCurrBall + "Key Ball ");
         if (KeyCurrBallPervious != KeyCurrBall)
         {
 
@@ -109,7 +109,7 @@ public class AI_01 : AI
       //      OnAtionWithKey_Status_Have_Ball(key);
         }
         KeyActionPrevious = KeyActionCurr;
-        TextStatus.text = key;
+       // TextStatus.text = key;
     }
 
     public void OnActionWithKeyProtectBall(string key,Dictionary<string,ActionGame[]> ActionGames)
@@ -194,29 +194,44 @@ public class AI_01 : AI
 
     public override void OnMoveProtectHoop()
     {
-        Debug.Log("Move ONProtect");
-        if ((PosPrecition - CurrPos)==0)
-        {
-            if (Mathf.Sign(PosPrecition - CurrPos) == 1)
-            {
-                isMoveLeft = true;
-                isMoveRight = false;
-            }
-            else
-            {
-                isMoveLeft = false;
-                isMoveRight = true;
-            }
-        }
-        else
-        {
-
-            isMoveLeft = false;
-            isMoveRight = false;
-        }
+        MoveToPos01(CtrlGamePlay.Ins.GetBall().CurrPos);
+       
        
 
     }
+    protected void MoveToPos01(int posTarger)
+    {
+        posTarger = Mathf.Clamp(posTarger, 0, CountSperateDistance);
+        //  Debug.Log(CurrPos + "  " + posTarger);
+        if ((Mathf.Abs(CurrPos - posTarger) != 0))
+        {
+
+
+
+            if (Mathf.Sign(CurrPos - posTarger) == 1)
+            {
+                Debug.Log("Right");
+                isMoveRight = true;
+                isMoveLeft = false;
+            }
+            else
+            {
+                Debug.Log("left");
+                isMoveRight = false;
+                isMoveLeft = true;
+            }
+
+        }
+        else
+        {
+            Debug.Log("None");
+            isMoveLeft = false;
+            isMoveRight = false;
+        }
+
+
+    }
+
     public override void OnMoveBackHaveBall()
     {
         Player a = CtrlGamePlay.Ins.GetPlayer();
@@ -546,7 +561,7 @@ public class AI_01 : AI
     {
         string s = Directory_StatusCpu[Key_Trigger_Jump].ToString();
     
-        TextStatus.text = s;
+      //  TextStatus.text = s;
         return s;
 
         

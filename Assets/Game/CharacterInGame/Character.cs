@@ -299,6 +299,7 @@ public abstract class Character : MonoBehaviour
     }
     public virtual void Destroy()
     {
+        if(gameObject.name!="Ball")
         Destroy(gameObject);
     }
 }

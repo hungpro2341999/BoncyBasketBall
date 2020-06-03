@@ -46,7 +46,7 @@
 
 // Status = 1+2+3
 
-0. 000 = MoveToHoop || OnActionMoveBackHaveBall
+0. 000 = MoveToHoop
 1. 001 = OnThrownOnGround ||  JumpThrowBall
 2. 010 = MoveToHoop
 3. 011 = OnThrownOnGround ||  JumpThrowBall 

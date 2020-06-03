@@ -24,7 +24,7 @@ namespace GoogleMobileAds.Common
     {
         public static MobileAdsEventExecutor instance = null;
 
-        private static List<System.Action> adEventsQueue = new List<System.Action> ();
+        private static List<System.Action> adEventsQueue = new List<System.Action>();
 
         private volatile static bool adEventsQueueEmpty = true;
 
@@ -52,7 +52,7 @@ namespace GoogleMobileAds.Common
             DontDestroyOnLoad(gameObject);
         }
 
-        public static void ExecuteInUpdate(System.Action  action)
+        public static void ExecuteInUpdate(System.Action action)
         {
             lock (adEventsQueue)
             {
@@ -85,7 +85,6 @@ namespace GoogleMobileAds.Common
         public void OnDisable()
         {
             instance = null;
-            
         }
     }
 }

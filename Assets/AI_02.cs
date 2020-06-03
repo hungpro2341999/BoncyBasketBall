@@ -80,7 +80,7 @@ public class AI_02 : AI
     public override void OnMoveToHoop()
     {
 
-        MoveToPos((int)Paramter[0]);  
+        MoveToPos(12);  
 
         if (!isComplete)
         {
@@ -226,7 +226,7 @@ public class AI_02 : AI
 
         base.Init();
     }
-
+    
 
 
     public bool isStop()

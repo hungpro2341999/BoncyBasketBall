@@ -330,7 +330,7 @@ public class CtrlGamePlay : MonoBehaviour
     public void StartWatting()
     {
         ScorePlayer = 0;
-        ScorePlayer = 0;
+        ScoreAI = 0;
         TextTime.text = timeGamePlay.ToString();
 
         RenderScore();
@@ -512,6 +512,9 @@ public class CtrlGamePlay : MonoBehaviour
         {
             Board[i].RestorCheckBoard();
         }
+        ScoreAI = 0;
+        ScorePlayer = 0;
+        RenderScore();
         isPlaying = true;
         m_timeGame = timeGamePlay;
         Player.transform.position = PosInitPlayer;
@@ -544,15 +547,19 @@ public class CtrlGamePlay : MonoBehaviour
         switch (score)
         {
             case TypeScore.Point_2:
+                AudioCtrl.Ins.Play("2Point");
                 a.ChangeImg(Scoure_Img_Score[0]);
                 break;
             case TypeScore.Point_3:
+                AudioCtrl.Ins.Play("3Point");
                 a.ChangeImg(Scoure_Img_Score[1]);
                 break;
             case TypeScore.Clean_Shoot:
+                AudioCtrl.Ins.Play("3Point");
                 a.ChangeImg(Scoure_Img_Score[2]);
                 break;
             case TypeScore.JumpBall:
+                AudioCtrl.Ins.Play("SlampDunk");
                 a.ChangeImg(Scoure_Img_Score[3]);
                 break;
         }
@@ -684,6 +691,20 @@ public class CtrlGamePlay : MonoBehaviour
         CtrlDataGame.Ins.SkinCPU = a.AnimationHandle.GetComponent<EquipsVisualsComponentExample>();
         
     
+    }
+
+    public void PlayAgain()
+    {
+        GameMananger.Ins.CloseSingle(TypeScreen.ResultWindown);
+        CtrlGamePlay.firstPlay = false;
+        GameMananger.Ins.isGameOver = false;
+        GameMananger.Ins.isGamePause = false;
+        CtrlGamePlay.Ins.isWattingStart = true;
+        CtrlGamePlay.Ins.timeWattingMatch = 5;
+        CtrlGamePlay.Ins.StartWatting();
+        AudioCtrl.Ins.Pause("BG");
+        AudioCtrl.Ins.Play("eff");
+      
     }
   
 }

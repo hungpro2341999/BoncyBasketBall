@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf21dc1875a05044835c5a6c969bda4, type: 3}
   m_Name: Head 35
   m_EditorClassIdentifier: 
+  idItem: 35
   equipType: 0
   sprite: {fileID: 21300000, guid: 4c273efb4681e7649ad7fdb698856a10, type: 3}
   description: 

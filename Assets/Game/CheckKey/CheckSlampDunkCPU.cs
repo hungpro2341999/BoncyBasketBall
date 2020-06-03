@@ -16,7 +16,7 @@ public class CheckSlampDunkCPU : Check
         {
             //  Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
             Debug.Log("Coll With");
-                var AI = (AI)character;
+            var AI = (AI)CtrlGamePlay.Ins.AI;
             if (AI.isBall)
             {
                 AI.OnActionEFFWithKey(KeyAciton);
@@ -31,7 +31,7 @@ public class CheckSlampDunkCPU : Check
     }
     private void Update()
     {
-        character = CtrlGamePlay.Ins.AI;
+      
     }
 
 }

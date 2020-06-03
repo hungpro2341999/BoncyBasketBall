@@ -17,8 +17,9 @@ public class GamePlayWindown : Screen
         //if (CtrlGamePlay.firstPlay)
         //{
             CtrlGamePlay.Ins.FirstCommit();
-            CtrlGamePlay.firstPlay = false;
+
         //}
+        CtrlGamePlay.firstPlay = false;
         GameMananger.Ins.isGameOver = false;
         GameMananger.Ins.isGamePause = false;
         CtrlGamePlay.Ins.isWattingStart = true;

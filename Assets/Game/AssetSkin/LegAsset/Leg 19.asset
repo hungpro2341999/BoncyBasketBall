@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf21dc1875a05044835c5a6c969bda4, type: 3}
   m_Name: Leg 19
   m_EditorClassIdentifier: 
-  equipType: 0
-  sprite: {fileID: 0}
+  idItem: 19
+  equipType: 3
+  sprite: {fileID: 21300000, guid: f6bba20b7b6cc224c902fced95092866, type: 3}
   description: 
   yourStats: 0
   listSprite: []

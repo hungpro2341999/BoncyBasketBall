@@ -675,6 +675,8 @@ public class TourmentCtrl : MonoBehaviour
 
     public void Play()
     {
+        CtrlGamePlay.Ins.SelectAI();
+
         VsScreen.isMatchRandom = false;
      
         VsScreen.SkinUse =  TourmentCtrl.Ins.GetTourmnet(TourmentCtrl.Ins.GetTourmnet(TourmentCtrl.Ins.TourCurrPlayer()).MatchRivial).Skin;

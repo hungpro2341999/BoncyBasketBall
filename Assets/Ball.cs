@@ -133,6 +133,8 @@ public class Ball : Character
     }
     public void AddKeyBall_2()
     {
+
+      
         event_getStatus = null;
         event_getStatus += SelectKey2;
     }

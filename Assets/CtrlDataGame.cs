@@ -230,7 +230,7 @@ public class CtrlDataGame : MonoBehaviour
     public void ApplySKinPlayer()
     {
 
-       
+        CtrlDataGame.Ins.TargetCharacter.equipSystem.target = SkinPlayer;
         ApplySkin();
     }
     

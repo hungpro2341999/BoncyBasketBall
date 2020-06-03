@@ -21,12 +21,12 @@ public class CheckWithPercition : Check
       
         if (collision.gameObject.tag == "Percition")
         {
-           Debug.Log("Coll : " + collision.gameObject.name + " " + collision.gameObject.tag);
+        
             if (character is AI)
             {
                 Debug.Log("Set Trigger");
                 var AI = (AI)character;
-              
+                collision.gameObject.GetComponent<CheckPoint>().Coll = true;
                 AI.SetKeyTrigger(key);
 
             }
@@ -40,7 +40,7 @@ public class CheckWithPercition : Check
         {
             if (character is AI)
             {
-                Debug.Log("Out Trigger");
+                collision.gameObject.GetComponent<CheckPoint>().Coll = false;
                 var AI = (AI)character;
                 AI.SetRestoreTrigger(key);
 

@@ -8,7 +8,7 @@ public class CheckPercitionCatchBall : Check
     {
        if(collision.gameObject.layer ==16)
         {
-            Debug.Log("Attack");
+         //   Debug.Log("Attack");
             var a = (AI)CtrlGamePlay.Ins.AI;
             a.RunActionTrigger(key);
            
