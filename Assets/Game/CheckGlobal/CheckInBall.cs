@@ -189,7 +189,7 @@ public class CheckInBall : MonoBehaviour
                             else
                             {
                                 score1 = 2;
-                                CtrlGamePlay.Ins.GlobalCPU(score1);
+                               
                                 CtrlGamePlay.Ins.SetScore(TypeScore.Point_2);
 
                             }

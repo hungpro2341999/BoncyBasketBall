@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 6885235487037829843}
   - component: {fileID: 6885235487037829842}
   - component: {fileID: 6885235487037829841}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,6 +812,7 @@ MonoBehaviour:
   textCPU: {fileID: 4900000, guid: 933f2f638dbf29b4e9130505e0af3400, type: 3}
   ForceHead: 0.15
   SpeedShoe: 0
+  DirectCpu: 0
   isJump: 0
   isJump_x2: 0
   isThrowBall: 0
@@ -823,14 +824,6 @@ MonoBehaviour:
   delayAI: 0
   xTargetHoop: 0
   yTargetHoop: 0
-  RelizeBall: 0
-  isSameWithBall: 0
-  isSameWithPlayer: 0
-  StatusWithPlayer: 0
-  StatusHaveBall: 0
-  LayerPlayer:
-    serializedVersion: 2
-    m_Bits: 8192
   DistanceToPlayer: 0
   PrecJump: 0
   DistanceToJump: 0
@@ -840,6 +833,7 @@ MonoBehaviour:
   timeStun: 0
   isLimit: 0
   Amount: 0
+  PosInit: 0
   PreviousPos: 0
   ChangeStatus: 0
   PosHand: {fileID: 6885235486649223473}

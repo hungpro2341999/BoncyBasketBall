@@ -53,17 +53,19 @@ public class ResultWindown : Screen
                     MissonCtrl.Ins.UpdateMission(2);
                     t_Reward.text = "500";
                     CtrlDataGame.Ins.AddCoin(500);
+                  
                 }
                 else
                 {
+                  
                     reward = 0;
                     t_Reward.text = "0";
                 }
-             
-               
-                TourmentCtrl.Ins.SetMatchPlayer();
-                TourmentCtrl.Ins.CompleteMatch();
 
+
+               
+               
+                TourmentCtrl.Ins.LoadTour();
             }
         }
         else

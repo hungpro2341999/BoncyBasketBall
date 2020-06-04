@@ -76,7 +76,7 @@ public enum Type_Shop {Shop_Hand,Shop_Leg_Shop_Head}
         public void LoadShop()
         {
 
-          PlayerPrefs.DeleteKey(Key_First_Shop);
+       //   PlayerPrefs.DeleteKey(Key_First_Shop);
 
 
         // LoadHead

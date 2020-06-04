@@ -1553,7 +1553,7 @@ public class AI : Character
 
         return key;
     }
-    public string KeyCurr_Player_Have_Ball()
+    public virtual string KeyCurr_Player_Have_Ball()
     {
 
         string key = Directory_StatusCpu[Key_Trigger_Front].ToString()+ Directory_StatusCpu[Key_Trigger_Back].ToString();

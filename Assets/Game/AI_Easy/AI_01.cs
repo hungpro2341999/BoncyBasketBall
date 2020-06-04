@@ -6,6 +6,7 @@ using UnityEngine;
 public class AI_01 : AI 
 
 {
+    
     protected float delayMove;
     protected float delayTimeMove = 0.2f;
 
@@ -14,7 +15,7 @@ public class AI_01 : AI
    
     public Dictionary<string, ActionGame[]> Directory_Protect_Board = new Dictionary<string, ActionGame[]>();
 
-
+    public Transform Box_Protect_Ball;
     public override void Start()
     {
        
@@ -29,8 +30,9 @@ public class AI_01 : AI
         PosPrecition = PostionToPos(ball.PosPercitionHoop.x);
         
     }
-
    
+    
+
 
     public override void ActiveActionKey()
     {
@@ -71,7 +73,8 @@ public class AI_01 : AI
     // add Process Key:
     public virtual void OnTriggerStatusMoveProtectBall()
     {
-       
+
+      
         var ball = (Ball)CtrlGamePlay.Ins.Ball;
         ball.OnPercitionBall_0();
         BoxAttack.gameObject.SetActive(false);
@@ -80,11 +83,24 @@ public class AI_01 : AI
         OnMoveToBall();
     }
 
+    public override void OnTriggerCpuHaveBall()
+    {
+        base.OnTriggerCpuHaveBall();
+      
+    }
+    public override void OnTriggerPlayerHaveBall()
+    {
+        base.OnTriggerPlayerHaveBall();
        
-
+    }
+    public override void OnActtionTriggerCatchBall()
+    {
+        base.OnActtionTriggerCatchBall();
+     
+    }
     public void ProcessKey_Protect_Board()
     {
-        
+      
         string key = KeyCurrProtectBall();
       
         KeyActionCurr = key;
@@ -114,6 +130,7 @@ public class AI_01 : AI
 
     public void OnActionWithKeyProtectBall(string key,Dictionary<string,ActionGame[]> ActionGames)
     {
+
         Debug.Log("Protect Move");
         int r = Random.Range(0, ActionGames[key].Length);
         ActionGame a = ActionGames[key][r];
@@ -492,7 +509,7 @@ public class AI_01 : AI
 
         ActionGame lc_OnActionJumpThrowBall = new ActionGame(OnJumpThrowBall, OnStartThrowBall, EndAction, 1);
 
-        ActionGame lc_OnActionMoveProtectBall = new ActionGame(OnTriggerMoveProtectHoop, OnMoveProtectHoop, OnEndProtectToHoop, 2);
+        ActionGame lc_OnActionMoveProtectBall = new ActionGame(OnTriggerMoveProtectHoop, OnMoveProtectHoop);
 
         // Update To Directory
 
@@ -557,12 +574,21 @@ public class AI_01 : AI
 
 
     }
-    public string KeyCurrProtectBall()
+    public virtual string KeyCurrProtectBall()
     {
-        string s = Directory_StatusCpu[Key_Trigger_Jump].ToString();
+ 
+        if (CtrlGamePlay.Ins.GetBall().isCollJump())
+        {
+            return 1.ToString();
+        }
+        else
+        {
+            return 0.ToString();
+        }
+
+   
     
-      //  TextStatus.text = s;
-        return s;
+   
 
         
     }

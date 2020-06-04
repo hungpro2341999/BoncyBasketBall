@@ -20,11 +20,14 @@ public class SpinWindown : Screen
         }
         else
         {
+            Debug.Log("GetSkin 1 : "+ skinSave.rSkin +"  "+ skinSave.typeSkin);
             if (!SpinCtrl.Ins.isBuy(skinSave.rSkin, skinSave.typeSkin))
             {
+
+                Debug.Log("GetSkin 2");
                 SpinCtrl.Ins.RandomSkin();
             }
-            Debug.Log("2");
+          
         }
 
       

@@ -175,7 +175,7 @@ public class TourmentCtrl : MonoBehaviour
 
     public void ReflectTour()
     {
-        CompleteMatch();
+      
         SaveMatchGlobal();
         TourCurrPlayer();
         List_Rivial = new List<Rivial>();
@@ -222,7 +222,7 @@ public class TourmentCtrl : MonoBehaviour
     {
 
         bool isResetTour = false;
-
+        TourmentCtrl.Ins.SetMatchPlayer();
         CompleteMatch();
         SaveMatchGlobal();
         TourCurrPlayer();
@@ -635,8 +635,8 @@ public class TourmentCtrl : MonoBehaviour
              
             Debug.Log("Match L "+List_Rivial[i].P1 + "  " + List_Rivial[i].P2);
 
-         //   if (!isMatchPlayer(List_Rivial[i]))
-///{
+           if (!isMatchPlayer(List_Rivial[i]))
+{
                 if (Random.Range(0, 2) == 0)
                 {
                     GetTourmnet(List_Rivial[i].P1).isNext = true;
@@ -648,7 +648,7 @@ public class TourmentCtrl : MonoBehaviour
 
 
 
-        //    }
+           }
 
 
 

@@ -7,7 +7,7 @@ public class AI_05 : AI_01
 
     [Header("AI_05")]
     public const string Key_Action_Catch_And_Throw = "Key_Catch_And_Throw";
-    public Transform BoxCatchAndThrow;
+ 
     public Transform BoxProtectBall;
 
     public override void Start()
@@ -43,35 +43,41 @@ public class AI_05 : AI_01
 
     public override void OnMoveProtectHoop()
     {
+        Debug.Log("Protect_Hoop");
         var ball = CtrlGamePlay.Ins.GetBall();
 
         MoveToPos(ball.CurrPos);
 
+     
 
-        if(Mathf.Abs(CurrPos - CtrlGamePlay.Ins.Ball.CurrPos) == 0)
-        {
-            OnEndProtectToHoop();
-        }
+     
            
        
      
     }
+  
+
     public override void OnEndProtectToHoop()
     {
         NullAction();
-        changeStatus = true;
-        isPullBall = false;
+      
     }
    
 
     public virtual void OnTriggerCatchAndThrow()
     {
-        isJump = true;
+       
         
     }
 
     public virtual void OnStartCatchAndThrow()
     {
+        MoveToPos(CtrlGamePlay.Ins.GetBall().CurrPos);
+        if (isGround)
+        {
+            
+            isJump = true;
+        }
         if (isBall)
         {
             isPullBall = true;
@@ -80,12 +86,17 @@ public class AI_05 : AI_01
         {
             isPullBall = true;
         }
+
+        if (CtrlGamePlay.Ins.Player.isBall)
+        {
+            OnEndProtectToHoop();
+        }
     }
     
 
     public override void Init()
     {
-        ActionGame actionGame = new ActionGame(OnTriggerCatchAndThrow, OnStartCatchAndThrow, Endjump,0.6f);
+        ActionGame actionGame = new ActionGame(OnTriggerCatchAndThrow, OnStartCatchAndThrow,OnEndProtectToHoop,0.6f);
 
         Directory_OnActionGame.Add(Key_Action_Catch_And_Throw, actionGame);
         base.Init();

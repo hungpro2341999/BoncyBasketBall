@@ -33,7 +33,7 @@
 3. 011 = MoveToBall
 4. 100 = Jump_Direct
 5. 101 = Jump_Direct
-6. 110 = Jump_Direct || OnActionMoveToBall
+6. 110 = Jump_Direct ||  MoveToBall 
 7. 111 = OnActionJump
 --Staus--
 

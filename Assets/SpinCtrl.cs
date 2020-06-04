@@ -43,6 +43,7 @@ public class SpinCtrl : MonoBehaviour
         {
             Destroy(gameObject);
         }
+      //  PlayerPrefs.DeleteKey(Key_Random_Skin);
     }
 
     // Start is called before the first frame update
@@ -365,9 +366,10 @@ public class SpinCtrl : MonoBehaviour
         switch (type)
         {
             case TypeShop.Shop_Hand:
-                
-                 
-                if (ShopCtrl.Ins.Item_Heads[i].isBuy)
+
+               
+
+                    if (ShopCtrl.Ins.Item_Hands[i].isBuy)
                 {
                     return true;
                 }
@@ -379,7 +381,7 @@ public class SpinCtrl : MonoBehaviour
                 break;
             case TypeShop.Shop_Leg:
 
-              
+            
                 if (ShopCtrl.Ins.Item_Legs[i].isBuy)
                 {
                     return true;

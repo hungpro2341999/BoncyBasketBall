@@ -28,12 +28,12 @@
 
 //
 0. 000 = MoveToBall 
-1. 001 = OnJumpRight || OnActionMoveToBall 
-2. 010 = OnJumpleft || OnActionMoveToBall
+1. 001 = Jump_Direct
+2. 010 = Jump_Direct
 3. 011 = MoveToBall
-4. 100 = OnActionJump 
-5. 101 = OnActionJump 
-6. 110 = OnActionJump || MoveToBall 
+4. 100 = Jump_Direct
+5. 101 = Jump_Direct
+6. 110 = Jump_Direct
 7. 111 = OnActionJump
 --Staus--
 
@@ -61,11 +61,8 @@
 
 //1.Trigger_Front_With_Player
 //2.Trigger_Back_With_Player
-0. 01 = Action_Block_Ball
-1. 10 = OnMoveToPlayer 
-2. 00 = Action_Block_Ball
-3. 11 = OnMoveToPlayer
-
+0. 0 = Action_Block_Ball
+0. 1 = Action_Block_Ball
 --Staus--
 
 // IV> Protect Ball

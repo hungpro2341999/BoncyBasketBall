@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AI_04 : AI_01
 {
+
+    
     public override void Start()
     {
        
@@ -137,6 +139,32 @@ public class AI_04 : AI_01
                 
         }
     }
+    public override void OnTriggerCpuHaveBall()
+    {
+
+        base.OnTriggerCpuHaveBall();
+        Box_Protect_Ball.gameObject.SetActive(false);
+    }
+
+    public override void OnTriggerPlayerHaveBall()
+    {
+        base.OnTriggerPlayerHaveBall();
+        Box_Protect_Ball.gameObject.SetActive(false);
+    }
+
+    public override void OnTriggerStatusMoveProtectBall()
+    {
+        base.OnTriggerStatusMoveProtectBall();
+        Box_Protect_Ball.gameObject.SetActive(true);
+    }
+
+
+    public override void OnTriggerStatusMoveCatchBall()
+    {
+        base.OnTriggerStatusMoveCatchBall();
+        Box_Protect_Ball.gameObject.SetActive(false);
+    }
+
 
 
     public override void OnJumpLeft()

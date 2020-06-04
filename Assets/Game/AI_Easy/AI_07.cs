@@ -139,7 +139,7 @@ public class AI_07 :AI_06
     }
 
 
-    public void OnStartBlockPlayerThrow()
+    public virtual void OnStartBlockPlayerThrow()
     {
 
         var player = CtrlGamePlay.Ins.GetPlayer();
@@ -161,24 +161,23 @@ public class AI_07 :AI_06
 
                     if (player.isMoveRight)
                     {
-                        MoveToPos(player.CurrPos);
+                        MoveToPos(player.CurrPos-1);
 
                         if (!player.isGround)
                         {
                             OnAction_01 += JumpLeft;
                             timeOnAction_01 = 0.3f;
-                            isMoveRight = true;
-                            isMoveLeft = false;
+                            MoveToPos(player.CurrPos);
                         }
                     }
                     else if (player.isMoveLeft)
                     {
 
-                        MoveToPos(1);
+                        MoveToPos(player.CurrPos-1);
                     }
                     else
                     {
-                        MoveToPos(player.CurrPos);
+                        MoveToPos(player.CurrPos-1);
                         if (!player.isGround)
                         {
                             OnAction_01 += Jump;
@@ -200,14 +199,14 @@ public class AI_07 :AI_06
                         OnAction_01 += MoveAndJumpAndThrow;
                     }
                     timeOnAction_01 = 1;
-                    isMoveRight = true;
-                    isMoveLeft = false;
+
+                    MoveToPos(player.CurrPos-1);
 
                 }
             }
             else
             {
-                MoveToPos(player.CurrPos);
+                MoveToPos(player.CurrPos-1);
                 if (timeDelay < 0)
                 {
                     timeDelay = 0.4f;
@@ -221,21 +220,34 @@ public class AI_07 :AI_06
             }
 
         }
+        if (!player.isBall)
+        {
+            OnEndBlockPlayerThrow();
+        }
     }
-    private void JumpLeft()
+    protected void JumpLeft()
     {
        
 
     }
-    private void Jump()
+    protected void Jump()
     {
 
 
     }
+    public override void OnMoveToHoop()
+    {
+        base.OnMoveToHoop();
 
+        if (!isBall)
+        {
+            OnEndBlockPlayerThrow();
+        }
+    }
 
     public void MoveAndJump()
     {
+        MoveToPos(CtrlGamePlay.Ins.Player.CurrPos-1);
         if (!CtrlGamePlay.Ins.GetPlayer().isGround || CtrlGamePlay.Ins.GetPlayer().StatusCurr == CharacterState.throw1)
         {
             isJump = true;
@@ -245,6 +257,7 @@ public class AI_07 :AI_06
 
     public void MoveAndJumpAndThrow()
     {
+        MoveToPos(CtrlGamePlay.Ins.Player.CurrPos - 1);
         if (!CtrlGamePlay.Ins.GetPlayer().isGround || CtrlGamePlay.Ins.GetPlayer().StatusCurr == CharacterState.throw1)
         {
             isJump = true;

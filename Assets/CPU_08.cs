@@ -23,7 +23,7 @@ public class CPU_08 : AI_07
         else
         {
             OnAction_01 = null;
-            if (GetDistancePlayerAndCPU() <= 3)
+            if (GetDistancePlayerAndCPU() <= 4)
             {
                 if (DirectCpu == DirectWithPlayer.Right)
                 {
@@ -45,7 +45,7 @@ public class CPU_08 : AI_07
                     }
                     else
                     {
-                        MoveToPos(player.CurrPos+1);
+                        MoveToPos(player.CurrPos-1);
 
                     }
 
@@ -54,7 +54,7 @@ public class CPU_08 : AI_07
                 else
                 {
 
-                    MoveToPos(player.CurrPos+1);
+                    MoveToPos(player.CurrPos-1);
 
                 }
 
@@ -62,7 +62,7 @@ public class CPU_08 : AI_07
             }
             else
             {
-                MoveToPos(player.CurrPos+1);
+                MoveToPos(player.CurrPos-1);
             }
         }
 
@@ -76,9 +76,9 @@ public class CPU_08 : AI_07
 
     }
 
-    private void OnMoveBackWhenPlayerIsJump()
+    protected void OnMoveBackWhenPlayerIsJump()
     {
-        MoveToPos(CtrlGamePlay.Ins.GetPlayer().CurrPos -1);
+        MoveToPos(CtrlGamePlay.Ins.GetPlayer().CurrPos-1);
         if (!CtrlGamePlay.Ins.GetPlayer().isGround)
         {
             if (timeDelay < 0)

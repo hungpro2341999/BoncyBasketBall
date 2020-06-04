@@ -57,6 +57,7 @@ public class Ball : Character
     private void Update()
     {
         PredictionFall();
+        Debug.Log(isCollJump().ToString());
     }
 
   
@@ -194,7 +195,7 @@ public class Ball : Character
             bitPlayer = "0";
         }
 
-        if (CtrlGamePlay.Ins.GetBall().CurrPos <= 2)
+        if (CtrlGamePlay.Ins.GetBall().CurrPos <= 3)
         {
             bitBoardCpu = "1";
         }
@@ -358,10 +359,7 @@ public class Ball : Character
     public void PredictionFall()
     {
         
-        for(int i = 0; i < ColliderIngore.Length; i++)
-        {
-            ColliderIngore[i].gameObject.layer = 2;
-        }   
+     
 
         Vector2 vec = Body.velocity;
         float x1 = transform.position.x;
@@ -370,11 +368,12 @@ public class Ball : Character
         float InitY = transform.position.y;
           Vector2 InitPoint = new Vector2(InitX, InitY);
           RaycastHit2D hits;
-          TurnOffSimulate();
+        //  TurnOffSimulate();
           gameObject.layer = 2;
         int a = 0;
             for(int i=0;i<15;i++)
             {
+            a = i;
                 x1 = InitX + vec.x * (Time.fixedDeltaTime * i*1.2f);
                 y1 = InitY + vec.y * (Time.fixedDeltaTime * i* 1.2f) - (0.5f * -Physics.gravity.y * Time.fixedDeltaTime * Time.fixedDeltaTime * i * i * 1.2f* 1.2f);
                 Point[i].SetActive(true);
@@ -384,30 +383,31 @@ public class Ball : Character
            
                if (hits.collider!=null)
               {
-               
-                
 
+
+                Debug.Log("Coll " + hits.collider.name);
 
                 var AI = (AI)CtrlGamePlay.Ins.AI;
-                posPercition = i;
-                posPercition = Mathf.Clamp(posPercition, 0, Point.Length);
-                PrecitionBallGround = Point[i].transform.position;
+                PosPercitionHoop = Point[i].transform.position;
+
+
 
                 break;
               }
+            if (i == 14)
+            {
+                PosPercitionHoop = Point[i].transform.position;
+            }
 
             }
-        //for (int i = a; i < 20; i++)
-        //{
-        //    Point[i].SetActive(false);
-        //}
+        for (int i = a; i < 15; i++)
+        {
+          Point[i].SetActive(false);
+            Point[i].GetComponent<CheckPoint>().Coll = false;
+        }
             gameObject.layer = 16;
 
-        for (int i = 0; i < ColliderIngore.Length; i++)
-        {
-            ColliderIngore[i].gameObject.layer = RestoreLayer[i];
-        }
-
+     
 
 
 
@@ -415,6 +415,20 @@ public class Ball : Character
 
 
 
+    }
+
+    public bool isCollJump()
+    {
+        for(int i = 0; i < 15; i++)
+        {
+            if (Point[i].gameObject.activeSelf && Point[i].GetComponent<CheckPoint>().Coll)
+            {
+                return true;
+            }
+
+          
+        }
+        return false;
     }
 
     public void PercitionForProtectBall()

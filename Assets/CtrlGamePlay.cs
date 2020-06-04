@@ -449,7 +449,7 @@ public class CtrlGamePlay : MonoBehaviour
     #region  EventGame
     public void GlobalCPU(int Score)
     {
-        ScoreAI += Score;
+        ScorePlayer += Score;
         RenderScore();
 
        
@@ -459,7 +459,7 @@ public class CtrlGamePlay : MonoBehaviour
 
     public void GlobalPlayer(int Score)
     {
-        ScorePlayer+=Score;
+        ScoreAI+=Score;
        
         RenderScore();
 
@@ -678,8 +678,10 @@ public class CtrlGamePlay : MonoBehaviour
 
     public void SelectAI()
     {
+        Ball.transform.parent = TransGamePlay;
         if (AI != null)
         {
+            
             AI = (AI)AI;
             AI.Destroy();
         }
