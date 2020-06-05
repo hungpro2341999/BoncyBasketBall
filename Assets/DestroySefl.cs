@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DestroySefl : Screen
+public class DestroySefl : Screens
 {
  
     public List<Sprite> ListCoins;

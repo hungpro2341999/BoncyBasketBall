@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GiftScreen : Screen
+public class GiftScreen : Screens
 {
     public override void EventOpen()
     {

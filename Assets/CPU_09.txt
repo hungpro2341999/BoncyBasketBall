@@ -61,8 +61,8 @@
 
 //1.Trigger_Front_With_Player
 //2.Trigger_Back_With_Player
-0. 0 = Action_Block_Ball
-0. 1 = Action_Block_Ball
+0. 0 = Action_Block_Ball || StealBall
+0. 1 = Action_Block_Ball || StealBall
 --Staus--
 
 // IV> Protect Ball

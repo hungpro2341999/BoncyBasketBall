@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopWindown : Screen
+public class ShopWindown : Screens
 {
     // Start is called before the first frame update
 

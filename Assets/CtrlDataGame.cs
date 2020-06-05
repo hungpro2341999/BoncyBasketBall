@@ -76,6 +76,7 @@ public class CtrlDataGame : MonoBehaviour
             PlayerPrefs.SetInt(KeyCoin,1000);
             PlayerPrefs.Save();
         }
+
         if (!PlayerPrefs.HasKey(KeyRemoveAds))
         {
             PlayerPrefs.SetInt(KeyRemoveAds, 0);

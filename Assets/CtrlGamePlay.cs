@@ -15,7 +15,7 @@ public enum TypeScore {Point_2,Point_3,Clean_Shoot,JumpBall}
 
 public class CtrlGamePlay : MonoBehaviour
 {
-
+    public static int CountPlay;
     public static int CountPlayQuickMatch = 0; 
 
     public static CtrlGamePlay Ins;
@@ -140,7 +140,7 @@ public class CtrlGamePlay : MonoBehaviour
     public Transform UpBox;
 
 
-
+   
     private void Awake()
     {
         if (Ins != null)
@@ -291,6 +291,7 @@ public class CtrlGamePlay : MonoBehaviour
         }
         if (WaitForEndMatch)
         {
+            
             if (timeWaiForEndMatch <= 0)
             {
                 if(ScoreAI == ScorePlayer)
@@ -355,12 +356,23 @@ public class CtrlGamePlay : MonoBehaviour
         float PercentageX =  CPU.TargetHoop.x - Random.Range(0,CPU.PercentageThrowBall)*CPU.PercentageDistance *Mathf.Clamp((currPos), 1, 12) * 0.05f;
         float PercentageY = CPU.TargetHoop.y + Random.Range(0, CPU.PercentageThrowBall) * CPU.PercentageDistance * Mathf.Clamp((currPos), 1, 12) * 0.05f;
         float yJump = Mathf.Abs(CPU.TargetHoop.y - Ball.transform.position.y);
+        
         yJump += Random.Range(0.5f, 1f);
         if (yJump < PercentageY)
         {
             yJump = PercentageY + 0.5f;
         }
-     
+
+        Debug.Log(yJump + " High Real");
+        if(AI.name.StartsWith("CPU Final"))
+        {
+            if (yJump >= 2)
+            {
+                yJump = 1.6f;
+            }
+            Debug.Log(yJump + " High");
+           
+        }
         Launch(yJump, new Vector3(PercentageX, PercentageY, 0));
     }
     public void PlayerThrowBall()
@@ -369,7 +381,7 @@ public class CtrlGamePlay : MonoBehaviour
         var player = (Player)Player;
         player.type = player.GetTypeScore();
         int currPos = (int)Mathf.Abs((CtrlGamePlay.Ins.WidthScreen / 2 - player.transform.position.x) / player.Amount);
-        float PercentageX = player.TargetHoop.x - Random.Range(0, player.PercentageThrowBall) * Mathf.Clamp((currPos), 1, 12) * 0.05f;
+        float PercentageX = player.TargetHoop.x + Random.Range(0, player.PercentageThrowBall) * Mathf.Clamp((currPos), 1, 12) * 0.3f;
         float PercentageY = player.TargetHoop.y + ((Random.Range(0, player.PercentageThrowBall) * player.PercentageDistance * Mathf.Clamp((currPos), 1, 12)* 0.05f));
         float yJump = Mathf.Abs(player.TargetHoop.y - Ball.transform.position.y);
         yJump += Random.Range(0.5f, 1);
@@ -384,7 +396,7 @@ public class CtrlGamePlay : MonoBehaviour
        
         a.isBall = false;
         b.isBall = false;
-        Ball.transform.transform.parent = null;
+        Ball.transform.transform.parent = TransGamePlay;
         Ball.GetComponent<CircleCollider2D>().isTrigger = false;
         Ball.Body.isKinematic = false;
         Ball.Body.simulated = true;
@@ -476,6 +488,7 @@ public class CtrlGamePlay : MonoBehaviour
     IEnumerator Rest_Game_Play()
     {
 
+        CountPlay++;
         isPlaying = false;
         yield return new WaitForSeconds(2);
         var color = BlackScreen.color;
@@ -704,7 +717,6 @@ public class CtrlGamePlay : MonoBehaviour
         CtrlGamePlay.Ins.isWattingStart = true;
         CtrlGamePlay.Ins.timeWattingMatch = 5;
         CtrlGamePlay.Ins.StartWatting();
-        AudioCtrl.Ins.Pause("BG");
         AudioCtrl.Ins.Play("eff");
       
     }

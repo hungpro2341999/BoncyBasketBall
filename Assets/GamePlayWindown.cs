@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GamePlayWindown : Screen
+public class GamePlayWindown : Screens
 {
     // Start is called before the first frame update
     public Transform GamePlay;
 
     public override void EventOpen()
     {
-        
+
+
+        AudioCtrl.Ins.Pause("BG");
         GameMananger.Ins.TrasUIGenrate.gameObject.SetActive(false);
         GameMananger.Ins.TransSetting.gameObject.SetActive(false);
         GameMananger.Ins.DemoCharacter.gameObject.SetActive(false);

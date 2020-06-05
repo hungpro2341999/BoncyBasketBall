@@ -98,7 +98,7 @@ MonoBehaviour:
     m_Bits: 2048
   Body: {fileID: 5387441478161733043}
   Velocity: {x: 0, y: 0}
-  Force: 12
+  Force: 12.8
   ForceJumpOnGround: 5
   Bounch: 0.5
   high: 0

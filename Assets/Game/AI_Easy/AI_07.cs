@@ -361,12 +361,12 @@ public class AI_07 :AI_06
 
         ActionGame lc_OnActionMoveToPlayer = new ActionGame(OnTriggerMoveToPlayer, OnMoveToPlayer);
         ActionGame lc_OnActionMove = new ActionGame(null, OnMoveToBall);
-        ActionGame lc_OnJump = new ActionGame(OnJump, OnJumpStraight, Endjump, 0.75f);
+        ActionGame lc_OnJump = new ActionGame(OnJump, OnJumpStraight, Endjump, 0.5f);
         ActionGame lc_OnIdle = new ActionGame(null, OnMoveIde, EndAction, 0.5f);
         ActionGame lc_OnMoveRandom = new ActionGame(null, OnMoveRandom);
         ActionGame lc_onMoveToHoop = new ActionGame(null, OnMoveToHoop);
-        ActionGame lc_OnJump_left = new ActionGame(OnTriggerJumpLeft, OnJumpLeft, Endjump, 1f);
-        ActionGame lc_OnJump_right = new ActionGame(OnJump, OnJumpRight, Endjump, 1f);
+        ActionGame lc_OnJump_left = new ActionGame(OnTriggerJumpLeft, OnJumpLeft, Endjump, 0.5f);
+        ActionGame lc_OnJump_right = new ActionGame(OnJump, OnJumpRight, Endjump, 0.5f);
         ActionGame lc_OnSlampDunk = new ActionGame(OnTriggerSlampDunk, OnActionSlampDunk, OnEndSlampDunk, 2, true);
         ActionGame lc_OnStun = new ActionGame(OnTriggerStun, OnStun, OnEndTriggerStun, 0);
 
@@ -381,11 +381,11 @@ public class AI_07 :AI_06
 
         ActionGame lc_OnActionJumpThrowBall = new ActionGame(OnJumpThrowBall, OnStartThrowBall, EndAction, 1);
 
-        ActionGame lc_OnActionMoveProtectBall = new ActionGame(OnTriggerMoveProtectHoop, OnMoveProtectHoop, OnEndProtectToHoop, 2);
+        ActionGame lc_OnActionMoveProtectBall = new ActionGame(OnTriggerMoveProtectHoop, OnMoveProtectHoop);
 
         ActionGame lc_OnCatchAndThrowBall = new ActionGame(OnTriggerCatchAndThrow, OnStartCatchAndThrow, null, 1);
 
-        ActionGame lc_OnJumpDirect = new ActionGame(OnActionJumpFollowDirect, OnTriggerActionJumpFollowDirect,OnEndActionJumpFollowDirect, 0.7f);
+        ActionGame lc_OnJumpDirect = new ActionGame(OnActionJumpFollowDirect, OnTriggerActionJumpFollowDirect,OnEndActionJumpFollowDirect, 0.5f);
         // Update To Directory
 
 
@@ -468,7 +468,14 @@ public class AI_07 :AI_06
         ChangeStatus = true;
         NullAction();
     }
-
+    public override void OnJumpLeft()
+    {
+        MoveToPos(CtrlGamePlay.Ins.Ball.CurrPos);
+    }
+    public override void OnJumpRight()
+    {
+        MoveToPos(CtrlGamePlay.Ins.Ball.CurrPos);
+    }
 
     //
 }

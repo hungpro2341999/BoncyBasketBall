@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResultWindown : Screen
+public class ResultWindown : Screens
 {
 
     public Image[] VisibleVictory;
@@ -53,19 +53,21 @@ public class ResultWindown : Screen
                     MissonCtrl.Ins.UpdateMission(2);
                     t_Reward.text = "500";
                     CtrlDataGame.Ins.AddCoin(500);
-                  
+                    GameMananger.Ins.OpenScreen(TypeScreen.Tourment);
+                    GameMananger.Ins.OpenSingle(TypeScreen.WinTourment);
                 }
                 else
                 {
-                  
+                   
                     reward = 0;
                     t_Reward.text = "0";
+                    
                 }
 
-
-               
-               
+                TourmentCtrl.Ins.SetMatchPlayer();
                 TourmentCtrl.Ins.LoadTour();
+                
+               
             }
         }
         else
@@ -99,6 +101,7 @@ public class ResultWindown : Screen
 
         int[] Player = new int[] { CtrlDataGame.Ins.GetIdHead(), CtrlDataGame.Ins.GetIdHand(), CtrlDataGame.Ins.GetIdHand(), CtrlDataGame.Ins.GetIdLeg(), CtrlDataGame.Ins.GetIdItemLeg() };
         Load(Player, VsScreen.SkinUse);
+        GameMananger.Ins.ShowFullAds();
     }
 
     public void Load(int[] P1,int[] P2)

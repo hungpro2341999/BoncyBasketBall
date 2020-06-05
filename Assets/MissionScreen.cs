@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissionScreen : Screen
+public class MissionScreen : Screens
 {
     public override void EventOpen()
     {

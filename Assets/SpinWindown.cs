@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpinWindown : Screen
+public class SpinWindown : Screens
 {
     public override void EventOpen()
     {

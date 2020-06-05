@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenHome : Screen
+public class ScreenHome : Screens
 {
     public override void EventOpen()
     {

@@ -29,6 +29,8 @@ public class UI_Tourment_Rivial : MonoBehaviour
     
     public Transform TransSkin;
 
+    public bool isLoading = false;
+
 
     private void Start()
     {
@@ -122,9 +124,17 @@ public class UI_Tourment_Rivial : MonoBehaviour
     public void StartProcess()
     {
         if (!runProcess)
+        {
+            isLoading = false;
             return;
+        }
+          
         if (!isNext)
+        {
+            isLoading = false;
             return;
+        }
+            
         if (i >= LineProcess.Count)
         {
             if (!done)
@@ -136,9 +146,12 @@ public class UI_Tourment_Rivial : MonoBehaviour
                 done = true;
                
             }
+
+            isLoading = false;
         }
         else
         {
+            isLoading = true;
             if (LineProcess[i].fillAmount != 1)
             {
                 LineProcess[i].fillAmount = LineProcess[i].fillAmount + speed * Time.deltaTime;

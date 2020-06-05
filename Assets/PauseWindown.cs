@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PauseWindown : Screen
+public class PauseWindown : Screens
 {
     public List<Button> Sound;
     public List<Button> Music;

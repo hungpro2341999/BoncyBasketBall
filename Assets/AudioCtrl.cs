@@ -27,7 +27,10 @@ public class AudioCtrl : MonoBehaviour
         for(int i = 0; i < AudioClip.Count; i++)
         {
             var audio =  gameObject.AddComponent<AudioSource>();
-          
+          if(audio.name == "BG")
+            {
+                audio.loop = true;
+            }
             audio.clip = AudioClip[i];
             Sounds.Add(audio);
         }

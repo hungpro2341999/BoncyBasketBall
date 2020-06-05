@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TourmentWindown : Screen
+public class TourmentWindown : Screens
 {
     public override void EventOpen()
     {

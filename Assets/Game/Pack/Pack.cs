@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Purchasing;
+
 using UnityEngine.UI;
 
 public class Pack : MonoBehaviour
@@ -26,7 +26,7 @@ public class Pack : MonoBehaviour
         {
             FirstBuy.gameObject.SetActive(false);
         }
-      //  iapBtn.onPurchaseComplete.AddListener();
+  
         this.isFirstBuy = IsFirstBuy;
         this.Canbuy = Canbuy;
     }

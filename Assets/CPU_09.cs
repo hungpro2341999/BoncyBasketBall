@@ -17,18 +17,13 @@ public class CPU_09 : CPU_08
 
     public override void OnMoveToHoop()
     {
-        if (CurrPos >= 10)
-        {
-            if (isBall)
-            {
-                if (isGround)
-                {
-                    isPullBall = true;
-                }
-            }
-        }
        
         base.OnMoveToHoop();
+        if (CtrlGamePlay.Ins.Player.isBall)
+        {
+            changeStatus = true;
+            ChangeStatus = true;
+        }
     }
 
     public override void OnStartTriggerStealBall()
@@ -95,8 +90,24 @@ public class CPU_09 : CPU_08
 
        
     }
-   
-  
+    public override void ProcessStatusPlayerHaveBall()
+    {
+        string key = KeyCurr_Player_Have_Ball();
+        KeyActionCurr = key;
+        if (changeStatus)
+        {
+            Directory_Action_Process_Key[KeyCurrBall].TriggerAction();
+            changeStatus = false;
+        }
+
+       
+        if (KeyActionCurr != KeyActionPrevious || KeyActionCurr!="")
+        {
+            OnAtionWithKey_Status_Player_Have_Ball(key);
+        }
+        KeyActionPrevious = KeyActionCurr;
+    }
+
 
     public override string KeyCurr_Player_Have_Ball()
     {

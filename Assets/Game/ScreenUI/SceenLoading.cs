@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SceenLoading : Screen
+public class SceenLoading : Screens
 {
     public float Time_Loading;
     public Image Img_Loading;

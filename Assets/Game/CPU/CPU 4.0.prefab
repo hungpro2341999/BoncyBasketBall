@@ -131,7 +131,7 @@ MonoBehaviour:
     m_Bits: 2048
   Body: {fileID: 3720076019640336452}
   Velocity: {x: 0, y: 0}
-  Force: 12
+  Force: 12.8
   ForceJumpOnGround: 5
   Bounch: 0.5
   high: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
   isStun: 0
   timeStartJump: 0.2
   BoxHurt: {fileID: 3720076020729511430}
-  speed: 4.5
+  speed: 5
   High: 0.73
   KeyInput: 
   CurrPos: 0

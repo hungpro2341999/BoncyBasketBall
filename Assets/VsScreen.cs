@@ -4,7 +4,7 @@ using UnityEngine;
 using Spine.Unity;
 using Spine.Unity.Examples;
 
-public class VsScreen : Screen
+public class VsScreen : Screens
 {
     public MixAndMatchGraphic P1;
     public MixAndMatchGraphic P2; 

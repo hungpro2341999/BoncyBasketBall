@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum TypeScreen { Home,Shop,Tourment,Mission,Vs,Loading,Pause,ResultWindown,SpinWindown,Gift,Play,ShowReward}
+public enum TypeScreen { Home,Shop,Tourment,Mission,Vs,Loading,Pause,ResultWindown,SpinWindown,Gift,Play,ShowReward,WinTourment}
 public class GameMananger : MonoBehaviour
 {
 
-    public List<Screen> Screens;
+    public List<Screens> Screens;
     public static GameMananger Ins;
 
     public bool isGamePause = true; 
@@ -19,9 +19,12 @@ public class GameMananger : MonoBehaviour
     public Transform DemoCharacter;
     public Transform TransSetting;
     public Transform TrasUIGenrate;
+    public Transform TrasUI;
     public Animator Anim_Setting;
     public bool open = false;
     public bool isTest = false;
+
+    public Status StatusPreb; 
     private void Awake()
     {
         if (Ins != null)
@@ -47,7 +50,10 @@ public class GameMananger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            ShowFullAds();
+        }
     }
 
     public void StartGame()
@@ -65,7 +71,7 @@ public class GameMananger : MonoBehaviour
 
     public void OpenScreen(TypeScreen type)
     {
-        foreach(Screen s in Screens)
+        foreach(Screens s in Screens)
         {
             if(s.typeSceen == type)
             {
@@ -80,9 +86,9 @@ public class GameMananger : MonoBehaviour
 
    
 
-    public void OpenScreen(Screen screen)
+    public void OpenScreen(Screens screen)
     {
-        foreach(Screen s in Screens)
+        foreach(Screens s in Screens)
         {
             if(s.typeSceen == screen.typeSceen)
             {
@@ -96,14 +102,14 @@ public class GameMananger : MonoBehaviour
         }
     }
 
-    public void CloseScreen(Screen s)
+    public void CloseScreen(Screens s)
     {
 
     }
 
     public void OpenSingle(TypeScreen type)
     {
-        foreach(Screen s in Screens)
+        foreach(Screens s in Screens)
         {
             if(s.typeSceen == type)
             {
@@ -113,18 +119,18 @@ public class GameMananger : MonoBehaviour
         }
     }
 
-    public void OpenSingle(Screen screen)
+    public void OpenSingle(Screens screen)
     {
         screen.Open();
     }
-    public void CloseSingle(Screen screen)
+    public void CloseSingle(Screens screen)
     {
         screen.Close();
     }
 
     public void CloseSingle(TypeScreen type)
     {
-        foreach (Screen s in Screens)
+        foreach (Screens s in Screens)
         {
             if (s.typeSceen == type)
             {
@@ -156,9 +162,15 @@ public class GameMananger : MonoBehaviour
     {
         if (!CtrlDataGame.Ins.IsActiveAds())
         {
+            Debug.Log("Show");
             ManagerAds.Ins.ShowInterstitial();
         }
+        else
+        {
+            Debug.Log("Khong Show Ads");
+        }
     }
+    
 
     public void Rate()
     {
@@ -177,6 +189,12 @@ public class GameMananger : MonoBehaviour
 
 
         }
+    }
+
+    public void ShowStatus(string text)
+    {
+        var a = Instantiate(StatusPreb, TrasUI);
+        a.Staus.text = text;
     }
 
 

@@ -67,6 +67,11 @@ public class SpinCtrl : MonoBehaviour
     }
     public void AddFreeRoll()
     {
+        if (isRolling)
+        {
+            GameMananger.Ins.ShowStatus("Spin is Rolling ...");
+            return;
+        }
         int roll = PlayerPrefs.GetInt(Key_Roll_Free, 0);
         if (roll <= 0)
         {
@@ -203,7 +208,11 @@ public class SpinCtrl : MonoBehaviour
     public void StartRolling()
     {
         if (isRolling)
+        {
+            GameMananger.Ins.ShowStatus("Spin is Rolling ...");
             return;
+        }
+           
         int r = GetFreeRoll();
         if (r > 0)
         {
@@ -250,7 +259,11 @@ public class SpinCtrl : MonoBehaviour
     public void StartRollSpin()
     {
         if (isRolling)
+        {
+            GameMananger.Ins.ShowStatus("Spin is Rolling ...");
             return;
+        }
+           
         GameMananger.Ins.RewardVideo(StartRolling);
     }
     public void AddRoll()

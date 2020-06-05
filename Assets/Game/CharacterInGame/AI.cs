@@ -230,7 +230,7 @@ public class AI : Character
 
 
 
-    public Stack<System.Action> Stack_Action_Move = new Stack<System.Action>();
+    public Stack<System.Action> Stack_Action_Move = new Stack<System.Action>(); 
 
 
 
@@ -1586,7 +1586,7 @@ public class AI : Character
         }
 
 
-        if (KeyActionCurr != KeyActionPrevious)
+        if (KeyActionCurr != KeyActionPrevious || KeyActionCurr == "")
         {
             OnActionWithKey(key);
         }
@@ -1618,14 +1618,14 @@ public class AI : Character
             KeyActionCurr = "";
           changeStatus = false;
         }
-        if (KeyActionCurr != KeyActionPrevious)
+        if (KeyActionCurr != KeyActionPrevious || KeyActionCurr == "")
         {
             OnAtionWithKey_Status_Have_Ball(key);
         }
         KeyActionPrevious = KeyActionCurr;
     }
 
-    public void ProcessStatusPlayerHaveBall()
+    public virtual void ProcessStatusPlayerHaveBall()
     {
        
 
