@@ -555,7 +555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4476976913113009267
 Transform:
   m_ObjectHideFlags: 0
@@ -564,7 +564,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4476976913113009276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.46, z: 0}
+  m_LocalPosition: {x: -0.24, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4476976912205644190}
@@ -583,7 +583,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.16138113, y: 0.5521302}
+  m_Offset: {x: 1.7305236, y: 0.5521302}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -594,7 +594,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1278265, y: 1.0647364}
+  m_Size: {x: 4.2661114, y: 1.0647364}
   m_EdgeRadius: 0
 --- !u!114 &4476976913113009266
 MonoBehaviour:
@@ -1160,7 +1160,7 @@ MonoBehaviour:
     m_Bits: 2048
   Body: {fileID: 4476976913746492901}
   Velocity: {x: 0, y: 0}
-  Force: 12.8
+  Force: 14
   ForceJumpOnGround: 5
   Bounch: 0.5
   high: 0
@@ -1177,7 +1177,7 @@ MonoBehaviour:
   isStun: 0
   timeStartJump: 0.2
   BoxHurt: {fileID: 4476976913953443435}
-  speed: 4.5
+  speed: 5
   High: 0.73
   KeyInput: 
   CurrPos: 0

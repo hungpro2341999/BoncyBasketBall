@@ -28,8 +28,8 @@
 
 //
 0. 000 = MoveToBall 
-1. 001 = OnJumpRight || OnActionMoveToBall 
-2. 010 = OnJumpleft || OnActionMoveToBall
+1. 001 = MoveToBall 
+2. 010 = MoveToBall 
 3. 011 = MoveToBall
 4. 100 = OnActionJump 
 5. 101 = OnActionJump 

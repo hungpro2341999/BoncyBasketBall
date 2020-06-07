@@ -41,6 +41,7 @@ public class AI_07 :AI_06
         Init();
         this.speed = 5.5f;
         CtrlGamePlay.Ins.GetBall().AddKeyBall_2();
+        delay = 0.3f;
 
     }
 
@@ -153,20 +154,28 @@ public class AI_07 :AI_06
         else
         {
             OnAction_01 = null;
-           
+          
+            
 
             if (GetDistancePlayerAndCPU() <= 5)
             {
-                if(DirectCpu == DirectWithPlayer.Right){
+                if (DirectCpu == DirectWithPlayer.Right) {
 
-                    if (player.isMoveRight)
+                    //if(player.StatusCurr == CharacterState.throw1)
+                    //{
+                    //    isMoveLeft = false;
+                    //    isMoveRight = false;
+                    //    isJump = true;
+                    //}
+
+                       if (player.isMoveRight)
                     {
-                        MoveToPos(player.CurrPos-1);
+                        MoveToPos(player.CurrPos - 1);
 
-                        if (!player.isGround)
+                        if (!player.isGround || player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1 )
                         {
                             OnAction_01 += JumpLeft;
-                            timeOnAction_01 = 0.3f;
+                            timeOnAction_01 = 0.4f;
                             MoveToPos(player.CurrPos);
                         }
                     }
@@ -174,14 +183,20 @@ public class AI_07 :AI_06
                     {
 
                         MoveToPos(player.CurrPos-1);
+                        if (!player.isGround || player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1)
+                        {
+                            OnAction_01 += JumpLeft;
+                            timeOnAction_01 = 0.4f;
+                            MoveToPos(player.CurrPos);
+                        }
                     }
                     else
                     {
                         MoveToPos(player.CurrPos-1);
-                        if (!player.isGround)
+                        if (!player.isGround || player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1)
                         {
                             OnAction_01 += Jump;
-                            timeOnAction_01 = 0.3f;
+                            timeOnAction_01 = 0.4f;
                             isMoveRight = false;
                             isMoveLeft = false;
                         }
@@ -477,5 +492,35 @@ public class AI_07 :AI_06
         MoveToPos(CtrlGamePlay.Ins.Ball.CurrPos);
     }
 
+    public override void OnMoveToPlayer()
+    {
+        var a = CtrlGamePlay.Ins.GetPlayer();
+        var b = CtrlGamePlay.Ins.GetCPU();
+
+        
+
+           
+
+      
+            if (!a.isGround || a.StatusCurr == CharacterState.throw1)
+            {
+                if (delayMove >= 0)
+                {
+                    delayMove -= Time.deltaTime;
+                }
+                else
+                {
+                  delayMove = 0.12f;
+                    isJump = true;
+                }
+               isMoveLeft = false;
+               isMoveRight = false;
+            }
+            else
+            {
+            MoveToPos(a.CurrPos - 1);
+            }
+       
+    }
     //
 }

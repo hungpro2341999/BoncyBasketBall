@@ -351,7 +351,7 @@ public class CtrlGamePlay : MonoBehaviour
         AudioCtrl.Ins.Play("Shoot");
         var CPU = (AI)AI;
 
-        CPU.type = CPU.GetTypeScore();
+        CPU.SetUpTypeScore();
         int currPos = (int)Mathf.Abs((CtrlGamePlay.Ins.WidthScreen / 2 - CPU.transform.position.x) / CPU.Amount);
         float PercentageX =  CPU.TargetHoop.x - Random.Range(0,CPU.PercentageThrowBall)*CPU.PercentageDistance *Mathf.Clamp((currPos), 1, 12) * 0.05f;
         float PercentageY = CPU.TargetHoop.y + Random.Range(0, CPU.PercentageThrowBall) * CPU.PercentageDistance * Mathf.Clamp((currPos), 1, 12) * 0.05f;
@@ -379,7 +379,7 @@ public class CtrlGamePlay : MonoBehaviour
     {
         AudioCtrl.Ins.Play("Shoot");
         var player = (Player)Player;
-        player.type = player.GetTypeScore();
+        player.SetUpTypeScore();
         int currPos = (int)Mathf.Abs((CtrlGamePlay.Ins.WidthScreen / 2 - player.transform.position.x) / player.Amount);
         float PercentageX = player.TargetHoop.x + Random.Range(0, player.PercentageThrowBall) * Mathf.Clamp((currPos), 1, 12) * 0.3f;
         float PercentageY = player.TargetHoop.y + ((Random.Range(0, player.PercentageThrowBall) * player.PercentageDistance * Mathf.Clamp((currPos), 1, 12)* 0.05f));
@@ -404,11 +404,19 @@ public class CtrlGamePlay : MonoBehaviour
 
       
         Vector3 vec = CaculateVelocity(height, Target).InitVelocity;
+        if(vec.ToString() == "(NaN, NaN, NaN)")
+        {
+            Target.y = Ball.transform.position.y;
+            height = 2;
+            vec = CaculateVelocity(height, Target).InitVelocity;
+        }
         Debug.Log(vec.ToString());
         Ball.Body.velocity = vec;
      
        
     }
+
+
 
     public void PushBall(Vector3 direct)
     {
@@ -447,6 +455,28 @@ public class CtrlGamePlay : MonoBehaviour
         return new LauchData(velocityX + velocityY * -Mathf.Sign(graviry), time);
 
     }
+
+    LauchData CaculateVelocity01(float height, Vector3 TargetTo)
+    {
+        Vector3 Target = TargetTo;
+        float h = height;
+        if (h < 1)
+        {
+            h = Random.Range(2, 4);
+        }
+        float displacementY = Target.y - Ball.transform.position.y;
+        Vector3 displacementX = new Vector3((Target.x - Ball.transform.position.x), 0, 0);
+
+        float time = Mathf.Sqrt(-2 * h / graviry) + Mathf.Sqrt(2 * (displacementY - h) / graviry);
+
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * graviry * h);
+        Vector3 velocityX = displacementX / Mathf.Clamp(time, 0.5f, 100);
+
+        return new LauchData(velocityX + velocityY * -Mathf.Sign(graviry), time);
+
+    }
+
+
     struct LauchData
     {
         public readonly Vector3 InitVelocity;

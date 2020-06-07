@@ -8,6 +8,7 @@ public enum TypePack { Coin,Skin,Ads}
 public class PackCtrl : MonoBehaviour
 {
     public const string Key_Pack = "Key_Pack";
+    public const string Key_Pack_Skins = "Key_Pack_Skins";
     public static PackCtrl Ins;
     public List<Pack> PackSkin;
     public List<Pack> PackCoin;
@@ -32,7 +33,7 @@ public class PackCtrl : MonoBehaviour
 
     public void Init()
     {
-      //  PlayerPrefs.DeleteKey(Key_Pack);
+       // PlayerPrefs.DeleteKey(Key_Pack_Skins);
         if (!PlayerPrefs.HasKey(Key_Pack))
         {
             List<InforPack> ListInforPack = new List<InforPack>();
@@ -77,12 +78,37 @@ public class PackCtrl : MonoBehaviour
 
         }
 
+        if (!PlayerPrefs.HasKey(Key_Pack_Skins))
+        {
+          
+            List<PackSkins> ListPackSkins = new List<PackSkins>();
+            for(int i = 0; i < PackSkin.Count; i++)
+            {
+                PackSkins Skins = new PackSkins(i, false);
+                ListPackSkins.Add(Skins);
 
-        var a = GetPackCoin();
-        Debug.Log("PACKS : " + a.Count);
+            }
+            ListPackSkins ListPacks = new ListPackSkins(ListPackSkins);
+            string json = JsonUtility.ToJson(ListPacks);
+            PlayerPrefs.SetString(Key_Pack_Skins, json);
+            PlayerPrefs.Save();
+        }
+
+
+
+            var a = GetPackCoin();
+            var b = GetPackSkins();
+        Debug.Log("PACKS Skins: " + b.Count);
         for(int i = 0; i < PackCoin.Count; i++)
         {
             PackCoin[i].LoadPack(a[i].FirstBuy, a[i].CanBuy);
+        }
+
+        for(int i = 0; i < PackSkin.Count; i++)
+        {
+            PackSkin[i].id = b[i].idPack;
+            PackSkin[i].isBuy = b[i].isBuy;
+            PackSkin[i].LoadStatus();
         }
         
     }
@@ -94,7 +120,11 @@ public class PackCtrl : MonoBehaviour
     {
         return JsonUtility.FromJson<ListPack>(PlayerPrefs.GetString(Key_Pack)).Packs;
     }
-
+    public List<PackSkins> GetPackSkins()
+    {
+        return JsonUtility.FromJson<ListPackSkins>(PlayerPrefs.GetString(Key_Pack_Skins)).Packs;
+        
+    }
     public void SavePackCoins()
     {
         List<InforPack> ListInforPack = new List<InforPack>();
@@ -114,6 +144,22 @@ public class PackCtrl : MonoBehaviour
         string json = JsonUtility.ToJson(Packs);
         PlayerPrefs.SetString(Key_Pack, json);
         PlayerPrefs.Save();
+    }
+
+    public void SavePackSKins()
+    {
+        List<PackSkins> ListInforPack = new List<PackSkins>();
+        for(int i = 0; i < PackSkin.Count; i++)
+        {
+            PackSkins PackSkins = new PackSkins(PackSkin[i].id, PackSkin[i].isBuy);
+            ListInforPack.Add(PackSkins);
+        }
+
+        ListPackSkins listpack = new ListPackSkins(ListInforPack);
+        string json = JsonUtility.ToJson(listpack);
+        PlayerPrefs.SetString(Key_Pack_Skins, json);
+        PlayerPrefs.Save();
+
     }
 
     public void Open(Windown windown)
@@ -177,5 +223,35 @@ public class InforPack
         this.typePack = typePack;
         this.FirstBuy = FirstBuy;
         this.CanBuy = CanBuy;
+    }
+}
+
+[System.Serializable]
+
+public class ListPackSkins
+{
+    public List<PackSkins> Packs = new List<PackSkins>();
+    public ListPackSkins(List<PackSkins> Packs)
+    {
+        this.Packs = Packs;
+    }
+    public ListPackSkins()
+    {
+
+    }
+
+}
+
+[System.Serializable]
+
+public class PackSkins
+{
+    public int idPack;
+    public bool isBuy;
+
+    public PackSkins(int idPack,bool isBuy)
+    {
+        this.isBuy = isBuy;
+        this.idPack = idPack;
     }
 }

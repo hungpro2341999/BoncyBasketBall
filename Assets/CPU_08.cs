@@ -9,6 +9,8 @@ public class CPU_08 : AI_07
     {
         base.Start();
         this.speed = 5f;
+      
+        delay = 0.2f;
     }
     public override void OnStartTriggerStealBall()
     {
@@ -22,12 +24,14 @@ public class CPU_08 : AI_07
         }
         else
         {
-            OnAction_01 = null;
+           
+
+                OnAction_01 = null;
             if (GetDistancePlayerAndCPU() <= 4)
             {
                 if (DirectCpu == DirectWithPlayer.Right)
                 {
-                    if (!player.isGround)
+                    if (!player.isGround  || player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1)
                     {
 
                         if (player.isMoveLeft)
@@ -46,7 +50,19 @@ public class CPU_08 : AI_07
                     else
                     {
                         MoveToPos(player.CurrPos-1);
+                        if (!player.isGround || player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1)
+                        {
+                            if (timeDelay < 0)
+                            {
+                                timeDelay = 0.4f;
+                                isJump = true;
+                            }
+                            else
+                            {
+                                timeDelay -= Time.deltaTime;
+                            }
 
+                        }
                     }
 
 
@@ -56,6 +72,19 @@ public class CPU_08 : AI_07
 
                     MoveToPos(player.CurrPos-1);
 
+                    if (!player.isGround || player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1)
+                    {
+                        if (timeDelay < 0)
+                        {
+                            timeDelay = 0.4f;
+                            isJump = true;
+                        }
+                        else
+                        {
+                            timeDelay -= Time.deltaTime;
+                        }
+
+                    }
                 }
 
 

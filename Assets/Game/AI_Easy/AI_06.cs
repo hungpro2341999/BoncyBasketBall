@@ -133,6 +133,11 @@ public class AI_06 : AI_05
 
         isMoveLeft = true;
         isMoveRight = false;
+        if (CurrPos <= 3)
+        {
+            isPullBall = true;
+        }
+
     }
 
     public override void Endjump()

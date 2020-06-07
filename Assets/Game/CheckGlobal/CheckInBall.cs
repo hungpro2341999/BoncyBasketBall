@@ -14,6 +14,7 @@ public class CheckInBall : MonoBehaviour
     public const string Key_Baset_2 = "Basket_2";
     public const string Key_Global = "Global";
     public const string Key_Coll_2 = "Coll_2";
+    public const string Key_Reset = "Reset";
     public bool isCanGlobal = false;
     public bool isGlobal = false;
     public Transform Hool;
@@ -105,20 +106,21 @@ public class CheckInBall : MonoBehaviour
                     {
                         case BoardGame.Player:
                             int score = 0;
+                            TypeScore type1 = cpu.GetTypeScore();
                             if (ball.LastHand is AI)
                             {
-                                if(cpu.type == TypeScore.Point_2)
+                                if(type1 == TypeScore.Point_2)
                                 {
                                     if(!cpu.isNullEffAction())
                                     {
-                                        cpu.type = TypeScore.JumpBall;
+                                        type1 = TypeScore.JumpBall;
                                         score = 2;
                                        
 
                                     }
                                     else
                                     {
-                                        cpu.type = TypeScore.Point_2;
+                                        type1 = TypeScore.Point_2;
                                         score = 2;
                                     }
 
@@ -126,22 +128,30 @@ public class CheckInBall : MonoBehaviour
                                 }
                                 else
                                 {
-                                 
-                                        if (Global[Key_Coll_2] == 0)
+                                    if (!cpu.isNullEffAction())
                                     {
-                                        cpu.type = TypeScore.Clean_Shoot;
-                                        score = 3;
-                                      
+                                        type1 = TypeScore.JumpBall;
+                                        score = 2;
                                     }
                                     else
                                     {
-                                        cpu.type = TypeScore.Point_3;
-                                         score = 3;
+                                        if (Global[Key_Coll_2] == 0)
+                                        {
+                                            type1 = TypeScore.Clean_Shoot;
+                                            score = 3;
+
+                                        }
+                                        else
+                                        {
+                                            type1 = TypeScore.Point_3;
+                                            score = 3;
+                                        }
                                     }
+                                       
 
                                    
                                 }
-                                CtrlGamePlay.Ins.SetScore(cpu.type);
+                                CtrlGamePlay.Ins.SetScore(type1);
 
                             }
                             else
@@ -159,31 +169,53 @@ public class CheckInBall : MonoBehaviour
                             int score1 = 0;
                             if (ball.LastHand is Player)
                             {
-                                if (player.type == TypeScore.Point_2)
+                                TypeScore type = player.GetTypeScore();
+                                if (type == TypeScore.Point_2)
                                 {
-                                    if (player.isInAction())
+                                    if (!player.isInAction())
                                     {
-                                       
-                                        player.type = TypeScore.JumpBall;
-                                       
+
+                                        type = TypeScore.JumpBall;
+
 
                                     }
+                                    else
+                                    {
+                                        type = TypeScore.Point_2;
+                                    }
+                                  
                                     score1 = 2;
                                 }
                                 else
                                 {
-                                    if (Global[Key_Coll_2] == 0)
+                                    if (!player.isInAction())
                                     {
-                                        player.type = TypeScore.Clean_Shoot;
-                                       
-                                        
+
+                                        type = TypeScore.JumpBall;
+                                        score1 = 2;
 
                                     }
-                                   
-                                    score1 = 3;
+                                    else
+                                    {
+                                        if (Global[Key_Coll_2] == 0)
+                                        {
+                                            type = TypeScore.Clean_Shoot;
+
+                                            score1 = 3;
+
+                                        }
+                                        else
+                                        {
+                                            type = TypeScore.Point_3;
+                                            score1 = 3;
+                                        }
+
+                                    }
+
+
                                 }
                             
-                                CtrlGamePlay.Ins.SetScore(player.type);
+                                CtrlGamePlay.Ins.SetScore(type);
 
                             }
                             else
@@ -224,6 +256,13 @@ public class CheckInBall : MonoBehaviour
 
             isCanGlobal = true;
             Global[Key_Global] = 0;
+            Global[Key_Baset_1] = 0;
+            Global[Key_Baset_2] = 0;
+            Global[Key_Coll_2] = 0;
+        }else if(key == "Reset")
+        {
+            isCanGlobal = true;
+           
             Global[Key_Baset_1] = 0;
             Global[Key_Baset_2] = 0;
             Global[Key_Coll_2] = 0;

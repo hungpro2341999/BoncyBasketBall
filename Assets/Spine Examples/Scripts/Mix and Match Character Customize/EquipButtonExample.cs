@@ -231,17 +231,26 @@ namespace Spine.Unity.Examples {
             EquipHead(skin[0]);
 
             EquipHand(skin[1]);
+
             EquipLeg(skin[3]);
-            if (skin[3] != -1)
+            if (skin[2] != -1)
             {
-                EquipItemHandNull();
+                EquipItemHand(skin[2]);
+               
             }
             else
             {
-                EquipItemHand(skin[2]);
+                EquipItemHandNull();
             }
-          
+            if (skin[4] != -1)
+            {
+                EquipItemLeg(skin[4]);
+            }
+            else
+            {
                 EquipItemLegNull();
+            }
+             
           
            
 

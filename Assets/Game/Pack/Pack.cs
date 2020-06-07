@@ -14,6 +14,8 @@ public class Pack : MonoBehaviour
     public Image FirstBuy;
     public bool isFirstBuy;
     public bool Canbuy;
+
+    public bool isBuy;
    
 
     public virtual void LoadPack(bool IsFirstBuy,bool Canbuy)
@@ -43,6 +45,20 @@ public class Pack : MonoBehaviour
             PackCtrl.Ins.SavePackCoins();
             FirstBuy.gameObject.SetActive(false);
         }
+        
+    }
+
+    public virtual void LoadStatus()
+    {
+        if (!isBuy)
+        {
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+
         
     }
 }

@@ -19,8 +19,10 @@ public class PackSkin : Pack
         ShopCtrl.Ins.SaveShopHand();
         ShopCtrl.Ins.SaveShopHead();
         ShopCtrl.Ins.SaveShopLeg();
-
+        isBuy = true;
         CtrlDataGame.Ins.AddCoin(RewardCoin);
+        PackCtrl.Ins.SavePackSKins();
+        LoadStatus();
     }
 
     public void UnclockBuy(int i, TypeShop type)

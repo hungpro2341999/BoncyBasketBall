@@ -1339,7 +1339,7 @@ MonoBehaviour:
   isStun: 0
   timeStartJump: 0.2
   BoxHurt: {fileID: 7563970642204526043}
-  speed: 4
+  speed: 4.8
   High: 0.73
   KeyInput: 
   CurrPos: 0

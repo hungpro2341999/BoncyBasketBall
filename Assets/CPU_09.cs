@@ -9,7 +9,11 @@ public class CPU_09 : CPU_08
     public const string OnActionStealBall = "StealBall";
 
 
-
+    public override void Start()
+    {
+        base.Start();
+        delay = 0.2f;
+    }
     public void OnJumpToHoop()
     {
 
@@ -43,7 +47,7 @@ public class CPU_09 : CPU_08
             {
                 if (DirectCpu == DirectWithPlayer.Right)
                 {
-                    if (!player.isGround)
+                    if (!player.isGround ||  player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1)
                     {
 
                         if (player.isMoveLeft)
@@ -251,11 +255,11 @@ public class CPU_09 : CPU_08
                 if (DirectCpu == DirectWithPlayer.Right)
                 {
 
-                    if (player.isMoveRight)
+                    if (player.isMoveRight )
                     {
                         MoveToPos(player.CurrPos - 1);
 
-                        if (!player.isGround)
+                        if (!player.isGround ||  player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1)
                         {
                             if (timeDelay < 0)
                             {
@@ -276,7 +280,7 @@ public class CPU_09 : CPU_08
                     else
                     {
                         MoveToPos(player.CurrPos - 1);
-                        if (!player.isGround)
+                        if (!player.isGround || player.StatusCurr == CharacterState.jumb1 || player.StatusCurr == CharacterState.throw1)
                         {
                          
                             timeOnAction_01 = 0.3f;

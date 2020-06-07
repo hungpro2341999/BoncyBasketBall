@@ -518,7 +518,7 @@ public class TourmentCtrl : MonoBehaviour
         PlayerPrefs.SetString(Key_Tourment_B, json1);
         PlayerPrefs.Save();
 
-
+        LoadPlayer();
 
 
 
@@ -750,6 +750,17 @@ public class TourmentCtrl : MonoBehaviour
 
         }
         return false;
+    }
+    public void LoadPlayer()
+    {
+        var a = TourmentCtrl.Ins.GetTourmnet("V_1");
+        a.Skin[0] = CtrlDataGame.Ins.GetIdHead();
+        a.Skin[1] = CtrlDataGame.Ins.GetIdHand();
+        a.Skin[2] = CtrlDataGame.Ins.GetIdItemHand();
+        a.Skin[3] = CtrlDataGame.Ins.GetIdLeg();
+        a.Skin[4] = CtrlDataGame.Ins.GetIdItemLeg();
+
+
     }
 }
 

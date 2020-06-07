@@ -28,8 +28,8 @@
 
 //
 0. 000 = MoveToBall 
-1. 001 = OnJumpRight || OnActionMoveToBall 
-2. 010 = OnJumpleft || OnActionMoveToBall
+1. 001 = MoveToBall 
+2. 010 = MoveToBall 
 3. 011 = MoveToBall
 4. 100 = OnActionJump 
 5. 101 = OnActionJump 
@@ -64,7 +64,7 @@
 0. 01 = Action_Block_Ball
 1. 10 = OnMoveToPlayer 
 2. 00 = Action_Block_Ball
-3. 11 = OnMoveToPlayer
+3. 11 = Action_Block_Ball
 
 --Staus--
 

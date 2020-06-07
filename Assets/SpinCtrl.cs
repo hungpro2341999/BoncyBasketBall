@@ -120,7 +120,7 @@ public class SpinCtrl : MonoBehaviour
 
             if (FrictionSpin <= 0)
             {
-                FrictionSpin = -1;
+                FrictionSpin = -1f;
                 isRolling = false;
                 StopSpin = true;
                 GameMananger.Ins.OpenSingle(TypeScreen.ShowReward);
@@ -212,7 +212,9 @@ public class SpinCtrl : MonoBehaviour
             GameMananger.Ins.ShowStatus("Spin is Rolling ...");
             return;
         }
-           
+
+
+        AudioCtrl.Ins.Play("SpinRoll");
         int r = GetFreeRoll();
         if (r > 0)
         {
@@ -421,11 +423,16 @@ public class SpinCtrl : MonoBehaviour
         return false;
     }
 
-    
 
-    
+    public void BackToHome()
+    {
+        if(SpinCtrl.isRolling)
+        GameMananger.Ins.OpenScreen(TypeScreen.Home);
 
-     public void Started()
+    }
+
+
+    public void Started()
     {
         Debug.Log("Start");
       

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum TypeScreen { Home,Shop,Tourment,Mission,Vs,Loading,Pause,ResultWindown,SpinWindown,Gift,Play,ShowReward,WinTourment}
+public enum TypeScreen { Home,Shop,Tourment,Mission,Vs,Loading,Pause,ResultWindown,SpinWindown,Gift,Play,ShowReward,WinTourment,FreeReward}
 public class GameMananger : MonoBehaviour
 {
-
+  
     public List<Screens> Screens;
     public static GameMananger Ins;
 

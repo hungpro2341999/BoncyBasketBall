@@ -1033,18 +1033,27 @@ public class AI : Character
         isMoveRight = true;
         isMoveLeft = false;
 
+        if (CurrPos <= 2)
+        {
+            isPullBall = true;
+        }
     }
     public virtual void OnJumpStraight()
     {
 
         isMoveRight = false;
         isMoveLeft = false;
+        if(CurrPos <= 2)
+        {
+            isPullBall = true;
+        }
 
     }
 
 
     public virtual void OnJump()
     {
+        isPullBall = false;
         // Debug.Log("Jump");
         hasPullBall = false;
        if(isGround)
@@ -1184,7 +1193,7 @@ public class AI : Character
     }
 
    
-    private float delay = 0.5f;
+    protected float delay = 0.5f;
     private bool change = false;
     public virtual void OnActtionTriggerCatchBall()
     {
@@ -1301,12 +1310,14 @@ public class AI : Character
         Body.simulated = true;
         Body.constraints = RigidbodyConstraints2D.None;
         Body.constraints = RigidbodyConstraints2D.FreezeRotation;
+        Body.isKinematic = false;
     }
 
     public virtual void OnTriggerSlampDunk()
     {
         isAction = true;
         StatusCurr = CharacterState.jumb2_slamdunk;
+        Body.isKinematic = true;
         isComplete = false;
         i = 0;
         Body.simulated = false;
@@ -2381,7 +2392,8 @@ public class AI : Character
         ArrayAction = new Action[0];
         Body.constraints = RigidbodyConstraints2D.None;
         Body.constraints = RigidbodyConstraints2D.FreezeRotation;
-       
+        Body.isKinematic = false;
+
     }
     #endregion
 
@@ -2413,6 +2425,19 @@ public class AI : Character
         base.Destroy();
 
     }
+
+    public override void SetUpTypeScore()
+    {
+        if (CurrPos <= 7)
+        {
+            type = TypeScore.Point_3;
+        }
+        else
+        {
+            type = TypeScore.Point_2;
+        }
+    }
+
 }
 public class ProcessKey
 {
@@ -2470,11 +2495,11 @@ public class ActionGame
     }
 
 
-    
+   
 
 
-   
-   
+
+
 }
 class RegistryItem
 {

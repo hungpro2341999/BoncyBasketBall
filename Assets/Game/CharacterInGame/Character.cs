@@ -288,15 +288,22 @@ public abstract class Character : MonoBehaviour
     }
     public virtual TypeScore GetTypeScore()
     {
-        if (CurrPos >= 6)
+        
+        return type;
+    }
+
+    public virtual void SetUpTypeScore()
+    {
+        if (CurrPos >= 5)
         {
-            return TypeScore.Point_3;
+           type = TypeScore.Point_3;
         }
         else
         {
-            return TypeScore.Point_2;
+           type = TypeScore.Point_2;
         }
     }
+
     public virtual void Destroy()
     {
         if(gameObject.name!="Ball")

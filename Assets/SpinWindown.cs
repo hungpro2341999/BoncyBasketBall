@@ -34,4 +34,6 @@ public class SpinWindown : Screens
         SpinCtrl.Ins.ApplyChageFragmentSkin();
         
     }
+
+ 
 }

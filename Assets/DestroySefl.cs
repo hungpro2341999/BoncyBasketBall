@@ -20,6 +20,7 @@ public class DestroySefl : Screens
     }
     public override void EventOpen()
     {
+        AudioCtrl.Ins.Play("GetReward");
         ShowReward(SpinCtrl.Ins.List_Fragment[SpinCtrl.FragmentSelect]);
     }
     public void ShowReward(Fragment fragment)

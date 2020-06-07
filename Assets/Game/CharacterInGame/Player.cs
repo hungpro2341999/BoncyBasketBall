@@ -71,7 +71,8 @@ public class Player : Character
     private float PosInit;
     public int CountSperateDistance;
 
-    
+    public Image ChangeStatus;
+    public Sprite[] ListStatus;
    
     private void Awake()
     {
@@ -123,6 +124,15 @@ public class Player : Character
    
     private void Update()
     {
+
+        if (!isBall)
+        {
+            ChangeStatus.sprite = ListStatus[1];
+        }
+        else
+        {
+            ChangeStatus.sprite = ListStatus[0];
+        }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -408,7 +418,7 @@ public class Player : Character
     }
     public bool isInAction()
     {
-        return OnAction != null;
+        return OnAction == null;
     }
     public void Swing()
     {
@@ -568,7 +578,9 @@ public class Player : Character
         isBall = true;
         CtrlGamePlay.Ins.AI.isBall = false;
     }
+   
 
+   
 
 
     #region Action

@@ -169,6 +169,7 @@ public class AI_04 : AI_01
 
     public override void OnJumpLeft()
     {
+        
         var a = CtrlGamePlay.Ins.Ball;
         var b = CtrlGamePlay.Ins.Player;
 
@@ -191,6 +192,11 @@ public class AI_04 : AI_01
 
             isMoveRight = false;
             isMoveLeft = true;
+        }
+
+        if (CurrPos <= 2)
+        {
+            isPullBall = true;
         }
     }
 

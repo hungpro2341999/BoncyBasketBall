@@ -489,6 +489,18 @@ public class Ball : Character
 
 
         }
+
+        if (collision.gameObject.layer == 11 || collision.gameObject.layer ==13)
+        {
+            if(LastHand is Player)
+            {
+                CtrlGamePlay.Ins.Player.SetUpTypeScore();
+            }
+            else
+            {
+                CtrlGamePlay.Ins.AI.SetUpTypeScore();
+            }
+        }
     }
   
   

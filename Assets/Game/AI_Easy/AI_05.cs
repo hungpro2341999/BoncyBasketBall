@@ -15,6 +15,7 @@ public class AI_05 : AI_01
       
         base.Start();
         CtrlGamePlay.Ins.GetBall().AddKeyBall_2();
+        delay = 0.3f;
     }
     public override void OnTriggerStatusMoveProtectBall()
     {
@@ -56,7 +57,7 @@ public class AI_05 : AI_01
      
     }
   
-
+   
     public override void OnEndProtectToHoop()
     {
         NullAction();
@@ -72,7 +73,7 @@ public class AI_05 : AI_01
 
     public virtual void OnStartCatchAndThrow()
     {
-        MoveToPos(CtrlGamePlay.Ins.GetBall().CurrPos);
+        MoveToPos(CtrlGamePlay.Ins.GetBall().CurrPos-1);
         if (isGround)
         {
             
